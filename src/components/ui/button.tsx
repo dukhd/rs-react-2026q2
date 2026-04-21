@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 interface ButtonProps {
   text: string;
   type: 'button' | 'submit' | 'reset';
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
 }
 

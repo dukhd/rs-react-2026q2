@@ -1,37 +1,42 @@
 import { PureComponent } from 'react';
 
 interface SearchInputProps {
+  id: string;
   name: string;
   placeholder: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   className?: string;
 }
 
 class SearchInput extends PureComponent<SearchInputProps> {
   render() {
     const {
+      id,
       name,
       placeholder,
       value,
       onChange,
-      onKeyDown,
       className = '',
     } = this.props;
 
     const baseClassName = 'border-2 border-black';
 
     return (
-      <input
-        type="search"
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        className={`${baseClassName} ${className}`}
-      />
+      <>
+        <label htmlFor={id} className="sr-only">
+          {name}
+        </label>
+        <input
+          type="search"
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className={`${baseClassName} ${className}`}
+        />
+      </>
     );
   }
 }
