@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 
-interface InputProps {
+interface SearchInputProps {
   name: string;
   placeholder: string;
   value: string;
@@ -9,7 +9,7 @@ interface InputProps {
   className?: string;
 }
 
-class Input extends PureComponent<InputProps> {
+class SearchInput extends PureComponent<SearchInputProps> {
   render() {
     const { name, placeholder, value, onChange, onKeyDown, className } =
       this.props;
@@ -30,4 +30,4 @@ class Input extends PureComponent<InputProps> {
   }
 }
 
-export default Input;
+export default SearchInput;
