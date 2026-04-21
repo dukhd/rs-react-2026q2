@@ -1,16 +1,16 @@
 import { PureComponent } from 'react';
 
+import type { CardData } from '@/types/interfaces';
+
 import Image from './image';
 
 interface CardProps {
-  src: string;
-  title: string;
-  description: string;
+  card: CardData;
 }
 
 class Card extends PureComponent<CardProps> {
   render() {
-    const { src, title, description } = this.props;
+    const { src, title, description } = this.props.card;
 
     return (
       <div>
