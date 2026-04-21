@@ -9,7 +9,7 @@ interface ButtonProps {
 
 class Button extends PureComponent<ButtonProps> {
   render() {
-    const { text, type, onClick, className } = this.props;
+    const { text, type, onClick, className = '' } = this.props;
 
     const baseClassName = 'cursor-pointer';
     const hoverClassName = 'hover:font-bold';
@@ -25,4 +25,5 @@ class Button extends PureComponent<ButtonProps> {
     );
   }
 }
+
 export default Button;

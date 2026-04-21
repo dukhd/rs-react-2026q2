@@ -11,8 +11,14 @@ interface SearchInputProps {
 
 class SearchInput extends PureComponent<SearchInputProps> {
   render() {
-    const { name, placeholder, value, onChange, onKeyDown, className } =
-      this.props;
+    const {
+      name,
+      placeholder,
+      value,
+      onChange,
+      onKeyDown,
+      className = '',
+    } = this.props;
 
     const baseClassName = 'border-2 border-black';
 
