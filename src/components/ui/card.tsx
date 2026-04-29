@@ -10,14 +10,15 @@ interface CardProps {
 
 class Card extends PureComponent<CardProps> {
   render() {
-    const { src, title, description } = this.props.card;
+    const { image, name, status, species } = this.props.card;
 
     return (
       <div>
-        <Image src={src} alt={`${title} poster`} size="s" />
+        <Image src={image} alt={`${name} avatar`} size="s" />
         <div>
-          <h2>{title}</h2>
-          <p>{description}</p>
+          <h2>{name}</h2>
+          <p>Status: {status}</p>
+          <p>Species: {species}</p>
         </div>
       </div>
     );

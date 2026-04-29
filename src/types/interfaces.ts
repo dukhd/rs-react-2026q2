@@ -1,8 +1,9 @@
 export interface CardData {
   id: string;
-  src: string;
-  title: string;
-  description: string;
+  image: string;
+  name: string;
+  status: string;
+  species: string;
 }
 
 interface CharacterLocation {
