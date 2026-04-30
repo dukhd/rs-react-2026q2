@@ -1,8 +1,10 @@
 import { PureComponent } from 'react';
 
+import { STORAGE_KEYS } from '@/constants/storage-keys';
+import storage from '@/services/local-storage';
+
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
-
 interface SearchBarProps {
   onSearch: (trimmedQuery: string) => void;
   initialValue?: string;
@@ -29,7 +31,9 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
     const trimmedQuery = this.state.query.trim();
     if (trimmedQuery === this.lastSearchedQuery || !trimmedQuery) return;
     this.lastSearchedQuery = trimmedQuery;
+
     this.setState({ query: trimmedQuery });
+    storage.save(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
     this.props.onSearch(trimmedQuery);
   };
 
