@@ -2,7 +2,7 @@ import { PureComponent } from 'react';
 
 import type { CharacterSchema } from '@/types/interfaces';
 
-import Card from './ui/card';
+import Card from './card';
 
 interface CardListProps {
   cards: CharacterSchema[];

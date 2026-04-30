@@ -6,8 +6,8 @@ import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
 import type { AllCharactersSchema, CharacterSchema } from '@/types/interfaces';
 import { ErrorFormatter } from '@/utils/error-formatter';
 
-import CardList from './card-list';
 import Loader from './loader/loader';
+import CardList from './ui/card-list';
 
 interface SearchState {
   data: CharacterSchema[];
