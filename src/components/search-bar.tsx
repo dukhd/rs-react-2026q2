@@ -29,7 +29,7 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
     event.preventDefault();
 
     const trimmedQuery = this.state.query.trim();
-    if (trimmedQuery === this.lastSearchedQuery || !trimmedQuery) return;
+    if (trimmedQuery === this.lastSearchedQuery) return;
     this.lastSearchedQuery = trimmedQuery;
 
     this.setState({ query: trimmedQuery });

@@ -3,6 +3,7 @@ import { Component } from 'react';
 import storage from '@/services/local-storage';
 
 import SearchBar from './components/search-bar';
+import SearchResult from './components/search-result';
 import { STORAGE_KEYS } from './constants/storage-keys';
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
           onSearch={this.handleSearch}
           initialValue={this.state.searchTerm}
         />
+        <SearchResult query={this.state.searchTerm} />
       </>
     );
   }

@@ -9,7 +9,11 @@ import { ErrorFormatter } from '@/utils/error-formatter';
 import Loader from './loader/loader';
 import CardList from './ui/card-list';
 
-interface SearchState {
+interface SearchResultProps {
+  query: string;
+}
+
+interface SearchResultState {
   data: CharacterSchema[];
   isLoading: boolean;
   error: string | null;
@@ -18,28 +22,38 @@ interface SearchState {
 const apiService = new ApiService();
 const errorFormatter = new ErrorFormatter();
 
-class SearchResult extends PureComponent<object, SearchState> {
+class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
   private controller: AbortController | null = null;
 
-  state: SearchState = {
+  state: SearchResultState = {
     data: [],
     isLoading: true,
     error: null,
   };
 
   componentDidMount(): void {
-    this.fetchData(CHARACTER_URL);
+    this.loadData(this.props.query);
+  }
+
+  componentDidUpdate(prevProps: SearchResultProps): void {
+    if (prevProps.query !== this.props.query) {
+      this.loadData(this.props.query);
+    }
   }
 
   componentWillUnmount(): void {
     this.controller?.abort();
   }
 
-  async fetchData(url: string): Promise<void> {
-    if (this.controller) {
-      this.controller.abort();
-    }
+  loadData(query: string): void {
+    const urlToFetch = query
+      ? `${CHARACTER_URL}/?name=${query}`
+      : CHARACTER_URL;
+    this.fetchData(urlToFetch);
+  }
 
+  async fetchData(url: string): Promise<void> {
+    this.controller?.abort();
     this.controller = new AbortController();
 
     try {
