@@ -1,17 +1,9 @@
-export interface CardData {
-  id: string;
-  image: string;
-  name: string;
-  status: string;
-  species: string;
-}
-
 interface CharacterLocation {
   name: string;
   url: string;
 }
 
-export interface CharacterSchemaResponse {
+export interface CharacterSchema {
   id: number;
   name: string;
   status: 'Alive' | 'Dead' | 'unknown';
@@ -33,5 +25,5 @@ export interface AllCharactersSchema {
     next: null | string;
     prev: null | string;
   };
-  results: CharacterSchemaResponse[];
+  results: CharacterSchema[];
 }

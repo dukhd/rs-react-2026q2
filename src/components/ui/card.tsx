@@ -1,11 +1,11 @@
 import { PureComponent } from 'react';
 
-import type { CardData } from '@/types/interfaces';
+import type { CharacterSchema } from '@/types/interfaces';
 
 import Image from './image';
 
 interface CardProps {
-  card: CardData;
+  card: CharacterSchema;
 }
 
 class Card extends PureComponent<CardProps> {
