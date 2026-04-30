@@ -14,6 +14,8 @@ interface SearchBarState {
   query: string;
 }
 
+const SEARCH_PLACEHOLDER = 'Search characters...';
+
 class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
   private lastSearchedQuery: string = this.props.initialValue?.trim() || '';
 
@@ -43,7 +45,7 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
         <SearchInput
           id="search-input"
           name="Search query"
-          placeholder="Enter movie title..."
+          placeholder={SEARCH_PLACEHOLDER}
           value={this.state.query}
           onChange={this.handleInputChange}
         />
