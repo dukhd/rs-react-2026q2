@@ -5,11 +5,14 @@
   --color-second: #24adc5;
   --color-accent: #2a781d;
   --shadow-general: 4px 6px 0 0 var(--color-second);
+
+  --font-sans: 'Advent Pro', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   body {
     background-color: var(--color-main);
+    font-family: var(--font-sans);
   }
 
   #root {

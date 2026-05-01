@@ -12,7 +12,7 @@ class Button extends PureComponent<ButtonProps> {
     const { text, type, onClick, className = '' } = this.props;
 
     const baseClassName =
-      'bg-accent text-main shadow-general cursor-pointer rounded-xl px-8 py-2 font-bold transition-shadow duration-300 ease-in-out';
+      'bg-accent text-main shadow-general cursor-pointer rounded-xl px-8 py-2 text-base font-semibold tracking-wide transition-shadow duration-300 ease-in-out';
     const hoverClassName = 'hover:shadow-none';
 
     return (
