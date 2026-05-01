@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 import storage from '@/services/local-storage';
 
+import ErrorButton from './components/error-button';
 import SearchBar from './components/search-bar';
 import SearchResult from './components/search-result';
 import { STORAGE_KEYS } from './constants/storage-keys';
@@ -18,7 +19,10 @@ class App extends Component {
   render() {
     return (
       <>
-        <h1 className="text-3xl font-bold text-blue-950">RS React App</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-blue-950">Rick and Morty</h1>
+          <ErrorButton />
+        </div>
         <SearchBar
           onSearch={this.handleSearch}
           initialValue={this.state.searchTerm}

@@ -5,6 +5,8 @@ import { createRoot } from 'react-dom/client';
 
 import App from '@/App.tsx';
 
+import ErrorBoundary from './components/error-boundary';
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error('Root element not found');
@@ -12,6 +14,8 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>
 );
