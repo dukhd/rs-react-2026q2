@@ -11,8 +11,9 @@ class Button extends PureComponent<ButtonProps> {
   render() {
     const { text, type, onClick, className = '' } = this.props;
 
-    const baseClassName = 'cursor-pointer';
-    const hoverClassName = 'hover:font-bold';
+    const baseClassName =
+      'bg-accent text-main shadow-general cursor-pointer rounded-xl px-8 py-2 font-bold transition-shadow duration-300 ease-in-out';
+    const hoverClassName = 'hover:shadow-none';
 
     return (
       <button

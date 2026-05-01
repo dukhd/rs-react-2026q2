@@ -1,7 +1,21 @@
 @import 'tailwindcss';
 
-#root {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 20px;
+@theme {
+  --color-main: #f7e3e3;
+  --color-second: #24adc5;
+  --color-accent: #2a781d;
+  --shadow-general: 4px 6px 0 0 var(--color-second);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-main);
+  }
+
+  #root {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+    min-height: 100vh;
+  }
 }
