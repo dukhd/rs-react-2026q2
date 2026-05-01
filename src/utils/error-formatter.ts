@@ -6,15 +6,19 @@ const SYSTEM_ERRORS = {
 };
 
 const ERROR_TEXTS = {
-  NETWORK: (status: number) => `Network Error (${status})`,
+  NETWORK: (statusText: string) => `Oops! ${statusText}. Please try again.`,
+  NOT_FOUND: 'Nothing was found for your request',
   VALIDATION: 'Data validation failed',
   FETCH_FAILED: 'Network failure or API limit reached. Please try again later.',
-  DEFAULT: 'Oops! Something went wrong',
+  DEFAULT: 'Oops! Something went wrong. Please try again.',
 };
 
 export class ErrorFormatter {
   public getMessage(error: unknown): string {
-    if (error instanceof HttpError) return ERROR_TEXTS.NETWORK(error.status);
+    if (error instanceof HttpError) {
+      if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
+      return ERROR_TEXTS.NETWORK(error.statusText);
+    }
     if (error instanceof ValidationError) return ERROR_TEXTS.VALIDATION;
     if (error instanceof Error) {
       const isSystemNetworkError =

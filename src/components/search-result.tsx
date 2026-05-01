@@ -57,7 +57,7 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
     this.controller = new AbortController();
 
     try {
-      this.setState({ isLoading: true, error: null });
+      this.setState({ isLoading: true, error: null, data: [] });
 
       const response: AllCharactersSchema = await apiService.getData(
         url,
@@ -68,7 +68,6 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
       this.setState({ data: response.results, isLoading: false });
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') return;
-
       this.setState({
         error: errorFormatter.getMessage(error),
         isLoading: false,
