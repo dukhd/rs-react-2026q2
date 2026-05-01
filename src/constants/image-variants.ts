@@ -1,6 +1,5 @@
-export type ImageSize = 's' | 'l';
+export type ImageSize = 's';
 
 export const POSTER_SIZES: Readonly<Record<ImageSize, string>> = {
-  s: 'w-[100px] h-[150px] aspect-[2/3]',
-  l: 'w-[213px] h-[320px] aspect-[213/320]',
+  s: 'w-[220px] h-[220px] aspect-[1/1]',
 };
