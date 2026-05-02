@@ -1,6 +1,6 @@
 {
-  "name": "Rick and Morty Characters",
-  "short_name": "R&M Characters",
+  "name": "Rick and Morty Explorer",
+  "short_name": "R&M Explorer",
   "icons": [
     {
       "src": "/favicon/android-chrome-192x192.png",
