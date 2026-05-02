@@ -1,5 +1,7 @@
 import { PureComponent } from 'react';
 
+import fallbackImage from '@/assets/images/rick-and-morty-30973.webp';
+
 import Button from './ui/button';
 
 const FALLBACK_CONTENT = {
@@ -18,11 +20,7 @@ class FallbackUI extends PureComponent<Props> {
         <h1 className="text-accent text-center text-3xl font-medium tracking-wide">
           {FALLBACK_CONTENT.TITLE}
         </h1>
-        <img
-          src="/src/assets/images/rick-and-morty-30973.webp"
-          alt={FALLBACK_CONTENT.IMG_ALT}
-          width={350}
-        />
+        <img src={fallbackImage} alt={FALLBACK_CONTENT.IMG_ALT} width={350} />
         <Button text="Return back" type="button" onClick={onReturn} />
       </div>
     );
