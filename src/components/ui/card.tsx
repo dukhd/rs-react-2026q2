@@ -6,6 +6,7 @@ import Image from './image';
 
 interface CardProps {
   card: CharacterSchema;
+  priority?: boolean;
 }
 
 const LABELS = {
@@ -22,7 +23,12 @@ class Card extends PureComponent<CardProps> {
 
     return (
       <article className="border-accent shadow-card text-accent grid grid-cols-[220px_1fr] gap-3 rounded-2xl border-4 tracking-wide">
-        <Image src={image} alt={`${name} avatar`} size="s" />
+        <Image
+          src={image}
+          alt={`${name} avatar`}
+          size="s"
+          priority={this.props.priority}
+        />
         <div className="flex flex-col justify-between p-3 pl-0">
           <header className="mb-3">
             <span className="text-sm">{LABELS.NAME}</span>
