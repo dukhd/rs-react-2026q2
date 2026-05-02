@@ -8,6 +8,7 @@
   --shadow-general: 4px 6px 0 0 var(--color-second);
   --shadow-card: 6px 8px 0 0 var(--color-second);
   --text-shadow-custom: 3px 2px 0 var(--color-second);
+  --text-shadow-custom-small: 2px 1px 0 var(--color-second);
 
   --font-advent: 'Advent Pro', sans-serif;
 }
