@@ -3,7 +3,7 @@
   font-size: 25px;
   font-weight: 700;
   line-height: 1.2;
-  color: #fff;
+  color: var(--color-main);
   letter-spacing: 5px;
   z-index: 1;
 }
@@ -20,14 +20,14 @@
 
 .glitch:before {
   animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-  color: #8b00ff;
+  color: var(--color-second);
   z-index: -1;
 }
 
 .glitch:after {
   animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both
     infinite;
-  color: #00e571;
+  color: var(--color-accent);
   z-index: -2;
 }
 

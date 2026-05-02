@@ -6,21 +6,16 @@ interface SearchInputProps {
   placeholder: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
 }
 
 class SearchInput extends PureComponent<SearchInputProps> {
   render() {
-    const {
-      id,
-      name,
-      placeholder,
-      value,
-      onChange,
-      className = '',
-    } = this.props;
+    const { id, name, placeholder, value, onChange } = this.props;
 
-    const baseClassName = 'border-2 border-black';
+    const baseClassName =
+      'w-100 h-10 rounded-xl border-2 border-accent bg-main shadow-general text-accent text-lg tracking-wide font-semibold transition-colors duration-300 easy-in-out focus:outline-none focus:border-focus p-3';
+    const placeholderClassName =
+      'placeholder:text-accent placeholder:font-normal placeholder:opacity-50';
 
     return (
       <>
@@ -34,7 +29,7 @@ class SearchInput extends PureComponent<SearchInputProps> {
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`${baseClassName} ${className}`}
+          className={`${baseClassName} ${placeholderClassName}`}
         />
       </>
     );

@@ -41,7 +41,11 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
 
   render() {
     return (
-      <form onSubmit={this.handleSearchSubmit} role="search">
+      <form
+        onSubmit={this.handleSearchSubmit}
+        role="search"
+        className="flex gap-3 self-center"
+      >
         <SearchInput
           id="search-input"
           name="Search query"

@@ -18,9 +18,11 @@ class App extends Component {
 
   render() {
     return (
-      <>
-        <div>
-          <h1 className="text-3xl font-bold text-blue-950">Rick and Morty</h1>
+      <main className="flex flex-col gap-6">
+        <div className="flex justify-between">
+          <h1 className="text-accent text-shadow-custom text-5xl font-bold">
+            Rick and Morty
+          </h1>
           <ErrorButton />
         </div>
         <SearchBar
@@ -28,7 +30,7 @@ class App extends Component {
           initialValue={this.state.searchTerm}
         />
         <SearchResult query={this.state.searchTerm} />
-      </>
+      </main>
     );
   }
 }

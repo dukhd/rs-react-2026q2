@@ -79,7 +79,12 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
     const { data, isLoading, error } = this.state;
 
     if (isLoading) return <Loader />;
-    if (error) return <div>{error}</div>;
+    if (error)
+      return (
+        <div className="text-accent mt-10 text-center text-2xl tracking-wide">
+          {error}
+        </div>
+      );
 
     return <CardList cards={data} />;
   }

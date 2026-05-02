@@ -4,22 +4,21 @@ interface ButtonProps {
   text: string;
   type: 'button' | 'submit' | 'reset';
   onClick?: () => void;
-  className?: string;
 }
 
 class Button extends PureComponent<ButtonProps> {
   render() {
-    const { text, type, onClick, className = '' } = this.props;
+    const { text, type, onClick } = this.props;
 
     const baseClassName =
-      'bg-accent text-main shadow-general cursor-pointer rounded-xl px-8 py-2 text-base font-semibold tracking-wide transition-shadow duration-300 ease-in-out';
+      'bg-accent text-main shadow-general cursor-pointer rounded-xl px-8 py-2 text-lg font-semibold tracking-wide transition-shadow duration-300 ease-in-out focus:outline-focus focus:outline-2';
     const hoverClassName = 'hover:shadow-none';
 
     return (
       <button
         type={type}
         onClick={onClick}
-        className={`${baseClassName} ${hoverClassName} ${className}`}
+        className={`${baseClassName} ${hoverClassName}`}
       >
         {text}
       </button>

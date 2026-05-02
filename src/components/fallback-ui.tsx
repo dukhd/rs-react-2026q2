@@ -14,11 +14,14 @@ class FallbackUI extends PureComponent<Props> {
   render() {
     const { onReturn } = this.props;
     return (
-      <div className="flex flex-col items-center gap-2">
-        <h1>{FALLBACK_CONTENT.TITLE}</h1>
+      <div className="mt-20 flex flex-col items-center gap-2">
+        <h1 className="text-accent text-center text-3xl font-medium tracking-wide">
+          {FALLBACK_CONTENT.TITLE}
+        </h1>
         <img
           src="/src/assets/images/rick-and-morty-30973.webp"
           alt={FALLBACK_CONTENT.IMG_ALT}
+          width={350}
         />
         <Button text="Return back" type="button" onClick={onReturn} />
       </div>
