@@ -7,7 +7,7 @@ const SYSTEM_ERRORS = {
 
 const ERROR_TEXTS = {
   NETWORK: (statusText: string) => `Oops! ${statusText}. Please try again.`,
-  NOT_FOUND: 'Nothing was found for your request...',
+  NOT_FOUND: 'No characters found. Try a different name.',
   VALIDATION: 'Data validation failed.',
   FETCH_FAILED: 'Network failure or API limit reached. Please try again later.',
   DEFAULT: 'Oops! Something went wrong. Please try again.',

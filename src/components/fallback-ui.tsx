@@ -21,7 +21,7 @@ class FallbackUI extends PureComponent<Props> {
           {FALLBACK_CONTENT.TITLE}
         </h1>
         <img src={fallbackImage} alt={FALLBACK_CONTENT.IMG_ALT} width={350} />
-        <Button text="Return back" type="button" onClick={onReturn} />
+        <Button text="Try again" type="button" onClick={onReturn} />
       </div>
     );
   }
