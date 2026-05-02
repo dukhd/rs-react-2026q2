@@ -30,13 +30,19 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
   handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const trimmedQuery = this.state.query.trim();
-    if (trimmedQuery === this.lastSearchedQuery) return;
-    this.lastSearchedQuery = trimmedQuery;
-
-    this.setState({ query: trimmedQuery });
-    storage.save(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
-    this.props.onSearch(trimmedQuery);
+    this.setState(
+      (prevState) => ({
+        query: prevState.query.trim(),
+      }),
+      () => {
+        const trimmedQuery = this.state.query;
+        if (trimmedQuery !== this.lastSearchedQuery) {
+          this.lastSearchedQuery = trimmedQuery;
+          storage.save(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
+          this.props.onSearch(trimmedQuery);
+        }
+      }
+    );
   };
 
   render() {
