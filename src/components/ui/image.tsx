@@ -9,24 +9,41 @@ interface ImageProps {
   priority?: boolean;
 }
 
-class Image extends PureComponent<ImageProps> {
+interface ImageState {
+  hasError: boolean;
+}
+class Image extends PureComponent<ImageProps, ImageState> {
+  state = {
+    hasError: false,
+  };
+
+  handleError = () => {
+    this.setState({ hasError: true });
+  };
+
   render() {
     const { src, alt, size, priority = false } = this.props;
-
+    const { hasError } = this.state;
     const sizeClassName = POSTER_SIZES[size];
 
     return (
-      <div className={`${sizeClassName} overflow-hidden rounded-l-xl`}>
-        <figure>
+      <div
+        className={`${sizeClassName} flex items-center justify-center place-self-center overflow-hidden rounded-t-xl bg-gray-200 sm:rounded-l-xl sm:rounded-tr-none`}
+      >
+        {hasError ? (
+          <span className="text-accent text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
+            No image available
+          </span>
+        ) : (
           <img
             src={src}
-            alt={alt}
+            alt={`${alt} avatar`}
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : 'auto'}
-            className={`text-4 text-accent rounded-l-xl bg-gray-300 object-cover font-semibold tracking-wide transition-transform duration-500 ease-out hover:scale-110 ${sizeClassName}`}
+            onError={this.handleError}
+            className={`h-full w-full object-cover transition-transform duration-500 ease-out hover:scale-110`}
           />
-          <figcaption>{alt}</figcaption>
-        </figure>
+        )}
       </div>
     );
   }

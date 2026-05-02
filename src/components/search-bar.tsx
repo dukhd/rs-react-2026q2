@@ -14,7 +14,7 @@ interface SearchBarState {
   query: string;
 }
 
-const SEARCH_PLACEHOLDER = 'Search characters...';
+const SEARCH_PLACEHOLDER = 'Search by name';
 
 class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
   private lastSearchedQuery: string = this.props.initialValue?.trim() || '';
@@ -44,7 +44,7 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
       <form
         onSubmit={this.handleSearchSubmit}
         role="search"
-        className="flex gap-3 self-center"
+        className="mx-auto flex w-full max-w-lg justify-center gap-3 self-center"
       >
         <SearchInput
           id="search-input"

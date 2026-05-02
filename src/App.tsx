@@ -19,8 +19,8 @@ class App extends Component {
   render() {
     return (
       <main className="flex flex-col gap-6">
-        <div className="flex justify-between">
-          <h1 className="text-accent text-shadow-custom text-5xl font-bold">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-accent text-shadow-custom text-center text-3xl font-bold sm:text-left sm:text-4xl md:text-5xl">
             Rick and Morty
           </h1>
           <ErrorButton />

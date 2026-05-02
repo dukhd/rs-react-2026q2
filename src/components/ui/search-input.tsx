@@ -13,9 +13,9 @@ class SearchInput extends PureComponent<SearchInputProps> {
     const { id, name, placeholder, value, onChange } = this.props;
 
     const baseClassName =
-      'w-100 h-10 rounded-xl border-2 border-accent bg-main shadow-general text-accent text-lg tracking-wide font-semibold transition-colors duration-300 easy-in-out focus:outline-none focus:border-focus p-3';
+      'w-full h-10 sm:h-11 md:h-12 rounded-xl border-2 border-accent bg-main shadow-general text-accent text-sm sm:text-base md:text-lg tracking-wide font-semibold transition-colors duration-300 ease-in-out focus:outline-none focus:border-focus p-3';
     const placeholderClassName =
-      'placeholder:text-accent placeholder:font-normal placeholder:opacity-50';
+      'placeholder:text-accent placeholder:font-normal placeholder:opacity-80';
 
     return (
       <>

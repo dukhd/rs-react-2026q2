@@ -22,14 +22,9 @@ class Card extends PureComponent<CardProps> {
     const { image, name, status, species, gender } = this.props.card;
 
     return (
-      <article className="border-accent shadow-card text-accent grid grid-cols-[220px_1fr] gap-3 rounded-2xl border-4 tracking-wide">
-        <Image
-          src={image}
-          alt={`${name} avatar`}
-          size="s"
-          priority={this.props.priority}
-        />
-        <div className="flex flex-col justify-between p-3 pl-0">
+      <article className="border-accent shadow-card text-accent grid min-w-65 grid-cols-1 justify-stretch rounded-2xl border-4 tracking-wide sm:grid-cols-[220px_1fr] sm:gap-3">
+        <Image src={image} alt={name} size="s" priority={this.props.priority} />
+        <div className="flex flex-col justify-between p-3 sm:pl-0">
           <header className="mb-3">
             <span className="text-sm">{LABELS.NAME}</span>
             <hr />
