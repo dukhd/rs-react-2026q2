@@ -9,13 +9,13 @@
   --shadow-card: 6px 8px 0 0 var(--color-second);
   --text-shadow-custom: 3px 2px 0 var(--color-second);
 
-  --font-sans: 'Advent Pro', ui-sans-serif, system-ui, sans-serif;
+  --font-advent: 'Advent Pro', sans-serif;
 }
 
 @layer base {
   body {
     background-color: var(--color-main);
-    font-family: var(--font-sans);
+    font-family: var(--font-advent);
   }
 
   #root {
