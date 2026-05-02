@@ -37,23 +37,24 @@ class Card extends PureComponent<CardProps> {
               {name}
             </h2>
           </header>
-
-          <dl>
+          <main>
             <span className="text-sm">{LABELS.DESCRIPTION}</span>
             <hr />
-            <div className="flex flex-row justify-between text-base">
-              <dt className="font-bold">{LABELS.STATUS}:</dt>
-              <dd>{status}</dd>
-            </div>
-            <div className="flex flex-row justify-between text-base">
-              <dt className="font-bold">{LABELS.SPECIES}:</dt>
-              <dd>{species}</dd>
-            </div>
-            <div className="flex flex-row justify-between text-base">
-              <dt className="font-bold">{LABELS.GENDER}:</dt>
-              <dd>{gender}</dd>
-            </div>
-          </dl>
+            <dl>
+              <div className="flex flex-row justify-between text-base">
+                <dt className="font-bold">{LABELS.STATUS}:</dt>
+                <dd>{status}</dd>
+              </div>
+              <div className="flex flex-row justify-between text-base">
+                <dt className="font-bold">{LABELS.SPECIES}:</dt>
+                <dd>{species}</dd>
+              </div>
+              <div className="flex flex-row justify-between text-base">
+                <dt className="font-bold">{LABELS.GENDER}:</dt>
+                <dd>{gender}</dd>
+              </div>
+            </dl>
+          </main>
         </div>
       </article>
     );
