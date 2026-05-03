@@ -45,14 +45,14 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
     this.controller?.abort();
   }
 
-  loadData(query: string): void {
+  private loadData(query: string, page: number = 1): void {
     const urlToFetch = query
-      ? `${CHARACTER_URL}/?name=${query}`
+      ? `${CHARACTER_URL}/?name=${query}&page=${page}`
       : CHARACTER_URL;
     this.fetchData(urlToFetch);
   }
 
-  async fetchData(url: string): Promise<void> {
+  private async fetchData(url: string): Promise<void> {
     this.controller?.abort();
     this.controller = new AbortController();
 
