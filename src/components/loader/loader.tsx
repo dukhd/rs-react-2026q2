@@ -6,10 +6,18 @@ class Loader extends Component {
   render() {
     return (
       <div
-        data-glitch="Loading..."
-        className={`${styles.glitch} mt-10 self-center`}
+        role="status"
+        aria-live="polite"
+        className="mt-10 flex flex-col items-center self-center"
       >
-        Loading...
+        <span className="sr-only">Loading...</span>
+        <div
+          aria-hidden="true"
+          data-glitch="Loading..."
+          className={styles.glitch}
+        >
+          Loading...
+        </div>
       </div>
     );
   }
