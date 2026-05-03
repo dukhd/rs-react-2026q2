@@ -10,8 +10,7 @@ export function areAllCharacters(data: unknown): data is AllCharactersSchema {
     data.info !== null &&
     'results' in data &&
     Array.isArray(data.results) &&
-    data.results !== null &&
-    data.results.every(isCharacter)
+    data.results?.every(isCharacter) === true
   ) {
     return true;
   } else {
