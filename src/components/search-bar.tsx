@@ -27,7 +27,9 @@ class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
     this.setState({ query: event.target.value });
   };
 
-  handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  handleSearchSubmit = (
+    event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
+  ) => {
     event.preventDefault();
 
     this.setState(
