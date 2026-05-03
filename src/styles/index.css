@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-main: #f7e3e3;
+  --color-second: #24adc5;
+  --color-accent: #237316;
+  --color-focus: #fa04f6;
+  --shadow-general: 4px 6px 0 0 var(--color-second);
+  --shadow-card: 6px 8px 0 0 var(--color-second);
+  --text-shadow-custom: 3px 2px 0 var(--color-second);
+  --text-shadow-custom-small: 2px 1px 0 var(--color-second);
+
+  --font-advent: 'Advent Pro', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-main);
+    font-family: var(--font-advent);
+  }
+
+  #root {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+    min-height: 100vh;
+  }
+}
