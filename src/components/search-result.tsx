@@ -58,12 +58,12 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
 
     try {
       this.setState({ isLoading: true, error: null, data: [] });
-
-      const response: AllCharactersSchema = await apiService.getData(
-        url,
-        areAllCharacters,
-        this.controller.signal
-      );
+      const [response] = await Promise.all<
+        [Promise<AllCharactersSchema>, Promise<void>]
+      >([
+        apiService.getData(url, areAllCharacters, this.controller.signal),
+        new Promise((resolve) => setTimeout(resolve, 300)),
+      ]);
 
       this.setState({ data: response.results, isLoading: false });
     } catch (error) {
