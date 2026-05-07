@@ -7,8 +7,8 @@ import Image from './image';
 type Props = ComponentProps<typeof Image>;
 
 const defaultProps: Props = {
-  alt: 'RSS',
-  src: 'https://app.rs.school/static/images/im-fine.svg',
+  alt: 'Rick Sanchez',
+  src: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
   size: 's',
 };
 
@@ -45,7 +45,7 @@ describe('Image', () => {
   test('should have correct alt text with avatar suffix', () => {
     render(<Image {...defaultProps} />);
 
-    const element = screen.getByAltText(/rss avatar/i);
+    const element = screen.getByAltText(/rick sanchez avatar/i);
     expect(element).toBeInTheDocument();
   });
 });
