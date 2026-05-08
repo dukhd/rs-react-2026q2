@@ -11,7 +11,15 @@ export const errorHandlers = {
 
   validationError: () =>
     http.get(CHARACTER_URL, () => {
-      return HttpResponse.json({ wrongField: 'wrong data' });
+      return HttpResponse.json({
+        info: {
+          count: 2,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+        results: [{ name: 'No ID here' }],
+      });
     }),
 
   networkError: () => http.get(CHARACTER_URL, () => HttpResponse.error()),

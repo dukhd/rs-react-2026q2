@@ -12,6 +12,7 @@ afterEach(() => {
   cleanup();
   localStorage.clear();
   vi.clearAllMocks();
+  vi.useRealTimers();
 });
 
 afterAll(() => server.close());
