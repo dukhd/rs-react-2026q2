@@ -1,8 +1,9 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
+import { resolveLoading } from '@/__tests__/utils/resolve-loading';
 
 import SearchResult from './search-result';
 
@@ -23,23 +24,17 @@ describe('Search Result', () => {
 
   test('Renders all cards after successful fetch', async () => {
     render(<SearchResult query="" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     const cards = await screen.findAllByRole('article');
     expect(cards).toHaveLength(2);
   });
 
   test('Fetches new data when query changes', async () => {
     const { rerender } = render(<SearchResult query="" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     await screen.findAllByRole('article');
     rerender(<SearchResult query="Rick" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     const card = screen.getByText(/rick sanchez/i);
     expect(card).toBeInTheDocument();
   });
@@ -47,9 +42,7 @@ describe('Search Result', () => {
   test('Displays no results message when no characters found', async () => {
     server.use(errorHandlers.notFound());
     render(<SearchResult query="UnknownCharacter" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     expect(await screen.findByText(/no characters found/i)).toBeInTheDocument();
     expect(screen.queryAllByRole('article')).toHaveLength(0);
   });
@@ -58,9 +51,7 @@ describe('Search Result', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     server.use(errorHandlers.networkError());
     render(<SearchResult query="" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     expect(
       await screen.findByText(/network failure or API limit reached/i)
     ).toBeInTheDocument();
@@ -72,9 +63,7 @@ describe('Search Result', () => {
     const abortSpy = vi.spyOn(AbortController.prototype, 'abort');
     const { rerender } = render(<SearchResult query="Rick" />);
     rerender(<SearchResult query="Morty" />);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-    });
+    await resolveLoading();
     expect(abortSpy).toHaveBeenCalled();
   });
 });
