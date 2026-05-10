@@ -2,11 +2,9 @@ import { describe, expect, test } from 'vitest';
 
 import { HttpError, ValidationError } from '@/types/errors';
 
-import { ErrorFormatter } from './error-formatter';
+import { formatErrorMessage } from './error-formatter';
 
 describe('Error Formatter Logic', () => {
-  const formatter = new ErrorFormatter();
-
   test.each([
     {
       name: 'HttpError 404',
@@ -41,7 +39,7 @@ describe('Error Formatter Logic', () => {
   ])(
     'getMessage should return correct string for $name',
     ({ error, expected }) => {
-      expect(formatter.getMessage(error)).toBe(expected);
+      expect(formatErrorMessage(error)).toBe(expected);
     }
   );
 });

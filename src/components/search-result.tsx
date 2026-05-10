@@ -4,7 +4,7 @@ import { CHARACTER_URL } from '@/constants/api-url';
 import ApiService from '@/services/api';
 import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
 import type { AllCharactersSchema, CharacterSchema } from '@/types/interfaces';
-import { ErrorFormatter } from '@/utils/error-formatter';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 import Loader from './loader/loader';
 import CardList from './ui/card-list';
@@ -20,7 +20,6 @@ interface SearchResultState {
 }
 
 const apiService = new ApiService();
-const errorFormatter = new ErrorFormatter();
 
 class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
   private controller: AbortController | null = null;
@@ -69,7 +68,7 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') return;
       this.setState({
-        error: errorFormatter.getMessage(error),
+        error: formatErrorMessage(error),
         isLoading: false,
       });
     }
