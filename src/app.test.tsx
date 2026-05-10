@@ -59,6 +59,13 @@ describe('App Component', () => {
     expect(input.value).toBe('');
   });
 
+  test('Should initialize with empty string if localStorage contains an empty string', () => {
+    vi.mocked(LocalStorage.get).mockReturnValue('');
+    render(<App />);
+    const input = screen.getByRole<HTMLInputElement>('searchbox');
+    expect(input.value).toBe('');
+  });
+
   test('Should update SearchResult when a new search is performed', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     vi.mocked(LocalStorage.get).mockReturnValue('');
@@ -73,7 +80,7 @@ describe('App Component', () => {
     await user.clear(input);
     await user.type(input, 'Morty');
     await user.click(button);
-
+    expect(screen.getByRole('status')).toBeInTheDocument();
     await resolveLoading();
 
     await waitFor(() => {

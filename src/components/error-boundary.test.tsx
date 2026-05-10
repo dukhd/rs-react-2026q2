@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import ErrorBoundary from './error-boundary';
+import ErrorButton from './error-button';
 
 const ProblemChild = ({ shouldThrow = true }: { shouldThrow?: boolean }) => {
   if (shouldThrow) throw new Error('Testing Errors!');
@@ -36,6 +37,25 @@ describe('Error Boundary', () => {
     expect(title).toBeInTheDocument();
     expect(button).toBeInTheDocument();
     expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  test('Should display fallback UI when ErrorButton throws', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const user = userEvent.setup();
+
+    render(
+      <ErrorBoundary>
+        <ErrorButton />
+      </ErrorBoundary>
+    );
+
+    const triggerButton = screen.getByRole('button', {
+      name: /trigger error/i,
+    });
+    await user.click(triggerButton);
+    expect(
+      screen.getByRole('heading', { name: /oooooops!/i })
+    ).toBeInTheDocument();
   });
 
   test('Should recover from error when "try again" is clicked', async () => {

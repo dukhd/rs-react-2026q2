@@ -34,6 +34,7 @@ describe('Search Result', () => {
     await resolveLoading();
     await screen.findAllByRole('article');
     rerender(<SearchResult query="Rick" />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
     await resolveLoading();
     const card = screen.getByText(/rick sanchez/i);
     expect(card).toBeInTheDocument();
@@ -56,6 +57,7 @@ describe('Search Result', () => {
       await screen.findByText(/network failure or API limit reached/i)
     ).toBeInTheDocument();
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(consoleSpy).not.toHaveBeenCalled();
     consoleSpy.mockRestore();
   });
 
@@ -65,5 +67,7 @@ describe('Search Result', () => {
     rerender(<SearchResult query="Morty" />);
     await resolveLoading();
     expect(abortSpy).toHaveBeenCalled();
+    const card = screen.getByText(/morty smith/i);
+    expect(card).toBeInTheDocument();
   });
 });
