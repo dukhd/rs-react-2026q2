@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import type { JSX } from 'react';
 
 import type { CharacterSchema } from '@/types/interfaces';
 
@@ -17,43 +17,39 @@ const LABELS = {
   GENDER: 'Gender',
 } as const;
 
-class Card extends PureComponent<CardProps> {
-  render() {
-    const { image, name, status, species, gender } = this.props.card;
-
-    return (
-      <article className="border-accent shadow-card text-accent grid min-w-65 grid-cols-1 justify-stretch rounded-2xl border-4 tracking-wide sm:grid-cols-[220px_1fr] sm:gap-3">
-        <Image src={image} alt={name} size="s" priority={this.props.priority} />
-        <div className="flex flex-col justify-between p-3 sm:pl-0">
-          <header className="mb-3">
-            <span className="text-sm">{LABELS.NAME}</span>
-            <hr />
-            <h2 className="line-clamp-1 overflow-hidden text-xl font-bold text-ellipsis">
-              {name}
-            </h2>
-          </header>
-          <main>
-            <span className="text-sm">{LABELS.DESCRIPTION}</span>
-            <hr />
-            <dl>
-              <div className="flex flex-row justify-between text-base">
-                <dt className="font-bold">{LABELS.STATUS}:</dt>
-                <dd>{status}</dd>
-              </div>
-              <div className="flex flex-row justify-between text-base">
-                <dt className="font-bold">{LABELS.SPECIES}:</dt>
-                <dd>{species}</dd>
-              </div>
-              <div className="flex flex-row justify-between text-base">
-                <dt className="font-bold">{LABELS.GENDER}:</dt>
-                <dd>{gender}</dd>
-              </div>
-            </dl>
-          </main>
-        </div>
-      </article>
-    );
-  }
-}
+const Card = ({ card, priority }: CardProps): JSX.Element => {
+  return (
+    <article className="border-accent shadow-card text-accent grid min-w-65 grid-cols-1 justify-stretch rounded-2xl border-4 tracking-wide sm:grid-cols-[220px_1fr] sm:gap-3">
+      <Image src={card.image} alt={card.name} size="s" priority={priority} />
+      <div className="flex flex-col justify-between p-3 sm:pl-0">
+        <header className="mb-3">
+          <span className="text-sm">{LABELS.NAME}</span>
+          <hr />
+          <h2 className="line-clamp-1 overflow-hidden text-xl font-bold text-ellipsis">
+            {card.name}
+          </h2>
+        </header>
+        <main>
+          <span className="text-sm">{LABELS.DESCRIPTION}</span>
+          <hr />
+          <dl>
+            <div className="flex flex-row justify-between text-base">
+              <dt className="font-bold">{LABELS.STATUS}:</dt>
+              <dd>{card.status}</dd>
+            </div>
+            <div className="flex flex-row justify-between text-base">
+              <dt className="font-bold">{LABELS.SPECIES}:</dt>
+              <dd>{card.species}</dd>
+            </div>
+            <div className="flex flex-row justify-between text-base">
+              <dt className="font-bold">{LABELS.GENDER}:</dt>
+              <dd>{card.gender}</dd>
+            </div>
+          </dl>
+        </main>
+      </div>
+    </article>
+  );
+};
 
 export default Card;
