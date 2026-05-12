@@ -23,14 +23,14 @@ class App extends Component {
         <header className="bg-header-bg border-b-accent shadow-header fixed top-0 z-1000 w-full border-b-6 px-5 py-4">
           <Header />
         </header>
-        <main className="mx-auto my-0 flex max-w-360 flex-col gap-6 px-5 pt-28">
+        <main className="mx-auto my-0 flex max-w-360 flex-col gap-6 px-5 pt-28 pb-40 sm:pb-28">
           <SearchBar
             onSearch={this.handleSearch}
             initialValue={this.state.searchTerm}
           />
           <SearchResult query={this.state.searchTerm} />
         </main>
-        <footer className="mt-10 mb-5 px-5">
+        <footer className="bg-main shadow-footer fixed bottom-0 z-1000 w-full p-4">
           <Footer />
         </footer>
       </>
