@@ -15,11 +15,16 @@ interface Props {
 
 const FallbackUI = ({ onReturn }: Props): JSX.Element => {
   return (
-    <div className="mt-20 flex flex-col items-center gap-2">
-      <h1 className="text-accent text-center text-3xl font-medium tracking-wide">
+    <div className="flex flex-1 flex-col items-center justify-center gap-6 px-5 py-10">
+      <h1 className="text-second text-center text-3xl font-medium tracking-wide">
         {FALLBACK_CONTENT.TITLE}
       </h1>
-      <img src={fallbackImage} alt={FALLBACK_CONTENT.IMG_ALT} width={350} />
+      <img
+        src={fallbackImage}
+        alt={FALLBACK_CONTENT.IMG_ALT}
+        width={350}
+        className="w-full max-w-87.5 object-cover"
+      />
       <Button text="Try again" type="button" onClick={onReturn} />
     </div>
   );

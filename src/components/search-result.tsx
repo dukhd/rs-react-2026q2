@@ -80,7 +80,7 @@ class SearchResult extends PureComponent<SearchResultProps, SearchResultState> {
     if (isLoading) return <Loader />;
     if (error)
       return (
-        <div className="text-accent mt-10 text-center text-2xl tracking-wide">
+        <div className="text-second mt-10 text-center text-2xl tracking-wide">
           {error}
         </div>
       );

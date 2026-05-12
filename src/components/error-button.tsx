@@ -14,7 +14,12 @@ const ErrorButton = (): JSX.Element => {
   }
 
   return (
-    <Button text="Trigger Error" type="button" onClick={handleTriggerError} />
+    <Button
+      text="Trigger Error"
+      type="button"
+      onClick={handleTriggerError}
+      customClassName={'bg-[#FF4444] text-white px-4 py-2 text-xs sm:text-sm'}
+    />
   );
 };
 
