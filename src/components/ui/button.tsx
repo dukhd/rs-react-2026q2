@@ -5,15 +5,13 @@ interface ButtonProps {
 }
 
 const Button = ({ text, type, onClick }: ButtonProps) => {
-  const baseClassName =
-    'bg-accent text-main shadow-general cursor-pointer rounded-xl px-4 py-2 sm:px-6 sm:py-2 md:px-8 md:py-3 text-sm sm:text-base md:text-lg font-semibold tracking-wide transition-shadow duration-300 ease-in-out focus:outline-focus focus:outline-2';
   const hoverClassName = 'hover:shadow-none';
 
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`${baseClassName} ${hoverClassName}`}
+      className={`bg-accent text-second border-border-main shadow-card focus:outline-focus cursor-pointer rounded-xl border-3 px-7 py-2 text-sm font-bold tracking-wide uppercase transition-shadow duration-300 ease-in-out focus:outline-2 sm:text-base md:text-lg ${hoverClassName}`}
     >
       {text}
     </button>

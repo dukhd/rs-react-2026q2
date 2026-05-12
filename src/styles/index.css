@@ -1,10 +1,11 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-main: #f7e3e3;
-  --color-second: #24adc5;
-  --color-accent: #237316;
+  --color-main: #f1f5f9;
+  --color-second: #0b0b0b;
+  --color-accent: #97ce4c;
   --color-focus: #fa04f6;
+  --color-border-main: var(--color-second);
   --shadow-general: 4px 6px 0 0 var(--color-second);
   --text-shadow-custom: 3px 2px 0 var(--color-second);
   --text-shadow-custom-small: 2px 1px 0 var(--color-second);
@@ -14,19 +15,20 @@
   --color-alive: #97ce4c;
   --color-dead: #f44;
   --color-unknown: #f0e14a;
-  --color-badge-main: #0b0b0b;
+  --color-badge-main: var(--color-second);
   --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
 
   --color-card-bg: #fdfdfd;
-  --color-card-border: #0b0b0b;
+  --color-card-border: var(--color-second);
   --shadow-card: 4px 4px 0 0 #18181b;
+  --shadow-card-hover: 4px 4px 0 0 var(--color-accent);
   --color-card-sub-bg: #f2f2f2;
-  --color-card-title: #0b0b0b;
+  --color-card-title: var(--color-second);
   --color-card-sub-title: #45556c;
   --color-card-text: #0f172b;
 
   --color-img-placeholder: #f2f2f2;
-  --color-img-text-placeholder: #0b0b0b;
+  --color-img-text-placeholder: var(--color-second);
 }
 
 @layer base {
