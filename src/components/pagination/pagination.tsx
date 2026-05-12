@@ -8,7 +8,7 @@ interface PaginationProps {
   totalPages?: number;
 }
 
-const Pagination = ({ totalPages = 1 }: PaginationProps): JSX.Element => {
+const Pagination = ({ totalPages = 42 }: PaginationProps): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const pages = getPaginationRange(currentPage, totalPages);

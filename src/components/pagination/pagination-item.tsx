@@ -7,9 +7,7 @@ interface Props {
 
 const PaginationItem = ({ page, isActive, isDisabled, onClick }: Props) => {
   const isDots = page === '...';
-  const activeClassName = isActive
-    ? 'bg-accent border-border-main shadow-card hover:shadow-none'
-    : 'bg-white hover:not-disabled:bg-accent border-transparent';
+  const activeClassName = isActive ? 'bg-pagination-active' : 'bg-white';
 
   if (isDots) {
     return (
@@ -22,7 +20,7 @@ const PaginationItem = ({ page, isActive, isDisabled, onClick }: Props) => {
       type="button"
       onClick={() => onClick(page)}
       disabled={isDisabled}
-      className={`text-second cursor-pointer rounded-xl border-2 px-2 py-1 text-sm font-bold tracking-wide uppercase transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-40 sm:px-7 sm:py-2 sm:text-base md:text-lg ${activeClassName}`}
+      className={`text-second border-border-main shadow-card cursor-pointer rounded-xl border-2 px-2 py-1 text-sm font-bold tracking-wide uppercase transition-all duration-300 ease-in-out hover:not-disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-40 sm:px-5 sm:text-base md:text-lg ${activeClassName}`}
     >
       {page}
     </button>

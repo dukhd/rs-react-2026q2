@@ -6,6 +6,7 @@
   --color-second: #0b0b0b;
   --color-accent: #97ce4c;
   --color-focus: #fa04f6;
+  --color-footer-bg: #f0e14a;
   --color-border-main: var(--color-second);
   --shadow-general: 4px 6px 0 0 var(--color-second);
   --shadow-header:
@@ -34,6 +35,8 @@
 
   --color-img-placeholder: #f2f2f2;
   --color-img-text-placeholder: var(--color-second);
+
+  --color-pagination-active: #00b5cc;
 }
 
 @layer base {
