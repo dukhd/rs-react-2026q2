@@ -6,7 +6,6 @@
   --color-accent: #237316;
   --color-focus: #fa04f6;
   --shadow-general: 4px 6px 0 0 var(--color-second);
-  --shadow-card: 6px 8px 0 0 var(--color-second);
   --text-shadow-custom: 3px 2px 0 var(--color-second);
   --text-shadow-custom-small: 2px 1px 0 var(--color-second);
 
@@ -17,6 +16,17 @@
   --color-unknown: #f0e14a;
   --color-badge-main: #0b0b0b;
   --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
+
+  --color-card-bg: #fdfdfd;
+  --color-card-border: #0b0b0b;
+  --shadow-card: 4px 4px 0 0 #18181b;
+  --color-card-sub-bg: #f2f2f2;
+  --color-card-title: #0b0b0b;
+  --color-card-sub-title: #45556c;
+  --color-card-text: #0f172b;
+
+  --color-img-placeholder: #f2f2f2;
+  --color-img-text-placeholder: #0b0b0b;
 }
 
 @layer base {

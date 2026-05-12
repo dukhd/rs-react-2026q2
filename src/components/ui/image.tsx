@@ -25,10 +25,10 @@ const Image = ({
 
   return (
     <div
-      className={`${sizeClassName} flex items-center justify-center place-self-center overflow-hidden rounded-t-xl bg-gray-200 sm:rounded-l-xl sm:rounded-tr-none`}
+      className={`${sizeClassName} bg-img-placeholder flex items-center justify-center place-self-center overflow-hidden rounded-t-xl`}
     >
       {hasError ? (
-        <span className="text-accent text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
+        <span className="text-img-text-placeholder text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
           No image available
         </span>
       ) : (

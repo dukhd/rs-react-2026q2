@@ -13,7 +13,7 @@ const Badge = ({ status }: BadgeProps) => {
 
   return (
     <div
-      className={`${bgColor} border-badge-main inline-flex items-center justify-center rounded-2xl border-2 px-2 py-0.5 shadow-(--badge-shadow)`}
+      className={`${bgColor} border-badge-main absolute top-2 right-2 z-100 inline-flex cursor-default items-center justify-center rounded-2xl border-2 px-2 py-0.5 shadow-(--badge-shadow)`}
     >
       <span className="text-badge-main text-sm font-bold tracking-wider uppercase">
         {status}
