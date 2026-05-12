@@ -11,6 +11,12 @@
   --text-shadow-custom-small: 2px 1px 0 var(--color-second);
 
   --font-advent: 'Advent Pro', sans-serif;
+
+  --color-alive: #97ce4c;
+  --color-dead: #f44;
+  --color-unknown: #f0e14a;
+  --color-badge-main: #0b0b0b;
+  --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
 }
 
 @layer base {
