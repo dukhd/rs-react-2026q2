@@ -1,7 +1,7 @@
 import { type JSX, useRef, useState } from 'react';
 
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-import storage from '@/services/local-storage';
+import useLocalStorage from '@/services/local-storage';
 
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
@@ -16,6 +16,10 @@ const SearchBar = ({
   onSearch,
   initialValue = '',
 }: SearchBarProps): JSX.Element => {
+  const [, setStoredQuery] = useLocalStorage(
+    STORAGE_KEYS.SEARCH_TERM,
+    initialValue
+  );
   const [query, setQuery] = useState<string>(initialValue);
   const lastSearchedQuery = useRef<string>(initialValue.trim());
 
@@ -31,7 +35,7 @@ const SearchBar = ({
     setQuery(trimmedQuery);
     if (trimmedQuery !== lastSearchedQuery.current) {
       lastSearchedQuery.current = trimmedQuery;
-      storage.save(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
+      setStoredQuery(trimmedQuery);
       onSearch(trimmedQuery);
     }
   };

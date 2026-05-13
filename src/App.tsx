@@ -1,6 +1,6 @@
 import { type JSX, useState } from 'react';
 
-import storage from '@/services/local-storage';
+import useLocalStorage from '@/services/local-storage';
 
 import ErrorButton from './components/error-button';
 import Header from './components/header';
@@ -10,9 +10,10 @@ import SearchResult from './components/search-result';
 import { STORAGE_KEYS } from './constants/storage-keys';
 
 const App = (): JSX.Element => {
-  const [searchTerm, setSearchTerm] = useState<string>(() => {
-    return storage.get(STORAGE_KEYS.SEARCH_TERM) ?? '';
-  });
+  const [searchTerm, setSearchTerm] = useLocalStorage(
+    STORAGE_KEYS.SEARCH_TERM,
+    ''
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
