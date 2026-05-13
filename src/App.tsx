@@ -15,6 +15,8 @@ const App = (): JSX.Element => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handleSearch = (query: string) => {
     setSearchTerm(query);
@@ -37,16 +39,20 @@ const App = (): JSX.Element => {
             query={searchTerm}
             page={currentPage}
             onDataLoaded={setTotalPages}
+            onLoadingChange={setIsDataLoading}
+            onError={setIsError}
           />
         </div>
       </main>
-      <footer className="bg-footer-bg shadow-footer fixed bottom-0 z-1000 w-full px-5 py-2">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </footer>
+      {!isDataLoading && !isError && (
+        <footer className="bg-footer-bg shadow-footer fixed bottom-0 z-1000 w-full px-5 py-2">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </footer>
+      )}
     </>
   );
 };

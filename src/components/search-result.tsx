@@ -11,14 +11,30 @@ interface SearchResultProps {
   query: string;
   page: number;
   onDataLoaded: (pages: number) => void;
+  onLoadingChange: (isLoading: boolean) => void;
+  onError: (isError: boolean) => void;
 }
 
-const SearchResult = ({ query, page, onDataLoaded }: SearchResultProps) => {
+const SearchResult = ({
+  query,
+  page,
+  onDataLoaded,
+  onLoadingChange,
+  onError,
+}: SearchResultProps) => {
   const urlToFetch = query
     ? `${CHARACTER_URL}/?name=${query}&page=${page}`
     : `${CHARACTER_URL}/?page=${page}`;
 
   const { data, isLoading, error } = useFetch(urlToFetch, areAllCharacters);
+
+  useEffect(() => {
+    onLoadingChange(isLoading);
+  }, [isLoading, onLoadingChange]);
+
+  useEffect(() => {
+    onError(!!error);
+  }, [error, onError]);
 
   useEffect(() => {
     if (data?.info?.pages) {
