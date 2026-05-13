@@ -1,21 +1,25 @@
-import { type JSX, useState } from 'react';
+import { type JSX } from 'react';
 
 import { getPaginationRange } from '@/utils/get-pagination-range';
 
 import PaginationItem from './pagination-item';
 
 interface PaginationProps {
+  currentPage: number;
+  onPageChange: (page: number) => void;
   totalPages?: number;
 }
 
-const Pagination = ({ totalPages = 42 }: PaginationProps): JSX.Element => {
-  const [currentPage, setCurrentPage] = useState(1);
-
+const Pagination = ({
+  currentPage,
+  onPageChange,
+  totalPages = 1,
+}: PaginationProps): JSX.Element => {
   const pages = getPaginationRange(currentPage, totalPages);
 
   const handlePageChange = (page: number | string) => {
     if (typeof page === 'number') {
-      setCurrentPage(page);
+      onPageChange(page);
     }
   };
 

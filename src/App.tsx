@@ -13,9 +13,13 @@ const App = (): JSX.Element => {
   const [searchTerm, setSearchTerm] = useState<string>(() => {
     return storage.get(STORAGE_KEYS.SEARCH_TERM) ?? '';
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleSearch = (query: string) => {
     setSearchTerm(query);
+    setCurrentPage(1);
+    setTotalPages(1);
   };
 
   return (
@@ -29,11 +33,19 @@ const App = (): JSX.Element => {
         </div>
         <div className="mx-auto my-0 flex max-w-360 flex-col gap-6">
           <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
-          <SearchResult query={searchTerm} />
+          <SearchResult
+            query={searchTerm}
+            page={currentPage}
+            onDataLoaded={setTotalPages}
+          />
         </div>
       </main>
       <footer className="bg-footer-bg shadow-footer fixed bottom-0 z-1000 w-full px-5 py-2">
-        <Pagination />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </footer>
     </>
   );
