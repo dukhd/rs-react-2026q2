@@ -7,12 +7,10 @@ import { CHARACTER_URL } from '@/constants/api-url';
 import { HttpError, ValidationError } from '@/types/errors';
 import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
 
-import ApiService from './api';
+import apiService from './api';
 
 describe('Api Service', () => {
-  const apiService = new ApiService();
-  const callGetCharacters = () =>
-    apiService.getData(CHARACTER_URL, areAllCharacters);
+  const callGetCharacters = () => apiService(CHARACTER_URL, areAllCharacters);
 
   test('Should return data on success response and validation', async () => {
     const data = await callGetCharacters();

@@ -2,13 +2,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { STORAGE_KEYS } from '@/constants/storage-keys';
-import LocalStorage from '@/services/local-storage';
-
 import SearchBar from './search-bar';
 
 vi.mock('@/services/local-storage', () => ({
-  default: { save: vi.fn() },
+  default: vi.fn(() => [null, vi.fn()]),
 }));
 
 describe('Search Bar', () => {
@@ -47,10 +44,6 @@ describe('Search Bar', () => {
     await user.click(button);
 
     expect(input).toHaveValue('Rick');
-    expect(LocalStorage.save).toHaveBeenCalledWith(
-      STORAGE_KEYS.SEARCH_TERM,
-      'Rick'
-    );
     expect(onSearchMock).toHaveBeenCalledWith('Rick');
   });
 
