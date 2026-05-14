@@ -1,4 +1,5 @@
 import { type JSX, useState } from 'react';
+import { Outlet } from 'react-router';
 
 import useLocalStorage from '@/services/local-storage';
 
@@ -31,6 +32,7 @@ const App = (): JSX.Element => {
         <Header />
       </header>
       <main className="flex flex-col items-center gap-2 px-5 pt-22 pb-20">
+        <Outlet />
         <div className="self-start">
           <ErrorButton />
         </div>
