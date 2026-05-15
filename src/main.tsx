@@ -3,10 +3,9 @@ import '@/styles/fonts.css';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider } from 'react-router/dom';
 
+import App from './App';
 import ErrorBoundary from './components/error-boundary';
-import { router } from './routing/router';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -16,7 +15,7 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>
-      <RouterProvider router={router} />
+      <App />
     </ErrorBoundary>
   </StrictMode>
 );
