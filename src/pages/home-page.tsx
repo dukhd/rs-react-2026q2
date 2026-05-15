@@ -25,7 +25,7 @@ const HomePage = (): JSX.Element => {
   };
   return (
     <div className="flex">
-      <section className="flex flex-1 flex-col items-center gap-2 px-5">
+      <section className="flex flex-1 flex-col items-center gap-2">
         <div className="self-start">
           <ErrorButton />
         </div>
@@ -40,7 +40,7 @@ const HomePage = (): JSX.Element => {
           />
         </div>
         {!isDataLoading && !isError && (
-          <div className="bg-footer-bg shadow-footer fixed bottom-0 z-1000 w-full px-5 py-2">
+          <div className="bg-footer-bg shadow-footer fixed bottom-0 z-1000 w-full py-2">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

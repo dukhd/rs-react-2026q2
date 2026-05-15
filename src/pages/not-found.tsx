@@ -5,7 +5,10 @@ const NotFoundPage = (): JSX.Element => {
   return (
     <div className="flex min-h-[calc(100vh-(--spacing(42)))] items-center justify-center">
       <div className="flex max-w-120 flex-col items-center gap-3 text-center">
-        <h2 className="mb-8 text-8xl font-bold">404</h2>
+        <h2 className="mb-7 text-8xl font-bold">
+          <p>404</p>
+          <p className="text-lg">Page Not Found</p>
+        </h2>
 
         <h3 className="text-2xl font-semibold">
           <p>Wubba Lubba Dub-Dub!</p>

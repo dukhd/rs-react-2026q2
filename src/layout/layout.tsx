@@ -10,7 +10,7 @@ const Layout = (): JSX.Element => {
       <header className="bg-header-bg border-b-accent shadow-header fixed top-0 z-1000 w-full border-b-6 px-5 py-4">
         <Header />
       </header>
-      <main className="pt-22 pb-20">
+      <main className="px-5 pt-22 pb-20">
         <Outlet />
       </main>
     </ErrorBoundary>

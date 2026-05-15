@@ -15,7 +15,7 @@ interface Props {
 
 const FallbackUI = ({ onReturn }: Props): JSX.Element => {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 px-5 py-10">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-5">
       <h1 className="text-second text-center text-3xl font-medium tracking-wide">
         {FALLBACK_CONTENT.TITLE}
       </h1>
