@@ -2,11 +2,15 @@
 
 @theme {
   --color-main: #f1f5f9;
-  --color-header-bg: #00b5cc;
+  --color-accent-blue: #00b5cc;
+  --color-accent-yellow: #f0e14a;
+  --color-accent-red: #f44;
   --color-second: #0b0b0b;
+  --color-gray: #62748e;
   --color-accent: #97ce4c;
   --color-focus: #fa04f6;
-  --color-footer-bg: #f0e14a;
+  --color-header-bg: var(--color-accent-blue);
+  --color-footer-bg: var(--color-accent-yellow);
   --color-border-main: var(--color-second);
   --shadow-general: 4px 6px 0 0 var(--color-second);
   --shadow-header:
@@ -19,8 +23,8 @@
   --font-advent: 'Advent Pro', sans-serif;
 
   --color-alive: #97ce4c;
-  --color-dead: #f44;
-  --color-unknown: #f0e14a;
+  --color-dead: var(--color-accent-red);
+  --color-unknown: var(--color-accent-yellow);
   --color-badge-main: var(--color-second);
   --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
 
@@ -36,7 +40,13 @@
   --color-img-placeholder: #f2f2f2;
   --color-img-text-placeholder: var(--color-second);
 
-  --color-pagination-active: #00b5cc;
+  --color-pagination-active: var(--color-accent-blue);
+
+  --shadow-about-card-1: 6px 6px 0 0 var(--color-accent-blue);
+  --shadow-about-card-2: 6px 6px 0 0 var(--color-accent-yellow);
+  --shadow-about-card-3: 6px 6px 0 0 var(--color-accent-red);
+  --shadow-about-card-4: 6px 6px 0 0 var(--color-accent);
+  --color-sub-bg-gray: #eff0f1;
 }
 
 @layer base {
