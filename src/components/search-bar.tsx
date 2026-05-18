@@ -1,7 +1,7 @@
 import { type JSX, useRef, useState } from 'react';
 
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-import useLocalStorage from '@/services/local-storage';
+import useLocalStorage from '@/hooks/use-local-storage';
 
 import Button from './ui/button';
 import SearchInput from './ui/search-input';

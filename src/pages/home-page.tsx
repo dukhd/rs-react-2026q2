@@ -6,7 +6,7 @@ import Pagination from '@/components/pagination/pagination';
 import SearchBar from '@/components/search-bar';
 import SearchResult from '@/components/search-result';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-import useLocalStorage from '@/services/local-storage';
+import useLocalStorage from '@/hooks/use-local-storage';
 
 const HomePage = (): JSX.Element => {
   const [searchTerm, setSearchTerm] = useLocalStorage(
