@@ -41,7 +41,7 @@ const CharacterDetails = (): JSX.Element => {
           text="Close"
           type="button"
           onClick={onClose}
-          customClassName="bg-[#FF4444] text-white px-4 py-2 text-xs sm:text-sm self-center"
+          customClassName="bg-btn-red text-main px-4 py-2 text-xs sm:text-sm self-center"
         />
       </div>
     );
@@ -63,7 +63,7 @@ const CharacterDetails = (): JSX.Element => {
         type="button"
         onClick={onClose}
         customClassName={
-          'bg-[#FF4444] text-white px-4 py-2 text-xs sm:text-sm self-end'
+          'bg-btn-red text-main px-4 py-2 text-xs sm:text-sm self-end'
         }
       />
       <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
@@ -77,7 +77,9 @@ const CharacterDetails = (): JSX.Element => {
             key={key}
             className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
           >
-            <h3 className="text-gray text-xs font-bold uppercase">{key}</h3>
+            <h3 className="text-card-sub-title text-xs font-bold uppercase">
+              {key}
+            </h3>
             <p className="text-second text-base font-bold">{value}</p>
           </div>
         ))}
