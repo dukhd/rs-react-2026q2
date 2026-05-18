@@ -32,7 +32,6 @@ const SearchBar = ({
     const trimmedQuery = query.trim();
     setQuery(trimmedQuery);
     if (trimmedQuery !== prevInitialValue.trim()) {
-      setPrevInitialValue(trimmedQuery);
       onSearch(trimmedQuery);
     }
   };

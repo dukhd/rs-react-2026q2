@@ -15,16 +15,16 @@ import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
 const HomePage = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
-  const urlSearchTerm = searchParams.get('search') || '';
+  const urlSearchTerm = searchParams.get('search');
   const savedSearchTerm = localStorage.getItem(STORAGE_KEYS.SEARCH_TERM) || '';
-  const activeSearchQuery = urlSearchTerm ?? savedSearchTerm;
+  const activeSearchQuery = urlSearchTerm || savedSearchTerm;
   const [, setSearchTerm] = useLocalStorage(
     STORAGE_KEYS.SEARCH_TERM,
     activeSearchQuery
   );
 
   useEffect(() => {
-    if (urlSearchTerm === null && savedSearchTerm) {
+    if (!urlSearchTerm && savedSearchTerm) {
       setSearchParams(
         (prev) => {
           prev.set('search', savedSearchTerm);
