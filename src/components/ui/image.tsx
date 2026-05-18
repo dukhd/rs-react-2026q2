@@ -1,32 +1,20 @@
 import { type JSX, useState } from 'react';
 
-import { type ImageSize, POSTER_SIZES } from '@/constants/image-variants';
-
 interface ImageProps {
   alt: string;
   src: string;
-  size: ImageSize;
   priority?: boolean;
 }
 
-const Image = ({
-  src,
-  alt,
-  size,
-  priority = false,
-}: ImageProps): JSX.Element => {
+const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
   const [hasError, setHasError] = useState<boolean>(false);
 
   const handleError = (): void => {
     setHasError(true);
   };
 
-  const sizeClassName = POSTER_SIZES[size];
-
   return (
-    <div
-      className={`${sizeClassName} bg-img-placeholder flex items-center justify-center place-self-center overflow-hidden rounded-t-xl`}
-    >
+    <div className="bg-img-placeholder flex aspect-square h-auto w-full items-center justify-center place-self-center overflow-hidden rounded-t-xl object-cover">
       {hasError ? (
         <span className="text-img-text-placeholder text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
           No image available
