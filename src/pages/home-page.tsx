@@ -37,7 +37,7 @@ const HomePage = (): JSX.Element => {
   }, [urlSearchTerm, savedSearchTerm, currentPage, setSearchParams]);
 
   const urlToFetch = activeSearchQuery
-    ? `${CHARACTER_URL}/?name=${activeSearchQuery}&page=${currentPage}`
+    ? `${CHARACTER_URL}/?name=${encodeURIComponent(activeSearchQuery)}&page=${currentPage}`
     : `${CHARACTER_URL}/?page=${currentPage}`;
   const { data, isLoading, error } = useFetch(urlToFetch, areAllCharacters);
   const totalPages = data?.info?.pages ?? 1;
