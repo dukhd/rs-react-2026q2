@@ -1,4 +1,4 @@
-import { type ErrorInfo, PureComponent, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 import FallbackUI from './fallback-ui';
 
@@ -10,7 +10,7 @@ interface State {
   hasError: boolean;
 }
 
-class ErrorBoundary extends PureComponent<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   state = { hasError: false };
 
   static getDerivedStateFromError(): State {
@@ -22,7 +22,7 @@ class ErrorBoundary extends PureComponent<Props, State> {
   }
 
   handleClick = () => {
-    this.setState((previous) => ({ hasError: !previous.hasError }));
+    this.setState({ hasError: false });
   };
 
   render() {

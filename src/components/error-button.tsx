@@ -1,32 +1,26 @@
-import { PureComponent } from 'react';
+import { type JSX, useState } from 'react';
 
 import Button from './ui/button';
 
-interface State {
-  testError: boolean;
-}
+const ErrorButton = (): JSX.Element => {
+  const [testError, setTestError] = useState<boolean>(false);
 
-class ErrorButton extends PureComponent<object, State> {
-  state = {
-    testError: false,
+  const handleTriggerError = (): void => {
+    setTestError(true);
   };
 
-  handleTriggerError = () => {
-    this.setState({ testError: true });
-  };
-
-  render() {
-    if (this.state.testError) {
-      throw new Error('Testing Errors!');
-    }
-    return (
-      <Button
-        text="Trigger Error"
-        type="button"
-        onClick={this.handleTriggerError}
-      />
-    );
+  if (testError) {
+    throw new Error('Testing Errors!');
   }
-}
+
+  return (
+    <Button
+      text="Trigger Error"
+      type="button"
+      onClick={handleTriggerError}
+      customClassName={'bg-btn-red text-main px-4 py-2 text-xs sm:text-sm'}
+    />
+  );
+};
 
 export default ErrorButton;

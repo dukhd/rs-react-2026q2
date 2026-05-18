@@ -9,7 +9,6 @@ type Props = ComponentProps<typeof Image>;
 const defaultProps: Props = {
   alt: 'Rick Sanchez',
   src: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  size: 's',
 };
 
 describe('Image', () => {

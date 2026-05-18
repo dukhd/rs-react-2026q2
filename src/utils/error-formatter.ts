@@ -13,23 +13,21 @@ const ERROR_TEXTS = {
   DEFAULT: 'Oops! Something went wrong. Please try again.',
 };
 
-export class ErrorFormatter {
-  public getMessage(error: unknown): string {
-    if (error instanceof HttpError) {
-      if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
-      return ERROR_TEXTS.NETWORK(error.statusText);
-    }
-    if (error instanceof ValidationError) return ERROR_TEXTS.VALIDATION;
-    if (error instanceof Error) {
-      const isSystemNetworkError =
-        error.message === SYSTEM_ERRORS.FETCH_MESSAGE ||
-        error.name === SYSTEM_ERRORS.TYPE_ERROR_NAME;
-
-      if (isSystemNetworkError) {
-        return ERROR_TEXTS.FETCH_FAILED;
-      }
-      return error.message;
-    }
-    return ERROR_TEXTS.DEFAULT;
+export const formatErrorMessage = (error: unknown): string => {
+  if (error instanceof HttpError) {
+    if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
+    return ERROR_TEXTS.NETWORK(error.statusText);
   }
-}
+  if (error instanceof ValidationError) return ERROR_TEXTS.VALIDATION;
+  if (error instanceof Error) {
+    const isSystemNetworkError =
+      error.message === SYSTEM_ERRORS.FETCH_MESSAGE ||
+      error.name === SYSTEM_ERRORS.TYPE_ERROR_NAME;
+
+    if (isSystemNetworkError) {
+      return ERROR_TEXTS.FETCH_FAILED;
+    }
+    return error.message;
+  }
+  return ERROR_TEXTS.DEFAULT;
+};

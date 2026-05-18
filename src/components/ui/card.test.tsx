@@ -25,7 +25,6 @@ describe('Card', () => {
   test('Should display correct labels', () => {
     render(<Card card={mockCharacters[0]} />);
 
-    expect(screen.getByText(/Status:/i)).toBeInTheDocument();
     expect(screen.getByText(/Species:/i)).toBeInTheDocument();
     expect(screen.getByText(/Gender:/i)).toBeInTheDocument();
   });

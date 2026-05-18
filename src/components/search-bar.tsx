@@ -1,7 +1,4 @@
-import { PureComponent } from 'react';
-
-import { STORAGE_KEYS } from '@/constants/storage-keys';
-import storage from '@/services/local-storage';
+import { type JSX, useState } from 'react';
 
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
@@ -10,61 +7,51 @@ interface SearchBarProps {
   initialValue?: string;
 }
 
-interface SearchBarState {
-  query: string;
-}
-
 const SEARCH_PLACEHOLDER = 'Search by name';
 
-class SearchBar extends PureComponent<SearchBarProps, SearchBarState> {
-  private lastSearchedQuery: string = this.props.initialValue?.trim() || '';
+const SearchBar = ({
+  onSearch,
+  initialValue = '',
+}: SearchBarProps): JSX.Element => {
+  const [query, setQuery] = useState<string>(initialValue);
+  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
 
-  state: SearchBarState = {
-    query: this.props.initialValue || '',
+  if (initialValue !== prevInitialValue) {
+    setQuery(initialValue);
+    setPrevInitialValue(initialValue);
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value });
-  };
-
-  handleSearchSubmit = (
+  const handleSearchSubmit = (
     event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
   ) => {
     event.preventDefault();
-
-    this.setState(
-      (prevState) => ({
-        query: prevState.query.trim(),
-      }),
-      () => {
-        const trimmedQuery = this.state.query;
-        if (trimmedQuery !== this.lastSearchedQuery) {
-          this.lastSearchedQuery = trimmedQuery;
-          storage.save(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
-          this.props.onSearch(trimmedQuery);
-        }
-      }
-    );
+    const trimmedQuery = query.trim();
+    setQuery(trimmedQuery);
+    if (trimmedQuery !== prevInitialValue.trim()) {
+      onSearch(trimmedQuery);
+    }
   };
 
-  render() {
-    return (
-      <form
-        onSubmit={this.handleSearchSubmit}
-        role="search"
-        className="mx-auto flex w-full max-w-lg justify-center gap-3 self-center"
-      >
-        <SearchInput
-          id="search-input"
-          name="Search query"
-          placeholder={SEARCH_PLACEHOLDER}
-          value={this.state.query}
-          onChange={this.handleInputChange}
-        />
-        <Button text="Search" type="submit" />
-      </form>
-    );
-  }
-}
+  return (
+    <form
+      onSubmit={handleSearchSubmit}
+      role="search"
+      className="mx-auto flex w-full max-w-lg justify-center gap-3 self-center"
+    >
+      <SearchInput
+        id="search-input"
+        name="Search query"
+        placeholder={SEARCH_PLACEHOLDER}
+        value={query}
+        onChange={handleInputChange}
+      />
+      <Button text="Search" type="submit" />
+    </form>
+  );
+};
 
 export default SearchBar;

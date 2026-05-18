@@ -1,16 +1,55 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-main: #f7e3e3;
-  --color-second: #24adc5;
-  --color-accent: #237316;
+  --color-main: #f1f5f9;
+  --color-header: #ffffff;
+  --color-btn-red: #9c1d1d;
+  --color-accent-blue: #0da3b7;
+  --color-accent-yellow: #f0e14a;
+  --color-accent-red: #f44;
+  --color-second: #0b0b0b;
+  --color-gray: #62748e;
+  --color-accent: #97ce4c;
+  --color-main-title-1: #ebff7a;
   --color-focus: #fa04f6;
+  --color-header-bg: var(--color-accent-blue);
+  --color-footer-bg: var(--color-accent-yellow);
+  --color-border-main: var(--color-second);
   --shadow-general: 4px 6px 0 0 var(--color-second);
-  --shadow-card: 6px 8px 0 0 var(--color-second);
-  --text-shadow-custom: 3px 2px 0 var(--color-second);
+  --shadow-header:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-footer:
+    0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -2px rgba(0, 0, 0, 0.1);
+  --text-shadow-custom: 4px 2px 0 var(--color-second);
   --text-shadow-custom-small: 2px 1px 0 var(--color-second);
 
   --font-advent: 'Advent Pro', sans-serif;
+
+  --color-alive: #97ce4c;
+  --color-dead: var(--color-accent-red);
+  --color-unknown: var(--color-accent-yellow);
+  --color-badge-main: var(--color-second);
+  --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
+
+  --color-card-bg: #fdfdfd;
+  --color-card-border: var(--color-second);
+  --shadow-card: 4px 4px 0 0 #18181b;
+  --shadow-card-hover: 4px 4px 0 0 var(--color-accent);
+  --color-card-sub-bg: #f2f2f2;
+  --color-card-title: var(--color-second);
+  --color-card-sub-title: #45556c;
+  --color-card-text: #0f172b;
+
+  --color-img-placeholder: #f2f2f2;
+  --color-img-text-placeholder: var(--color-second);
+
+  --color-pagination-active: var(--color-accent-blue);
+
+  --shadow-about-card-1: 6px 6px 0 0 var(--color-accent-blue);
+  --shadow-about-card-2: 6px 6px 0 0 var(--color-accent-yellow);
+  --shadow-about-card-3: 6px 6px 0 0 var(--color-accent-red);
+  --shadow-about-card-4: 6px 6px 0 0 var(--color-accent);
+  --color-sub-bg-gray: #eff0f1;
 }
 
 @layer base {
@@ -20,9 +59,6 @@
   }
 
   #root {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 20px 20px 40px;
     min-height: 100vh;
   }
 }
