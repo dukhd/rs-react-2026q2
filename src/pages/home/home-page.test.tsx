@@ -54,7 +54,7 @@ describe('Home Page Component', () => {
 
     await resolveLoading();
 
-    const cards = await screen.findAllByRole('article');
+    const cards = await screen.findAllByRole('listitem');
     expect(cards).toHaveLength(1);
     expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
   });
@@ -79,7 +79,7 @@ describe('Home Page Component', () => {
     await user.click(button);
 
     await waitFor(() => {
-      const cards = screen.getAllByRole('article');
+      const cards = screen.getAllByRole('listitem');
       expect(cards).toHaveLength(1);
       expect(screen.getByText(/Morty Smith/i)).toBeInTheDocument();
     });

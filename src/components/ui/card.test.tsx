@@ -9,13 +9,13 @@ describe('Card', () => {
   test('Should render a card element with correct data', () => {
     render(<Card card={mockCharacters[0]} />);
 
-    const element = screen.getByRole('article');
+    const cardHeader = screen.getByRole('banner');
     const heading = screen.getByRole('heading', {
       level: 2,
       name: /rick sanchez/i,
     });
 
-    expect(element).toBeInTheDocument();
+    expect(cardHeader).toBeInTheDocument();
     expect(heading).toBeInTheDocument();
     expect(screen.getByText(/alive/i)).toBeInTheDocument();
     expect(screen.getByText(/human/i)).toBeInTheDocument();
