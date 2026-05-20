@@ -3,6 +3,7 @@ import type { JSX } from 'react';
 import type { CharacterSchema } from '@/types/interfaces';
 
 import Badge from './badge';
+import Checkbox from './checkbox';
 import Image from './image';
 
 interface CardProps {
@@ -17,8 +18,9 @@ const LABELS = {
 
 const Card = ({ card, priority }: CardProps): JSX.Element => {
   return (
-    <article className="bg-card-bg border-card-border shadow-card text-card-text hover:shadow-card-hover relative z-20 cursor-pointer rounded-2xl border-3 tracking-wide transition-all duration-300 ease-in-out hover:scale-105 hover:rotate-1">
+    <div className="bg-card-bg border-card-border shadow-card text-card-text hover:shadow-card-hover relative z-20 cursor-pointer rounded-2xl border-3 tracking-wide transition-all duration-300 ease-in-out hover:scale-105 hover:rotate-1">
       <header className="border-card-border relative border-b-4">
+        <Checkbox id={card.id} name={card.name} />
         <Badge status={card.status} />
         <Image src={card.image} alt={card.name} priority={priority} />
       </header>
@@ -41,7 +43,7 @@ const Card = ({ card, priority }: CardProps): JSX.Element => {
           </div>
         </dl>
       </main>
-    </article>
+    </div>
   );
 };
 
