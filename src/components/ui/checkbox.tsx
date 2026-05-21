@@ -28,8 +28,8 @@ const Checkbox = ({ id, name }: CheckboxProps): JSX.Element => {
         aria-label={`Add "${name}" to favorites`}
       />
 
-      <div className="group bg-card-bg border-card-border shadow-card peer-hover:shadow-card-hover flex h-10 w-10 items-center justify-center rounded-2xl border-3 transition-all duration-300 ease-in-out">
-        <div className="bg-accent-blue h-0 w-0 rounded-lg opacity-0 transition-all duration-200 ease-in-out group-peer-checked:h-5 group-peer-checked:w-5 group-peer-checked:opacity-100"></div>
+      <div className="group bg-checkbox-bg border-checkbox-border shadow-checkbox peer-hover:shadow-card-hover flex h-10 w-10 items-center justify-center rounded-2xl border-3 transition-all duration-300 ease-in-out">
+        <div className="bg-checkbox-checked h-0 w-0 rounded-lg opacity-0 transition-all duration-200 ease-in-out group-peer-checked:h-5 group-peer-checked:w-5 group-peer-checked:opacity-100"></div>
       </div>
     </label>
   );

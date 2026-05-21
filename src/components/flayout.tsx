@@ -16,7 +16,7 @@ const Flayout = () => {
         <Button
           type="reset"
           text="Unselect all"
-          customClassName="bg-btn-red text-main px-6 py-1 text-sm sm:text-base"
+          customClassName="bg-btn-red text-btn-red-text px-6 py-1 text-sm sm:text-base"
         />
       </div>
     </div>

@@ -1,40 +1,51 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-advent: 'Advent Pro', sans-serif;
+
   --color-main: #f1f5f9;
-  --color-header: #ffffff;
-  --color-btn-red: #9c1d1d;
+  --color-second: #0b0b0b;
+  --color-accent: #97ce4c;
   --color-accent-blue: #0da3b7;
   --color-accent-yellow: #f0e14a;
   --color-accent-red: #f44;
-  --color-second: #0b0b0b;
-  --color-gray: #62748e;
-  --color-accent: #97ce4c;
-  --color-main-title-1: #ebff7a;
   --color-focus: #fa04f6;
+
+  --color-border-main: var(--color-second);
+  --color-btn-red: #9c1d1d;
+  --color-btn-red-text: var(--color-main);
+
+  --color-main-title-1: var(--color-nav);
+  --color-main-title-2: var(--color-nav);
+
+  --color-nav: #ffffff;
   --color-header-bg: var(--color-accent-blue);
   --color-footer-bg: var(--color-accent-yellow);
-  --color-border-main: var(--color-second);
+
   --shadow-general: 4px 6px 0 0 var(--color-second);
   --shadow-header:
     0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --shadow-footer:
     0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -2px rgba(0, 0, 0, 0.1);
-  --text-shadow-custom: 4px 2px 0 var(--color-second);
-  --text-shadow-custom-small: 2px 1px 0 var(--color-second);
 
-  --font-advent: 'Advent Pro', sans-serif;
+  --color-text-shadow-custom: var(--color-second);
+  --text-shadow-custom: 4px 2px 0 var(--color-text-shadow-custom);
+  --text-shadow-custom-small: 2px 1px 0 var(--color-text-shadow-custom);
+
+  --color-shadow-card: #18181b;
+  --color-shadow-card-hover: var(--color-accent);
+  --shadow-card: 4px 4px 0 0 var(--color-shadow-card);
+  --shadow-card-hover: 4px 4px 0 0 var(--color-shadow-card-hover);
 
   --color-alive: #97ce4c;
   --color-dead: var(--color-accent-red);
   --color-unknown: var(--color-accent-yellow);
+
   --color-badge-main: var(--color-second);
   --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
 
   --color-card-bg: #fdfdfd;
   --color-card-border: var(--color-second);
-  --shadow-card: 4px 4px 0 0 #18181b;
-  --shadow-card-hover: 4px 4px 0 0 var(--color-accent);
   --color-card-sub-bg: #f2f2f2;
   --color-card-title: var(--color-second);
   --color-card-sub-title: #45556c;
@@ -50,12 +61,80 @@
   --shadow-about-card-3: 6px 6px 0 0 var(--color-accent-red);
   --shadow-about-card-4: 6px 6px 0 0 var(--color-accent);
   --color-sub-bg-gray: #eff0f1;
+
+  --color-details-error: #9c1d1d;
+
+  --color-checkbox-bg: var(--color-main);
+  --color-checkbox-border: var(--color-second);
+  --color-checkbox-checked: var(--color-accent-blue);
+  --shadow-checkbox: 4px 4px 0 0 var(--color-checkbox-border);
+
+  --color-theme-tgl-main: var(--color-second);
+  --shadow-theme-tgl: 2px 2px 0 0 var(--color-theme-tgl-main);
+}
+
+[data-theme='dark'] {
+  --color-main: #2d2e2e;
+  --color-second: #fcfcfc;
+  --color-accent: #608034;
+  --color-accent-blue: #0da3b7;
+  --color-accent-yellow: #f0e14a;
+  --color-accent-red: #f44;
+  --color-focus: #fa04f6;
+
+  --color-border-main: var(--color-second);
+  --color-btn-red-text: var(--color-second);
+
+  --color-main-title-1: #97ce4c;
+  --color-main-title-2: #97ce4c;
+
+  --color-nav: #ffffff;
+  --color-header-bg: var(--color-main);
+  --color-footer-bg: var(--color-main);
+
+  --shadow-general: 4px 6px 0 0 var(--color-second);
+  --shadow-header:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-footer:
+    0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -2px rgba(0, 0, 0, 0.1);
+
+  --color-text-shadow-custom: transparent;
+
+  --color-shadow-card: #eeeeee;
+  --color-shadow-card-hover: var(--color-accent-blue);
+
+  --color-badge-main: var(--color-main);
+  --badge-shadow: 2px 2px 0 0 var(--color-badge-main);
+
+  --color-card-bg: var(--color-main);
+  --color-card-border: var(--color-second);
+  --color-card-sub-bg: #1d1d1d;
+  --color-card-title: var(--color-second);
+  --color-card-sub-title: #d6d5d5;
+  --color-card-text: #ffffff;
+
+  --color-img-placeholder: #383838;
+  --color-img-text-placeholder: var(--color-second);
+
+  --color-sub-bg-gray: #1d1d1d;
+
+  --color-details-error: #f7bfbf;
+
+  --color-checkbox-bg: var(--color-second);
+  --color-checkbox-border: var(--color-main);
+
+  --color-theme-tgl-main: var(--color-second);
+  --shadow-theme-tgl: 2px 2px 0 0 var(--color-theme-tgl-main);
 }
 
 @layer base {
   body {
     background-color: var(--color-main);
+    color: var(--color-second);
     font-family: var(--font-advent);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 
   #root {

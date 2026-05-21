@@ -44,7 +44,7 @@ const HomePage = (): JSX.Element => {
           onSearch={handleSearch}
           onCardClick={handleCardClick}
         />
-        <div className="bg-footer-bg shadow-footer fixed bottom-14 z-1000 mx-auto rounded-2xl px-10 py-3 transition-all duration-300">
+        <div className="bg-footer-bg shadow-footer fixed bottom-14 z-1000 mx-auto rounded-2xl border-2 px-10 py-3 transition-all duration-300">
           <Flayout />
         </div>
 

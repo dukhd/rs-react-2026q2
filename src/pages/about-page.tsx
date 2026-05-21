@@ -13,7 +13,7 @@ const AboutPage = (): JSX.Element => {
         </p>
         <div className="flex w-full flex-col items-center gap-4 md:flex-row md:justify-between md:gap-1">
           <div className="shadow-about-card-2 border-second flex h-45 w-full max-w-180 flex-col items-start gap-3 rounded-2xl border-4 p-5 md:w-88">
-            <span className="text-gray bg-sub-bg-gray rounded-sm px-3 py-1 text-sm font-bold uppercase">
+            <span className="text-card-sub-title bg-sub-bg-gray rounded-sm px-3 py-1 text-sm font-bold uppercase">
               Author:{' '}
             </span>
             <a
@@ -26,7 +26,7 @@ const AboutPage = (): JSX.Element => {
             </a>
           </div>
           <div className="shadow-about-card-3 border-second flex h-45 w-full max-w-180 flex-col items-start gap-3 rounded-2xl border-4 p-5 md:w-88">
-            <span className="text-gray bg-sub-bg-gray rounded-sm px-3 py-1 text-sm font-bold uppercase">
+            <span className="text-card-sub-title bg-sub-bg-gray rounded-sm px-3 py-1 text-sm font-bold uppercase">
               Mentor:
             </span>
             <a
@@ -37,7 +37,7 @@ const AboutPage = (): JSX.Element => {
             >
               @aleks6699
             </a>
-            <p className="text-gray text-left text-sm font-medium">
+            <p className="text-card-sub-title text-left text-sm font-medium">
               rare kind of developer who brings order to chaos, transforming
               React confusion into multiverse-level clarity.
             </p>
@@ -50,7 +50,7 @@ const AboutPage = (): JSX.Element => {
           logic is optional.
         </p>
         <hr />
-        <p className="text-gray text-base font-bold uppercase">
+        <p className="text-card-sub-title text-base font-bold uppercase">
           The project was created as part of the:{' '}
           <a
             className="text-second text-xl font-bold capitalize hover:underline"
