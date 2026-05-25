@@ -1,7 +1,21 @@
+import { useDispatch, useSelector } from 'react-redux';
+
+import { unselectAll } from '@/store/selected-cards-slice';
+import type { AppDispatch, RootState } from '@/store/store';
+
 import Button from './ui/button';
 
 const Flayout = () => {
-  const count = 1;
+  const dispatch = useDispatch<AppDispatch>();
+  const selectedCards = useSelector(
+    (state: RootState) => state.selectedCards.cards
+  );
+  const count = selectedCards.length;
+
+  const handleUnselectAll = () => {
+    dispatch(unselectAll());
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
       <span className="min-w-30 text-xl font-semibold uppercase tabular-nums">
@@ -16,6 +30,7 @@ const Flayout = () => {
         <Button
           type="reset"
           text="Unselect all"
+          onClick={handleUnselectAll}
           customClassName="bg-btn-red text-btn-red-text px-6 py-1 text-sm sm:text-base"
         />
       </div>

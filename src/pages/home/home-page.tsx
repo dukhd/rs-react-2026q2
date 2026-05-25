@@ -1,8 +1,10 @@
 import { type JSX } from 'react';
+import { useSelector } from 'react-redux';
 
 import Flayout from '@/components/flayout';
 import Pagination from '@/components/pagination/pagination';
 import { useHomePage } from '@/hooks/use-home-page';
+import type { RootState } from '@/store/store';
 
 import { HomeContent } from './components/home-content';
 import { HomeSidebar } from './components/home-sidebar';
@@ -21,6 +23,11 @@ const HomePage = (): JSX.Element => {
     handleCloseDetails,
     handleCardClick,
   } = useHomePage();
+
+  const selectedCards = useSelector(
+    (state: RootState) => state.selectedCards.cards
+  );
+  const hasSelectedCards = selectedCards.length > 0;
 
   return (
     <div
@@ -44,9 +51,11 @@ const HomePage = (): JSX.Element => {
           onSearch={handleSearch}
           onCardClick={handleCardClick}
         />
-        <div className="bg-footer-bg shadow-footer fixed bottom-14 z-1000 mx-auto rounded-2xl border-2 px-10 py-3 transition-all duration-300">
-          <Flayout />
-        </div>
+        {hasSelectedCards && (
+          <div className="bg-footer-bg shadow-footer fixed bottom-14 z-1000 mx-auto rounded-2xl border-2 px-10 py-3 transition-all duration-300">
+            <Flayout />
+          </div>
+        )}
 
         {!isLoading && !error && (
           <div

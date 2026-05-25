@@ -20,7 +20,7 @@ const Card = ({ card, priority }: CardProps): JSX.Element => {
   return (
     <div className="bg-card-bg border-card-border shadow-card text-card-text hover:shadow-card-hover relative z-20 cursor-pointer rounded-2xl border-3 tracking-wide transition-all duration-300 ease-in-out hover:scale-105 hover:rotate-1">
       <header className="border-card-border relative border-b-4">
-        <Checkbox id={card.id} name={card.name} />
+        <Checkbox card={card} />
         <Badge status={card.status} />
         <Image src={card.image} alt={card.name} priority={priority} />
       </header>
