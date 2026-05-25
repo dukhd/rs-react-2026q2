@@ -1,5 +1,7 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -7,14 +9,20 @@ import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
 import { resolveLoading } from '@/__tests__/utils/resolve-loading';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
+import selectedCardsReducer from '@/store/selected-cards-slice';
 
 import HomePage from './home-page';
 
 const renderHomePage = () => {
+  const store = configureStore({
+    reducer: { selectedCards: selectedCardsReducer },
+  });
   return render(
-    <MemoryRouter>
-      <HomePage />
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    </Provider>
   );
 };
 

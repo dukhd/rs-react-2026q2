@@ -1,16 +1,25 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, test } from 'vitest';
 
+import { ThemeProvider } from '@/context/theme-provider';
+
 import Header from './header';
+
+const renderHeader = ({ initialEntries = ['/'] } = {}) => {
+  return render(
+    <ThemeProvider>
+      <MemoryRouter initialEntries={initialEntries}>
+        <Header />
+      </MemoryRouter>
+    </ThemeProvider>
+  );
+};
 
 describe('Header Component', () => {
   test('Should render title and navigation links', () => {
-    render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
-    );
+    renderHeader();
 
     expect(
       screen.getByRole('heading', { name: /Rick and Morty/i })
@@ -20,11 +29,7 @@ describe('Header Component', () => {
   });
 
   test('Navigation links have correct href attributes', () => {
-    render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
-    );
+    renderHeader();
 
     expect(screen.getByRole('link', { name: /home/i })).toHaveAttribute(
       'href',
@@ -37,11 +42,7 @@ describe('Header Component', () => {
   });
 
   test('Should apply active class to the current route link', () => {
-    render(
-      <MemoryRouter initialEntries={['/about']}>
-        <Header />
-      </MemoryRouter>
-    );
+    renderHeader({ initialEntries: ['/about'] });
 
     const homeLink = screen.getByRole('link', { name: /home/i });
     const aboutLink = screen.getByRole('link', { name: /about/i });
@@ -51,5 +52,21 @@ describe('Header Component', () => {
 
     expect(homeLink).toHaveClass('no-underline');
     expect(homeLink).not.toHaveClass('underline decoration-2');
+  });
+
+  test('Should toggle theme on button click', async () => {
+    const user = userEvent.setup();
+    renderHeader();
+
+    const themeButton = screen.getByRole('button', {
+      name: /Switch to dark theme/i,
+    });
+    expect(themeButton).toBeInTheDocument();
+
+    await user.click(themeButton);
+
+    expect(
+      screen.getByRole('button', { name: /Switch to light theme/i })
+    ).toBeInTheDocument();
   });
 });
