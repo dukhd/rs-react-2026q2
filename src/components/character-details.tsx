@@ -36,12 +36,12 @@ const CharacterDetails = (): JSX.Element => {
   if (error || !character) {
     return (
       <div className="flex flex-col gap-4 p-4 text-center">
-        <p className="font-bold text-red-500">Failed to load details</p>
+        <p className="text-details-error font-bold">Failed to load details</p>
         <Button
           text="Close"
           type="button"
           onClick={onClose}
-          customClassName="bg-btn-red text-main px-4 py-2 text-xs sm:text-sm self-center"
+          customClassName="bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-center"
         />
       </div>
     );
@@ -63,7 +63,7 @@ const CharacterDetails = (): JSX.Element => {
         type="button"
         onClick={onClose}
         customClassName={
-          'bg-btn-red text-main px-4 py-2 text-xs sm:text-sm self-end'
+          'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
         }
       />
       <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">

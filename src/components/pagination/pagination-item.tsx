@@ -7,7 +7,7 @@ interface Props {
 
 const PaginationItem = ({ page, isActive, isDisabled, onClick }: Props) => {
   const isDots = page === '...';
-  const activeClassName = isActive ? 'bg-pagination-active' : 'bg-white';
+  const activeClassName = isActive ? 'bg-pagination-active' : 'bg-main';
 
   if (isDots) {
     return (
