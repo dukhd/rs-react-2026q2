@@ -6,7 +6,7 @@ import { downloadCharactersCSV } from '@/utils/download-csv';
 
 import Button from './ui/button';
 
-const Flayout = () => {
+const Flyout = () => {
   const dispatch = useDispatch<AppDispatch>();
   const selectedCards = useSelector(
     (state: RootState) => state.selectedCards.cards
@@ -47,4 +47,4 @@ const Flayout = () => {
   );
 };
 
-export default Flayout;
+export default Flyout;

@@ -8,13 +8,13 @@ import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import selectedCardsReducer from '@/store/selected-cards-slice';
 import { downloadCharactersCSV } from '@/utils/download-csv';
 
-import Flayout from './flayout';
+import Flyout from './flyout';
 
 vi.mock('@/utils/download-csv', () => ({
   downloadCharactersCSV: vi.fn(),
 }));
 
-const renderFlayout = (initialCards = mockCharacters) => {
+const renderFlyout = (initialCards = mockCharacters) => {
   const store = configureStore({
     reducer: { selectedCards: selectedCardsReducer },
     preloadedState: { selectedCards: { cards: initialCards } },
@@ -23,16 +23,16 @@ const renderFlayout = (initialCards = mockCharacters) => {
   return {
     ...render(
       <Provider store={store}>
-        <Flayout />
+        <Flyout />
       </Provider>
     ),
     store,
   };
 };
 
-describe('Flayout Component', () => {
+describe('Flyout Component', () => {
   test('Should render correctly with selected cards count', () => {
-    renderFlayout([mockCharacters[0], mockCharacters[1]]);
+    renderFlyout([mockCharacters[0], mockCharacters[1]]);
 
     expect(screen.getByText(/Selected: 2/i)).toBeInTheDocument();
     expect(
@@ -45,7 +45,7 @@ describe('Flayout Component', () => {
 
   test('Should clear store when Unselect all is clicked', async () => {
     const user = userEvent.setup();
-    const { store } = renderFlayout([mockCharacters[0]]);
+    const { store } = renderFlyout([mockCharacters[0]]);
 
     const unselectAllButton = screen.getByRole('button', {
       name: /unselect all/i,
@@ -58,7 +58,7 @@ describe('Flayout Component', () => {
   test('Should call downloadCharactersCSV utility when Download is clicked', async () => {
     const user = userEvent.setup();
     const testCards = [mockCharacters[0]];
-    renderFlayout(testCards);
+    renderFlyout(testCards);
 
     const downloadButton = screen.getByRole('button', { name: /download/i });
     await user.click(downloadButton);

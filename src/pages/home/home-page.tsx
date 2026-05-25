@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 import { useSelector } from 'react-redux';
 
-import Flayout from '@/components/flayout';
+import Flyout from '@/components/flyout';
 import Pagination from '@/components/pagination/pagination';
 import { useHomePage } from '@/hooks/use-home-page';
 import type { RootState } from '@/store/store';
@@ -71,7 +71,7 @@ const HomePage = (): JSX.Element => {
             )}
             {hasSelectedCards && (
               <div className="bg-footer-bg shadow-footer mx-auto rounded-2xl border-2 px-10 py-2 transition-all duration-300">
-                <Flayout />
+                <Flyout />
               </div>
             )}
           </div>
