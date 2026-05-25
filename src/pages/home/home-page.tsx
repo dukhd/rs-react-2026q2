@@ -28,10 +28,12 @@ const HomePage = (): JSX.Element => {
     (state: RootState) => state.selectedCards.cards
   );
   const hasSelectedCards = selectedCards.length > 0;
+  const shouldShowPagination = !isLoading && !error;
+  const shouldShowFooter = shouldShowPagination || hasSelectedCards;
 
   return (
     <div
-      className={`flex w-full transition-all duration-300 ${isSidebarOpen ? 'pr-100' : 'pr-0'}`}
+      className={`flex min-h-screen w-full transition-all duration-300 ${isSidebarOpen ? 'pr-100' : 'pr-0'}`}
     >
       {isSidebarOpen && (
         <button
@@ -41,33 +43,37 @@ const HomePage = (): JSX.Element => {
           className="fixed inset-0 z-0 h-full w-full cursor-default border-none bg-transparent p-0"
         />
       )}
-      <section className="flex flex-1 flex-col items-center gap-2">
-        <HomeContent
-          isLoading={isLoading}
-          error={error}
-          cards={data?.results ?? []}
-          activeSearchQuery={activeSearchQuery}
-          isSidebarOpen={isSidebarOpen}
-          onSearch={handleSearch}
-          onCardClick={handleCardClick}
-        />
-        {hasSelectedCards && (
-          <div className="bg-footer-bg shadow-footer fixed bottom-14 z-1000 mx-auto rounded-2xl border-2 px-10 py-3 transition-all duration-300">
-            <Flayout />
-          </div>
-        )}
+      <section className="flex flex-1 flex-col items-center justify-between gap-2">
+        <div className="flex w-full grow flex-col items-center gap-2">
+          <HomeContent
+            isLoading={isLoading}
+            error={error}
+            cards={data?.results ?? []}
+            activeSearchQuery={activeSearchQuery}
+            isSidebarOpen={isSidebarOpen}
+            onSearch={handleSearch}
+            onCardClick={handleCardClick}
+          />
+        </div>
 
-        {!isLoading && !error && (
-          <div
-            className={`bg-footer-bg shadow-footer fixed bottom-0 left-0 z-1000 py-2 transition-all duration-300 ${
-              isSidebarOpen ? 'w-[calc(100%-400px)]' : 'w-full'
-            }`}
-          >
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+        {shouldShowFooter && (
+          <div className="bg-footer-bg shadow-footer sticky bottom-0 z-1000 -mx-5 mt-auto flex w-[calc(100%+40px)] flex-col items-center gap-2 px-5 pt-4 pb-2 transition-all duration-300">
+            {shouldShowPagination && (
+              <div
+                className={`py-1 ${isSidebarOpen ? 'w-[calc(100%-400px)]' : 'w-full'}`}
+              >
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+            {hasSelectedCards && (
+              <div className="bg-footer-bg shadow-footer mx-auto rounded-2xl border-2 px-10 py-2 transition-all duration-300">
+                <Flayout />
+              </div>
+            )}
           </div>
         )}
       </section>

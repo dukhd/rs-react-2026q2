@@ -22,7 +22,10 @@ const Flayout = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
+    <aside
+      aria-label="Selected items actions"
+      className="flex flex-col items-center gap-2 sm:flex-row sm:gap-8"
+    >
       <span className="min-w-30 text-xl font-semibold uppercase tabular-nums">
         Selected: {count}
       </span>
@@ -40,7 +43,7 @@ const Flayout = () => {
           customClassName="bg-btn-red text-btn-red-text px-6 py-1 text-sm sm:text-base"
         />
       </div>
-    </div>
+    </aside>
   );
 };
 
