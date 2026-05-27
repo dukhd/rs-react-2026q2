@@ -23,6 +23,8 @@ const defaultState: TestFetchState = {
 
 let mockFetchResult: TestFetchState = { ...defaultState };
 
+const mockRefreshDetails = vi.fn();
+
 vi.mock('react-router', () => ({
   useSearchParams: vi.fn(),
   useOutletContext: vi.fn(),
@@ -30,6 +32,12 @@ vi.mock('react-router', () => ({
 
 vi.mock('@/services/characters-api', () => ({
   useGetCharacterDetailsQuery: () => mockFetchResult,
+}));
+
+vi.mock('@/hooks/use-cache-refresh', () => ({
+  useCacheRefresh: () => ({
+    refreshDetails: mockRefreshDetails,
+  }),
 }));
 
 vi.mock('@/components/loader/loader', () => ({
@@ -109,5 +117,25 @@ describe('CharacterDetails Component', () => {
     await userEvent.click(errorCloseBtn);
 
     expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should call refreshDetails with character id when Refresh button is clicked', async () => {
+    setup({ data: mockCharacters[0] });
+
+    const refreshBtn = screen.getByRole('button', { name: 'Refresh' });
+    await userEvent.click(refreshBtn);
+
+    expect(mockRefreshDetails).toHaveBeenCalledWith(1);
+    expect(mockRefreshDetails).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should fallback to id 0 and handle missing detailsId', () => {
+    vi.mocked(useSearchParams).mockReturnValue([
+      new URLSearchParams(''),
+      vi.fn(),
+    ]);
+
+    setup({ data: null });
+    expect(screen.getByText('Failed to load details')).toBeInTheDocument();
   });
 });
