@@ -5,6 +5,7 @@ import Flyout from '@/components/flyout';
 import Pagination from '@/components/pagination/pagination';
 import { useHomePage } from '@/hooks/use-home-page';
 import type { RootState } from '@/store/store';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 import { HomeContent } from './components/home-content';
 import { HomeSidebar } from './components/home-sidebar';
@@ -16,6 +17,7 @@ const HomePage = (): JSX.Element => {
     isSidebarOpen,
     data,
     isLoading,
+    isFetching,
     error,
     totalPages,
     handleSearch,
@@ -46,8 +48,8 @@ const HomePage = (): JSX.Element => {
       <section className="flex flex-1 flex-col items-center justify-between gap-2">
         <div className="flex w-full grow flex-col items-center gap-2">
           <HomeContent
-            isLoading={isLoading}
-            error={error}
+            isLoading={isLoading || isFetching}
+            error={error ? formatErrorMessage(error) : null}
             cards={data?.results ?? []}
             activeSearchQuery={activeSearchQuery}
             isSidebarOpen={isSidebarOpen}

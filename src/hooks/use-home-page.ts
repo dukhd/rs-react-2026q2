@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-import { CHARACTER_URL } from '@/constants/api-url';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-import { useFetch } from '@/hooks/use-fetch';
 import useLocalStorage from '@/hooks/use-local-storage';
-import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
+import { useGetCharactersQuery } from '@/services/characters-api';
 
 export const useHomePage = () => {
   const navigate = useNavigate();
@@ -37,11 +35,10 @@ export const useHomePage = () => {
   const selectedDetailsId = searchParams.get('details');
   const isSidebarOpen = !!selectedDetailsId;
 
-  const urlToFetch = activeSearchQuery
-    ? `${CHARACTER_URL}/?name=${encodeURIComponent(activeSearchQuery)}&page=${currentPage}`
-    : `${CHARACTER_URL}/?page=${currentPage}`;
-
-  const { data, isLoading, error } = useFetch(urlToFetch, areAllCharacters);
+  const { data, isLoading, isFetching, error } = useGetCharactersQuery({
+    page: currentPage,
+    searchTerm: activeSearchQuery,
+  });
   const totalPages = data?.info?.pages ?? 1;
 
   const handleSearch = (query: string) => {
@@ -85,6 +82,7 @@ export const useHomePage = () => {
     isSidebarOpen,
     data,
     isLoading,
+    isFetching,
     error,
     totalPages,
     handleSearch,

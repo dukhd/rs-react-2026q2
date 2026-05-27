@@ -2,9 +2,7 @@ import type { JSX } from 'react';
 import { useOutletContext, useSearchParams } from 'react-router';
 
 import Loader from '@/components/loader/loader';
-import { CHARACTER_URL } from '@/constants/api-url';
-import { useFetch } from '@/hooks/use-fetch';
-import { isCharacter } from '@/types/guards/is-character.guard';
+import { useGetCharacterDetailsQuery } from '@/services/characters-api';
 
 import Button from './ui/button';
 import Image from './ui/image';
@@ -18,14 +16,16 @@ const CharacterDetails = (): JSX.Element => {
   const { onClose } = useOutletContext<OutletContextType>();
 
   const detailsId = searchParams.get('details');
+  const id = detailsId ? Number(detailsId) : 0;
 
   const {
     data: character,
     isLoading,
+    isFetching,
     error,
-  } = useFetch(`${CHARACTER_URL}/${detailsId}`, isCharacter);
+  } = useGetCharacterDetailsQuery(id, { skip: !detailsId });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className="flex h-full w-full items-center justify-center py-20">
         <Loader />
