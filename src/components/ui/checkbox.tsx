@@ -1,8 +1,7 @@
 import type { JSX } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { useAppDispatch, useAppSelector } from '@/hooks/store-hooks';
 import { toggleItem } from '@/store/selected-cards-slice';
-import type { AppDispatch, RootState } from '@/store/store';
 import type { CharacterSchema } from '@/types/interfaces';
 
 interface CheckboxProps {
@@ -10,10 +9,8 @@ interface CheckboxProps {
 }
 
 const Checkbox = ({ card }: CheckboxProps): JSX.Element => {
-  const dispatch = useDispatch<AppDispatch>();
-  const selectedCards = useSelector(
-    (state: RootState) => state.selectedCards.cards
-  );
+  const dispatch = useAppDispatch();
+  const selectedCards = useAppSelector((state) => state.selectedCards.cards);
 
   const stringId = card.id.toString();
   const isChecked = selectedCards.some((item) => item.id === card.id);

@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux';
-
 import { charactersApi } from '@/services/characters-api';
 
+import { useAppDispatch } from './store-hooks';
+
 export const useCacheRefresh = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const refreshPage = (page: number, searchTerm: string) => {
     dispatch(

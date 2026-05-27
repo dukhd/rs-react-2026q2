@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react';
-import { useDispatch } from 'react-redux';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { charactersApi } from '@/services/characters-api';
 
+import { useAppDispatch } from './store-hooks';
 import { useCacheRefresh } from './use-cache-refresh';
 
-vi.mock('react-redux', () => ({
-  useDispatch: vi.fn(),
+vi.mock('@/hooks/store-hooks', () => ({
+  useAppDispatch: vi.fn(),
 }));
 
 vi.mock('@/services/characters-api', () => ({
@@ -26,7 +26,7 @@ describe('useCacheRefresh', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useDispatch).mockReturnValue(mockDispatch);
+    vi.mocked(useAppDispatch).mockReturnValue(mockDispatch);
   });
 
   test('refreshPage should call dispatch with correct page and search tags', () => {

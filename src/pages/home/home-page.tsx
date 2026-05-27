@@ -1,10 +1,9 @@
 import { type JSX } from 'react';
-import { useSelector } from 'react-redux';
 
 import Flyout from '@/components/flyout';
 import Pagination from '@/components/pagination/pagination';
+import { useAppSelector } from '@/hooks/store-hooks';
 import { useHomePage } from '@/hooks/use-home-page';
-import type { RootState } from '@/store/store';
 import { formatErrorMessage } from '@/utils/error-formatter';
 
 import { HomeContent } from './components/home-content';
@@ -27,9 +26,7 @@ const HomePage = (): JSX.Element => {
     handleRefresh,
   } = useHomePage();
 
-  const selectedCards = useSelector(
-    (state: RootState) => state.selectedCards.cards
-  );
+  const selectedCards = useAppSelector((state) => state.selectedCards.cards);
   const hasSelectedCards = selectedCards.length > 0;
   const shouldShowPagination = !isLoading && !error;
   const shouldShowFooter = shouldShowPagination || hasSelectedCards;
