@@ -3,6 +3,7 @@ import type { JSX } from 'react';
 import ErrorButton from '@/components/error-button';
 import Loader from '@/components/loader/loader';
 import SearchBar from '@/components/search-bar';
+import Button from '@/components/ui/button';
 import CardList from '@/components/ui/card-list';
 import type { CharacterSchema } from '@/types/interfaces';
 
@@ -14,6 +15,7 @@ interface HomeContentProps {
   isSidebarOpen: boolean;
   onSearch: (query: string) => void;
   onCardClick: (id: number, e: React.MouseEvent) => void;
+  onRefresh: () => void;
 }
 
 export const HomeContent = ({
@@ -24,10 +26,19 @@ export const HomeContent = ({
   isSidebarOpen,
   onSearch,
   onCardClick,
+  onRefresh,
 }: HomeContentProps): JSX.Element => (
   <div className="pointer-events-none mx-auto my-0 flex w-full max-w-360 flex-col gap-6">
-    <div className="pointer-events-auto self-start">
+    <div className="pointer-events-auto flex justify-between">
       <ErrorButton />
+      <Button
+        text="Refresh"
+        type="button"
+        onClick={onRefresh}
+        customClassName={
+          'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
+        }
+      />
     </div>
 
     <div className="pointer-events-auto mx-auto my-0 flex w-full max-w-360 flex-col gap-6">

@@ -5,10 +5,13 @@ import { STORAGE_KEYS } from '@/constants/storage-keys';
 import useLocalStorage from '@/hooks/use-local-storage';
 import { useGetCharactersQuery } from '@/services/characters-api';
 
+import { useCacheRefresh } from './use-cache-refresh';
+
 export const useHomePage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const { refreshPage } = useCacheRefresh();
   const currentPage = Number(searchParams.get('page')) || 1;
   const urlSearchTerm = searchParams.get('search');
   const savedSearchTerm = localStorage.getItem(STORAGE_KEYS.SEARCH_TERM) || '';
@@ -40,6 +43,10 @@ export const useHomePage = () => {
     searchTerm: activeSearchQuery,
   });
   const totalPages = data?.info?.pages ?? 1;
+
+  const handleRefresh = () => {
+    refreshPage(currentPage, activeSearchQuery);
+  };
 
   const handleSearch = (query: string) => {
     setSearchTerm(query);
@@ -89,5 +96,6 @@ export const useHomePage = () => {
     handlePageChange,
     handleCloseDetails,
     handleCardClick,
+    handleRefresh,
   };
 };

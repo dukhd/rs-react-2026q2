@@ -24,6 +24,7 @@ const HomePage = (): JSX.Element => {
     handlePageChange,
     handleCloseDetails,
     handleCardClick,
+    handleRefresh,
   } = useHomePage();
 
   const selectedCards = useSelector(
@@ -42,7 +43,7 @@ const HomePage = (): JSX.Element => {
           onClick={handleCloseDetails}
           type="button"
           aria-label="Close details"
-          className="fixed inset-0 z-0 h-full w-full cursor-default border-none bg-transparent p-0"
+          className="bg-accent/10 fixed inset-0 z-1 h-full w-full cursor-default border-none p-0 backdrop-blur-xs"
         />
       )}
       <section className="flex flex-1 flex-col items-center justify-between gap-2">
@@ -55,6 +56,7 @@ const HomePage = (): JSX.Element => {
             isSidebarOpen={isSidebarOpen}
             onSearch={handleSearch}
             onCardClick={handleCardClick}
+            onRefresh={handleRefresh}
           />
         </div>
 
