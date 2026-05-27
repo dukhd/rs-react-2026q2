@@ -127,4 +127,50 @@ describe('Home Page Component', () => {
     const errorButton = screen.getByRole('button', { name: /trigger error/i });
     expect(errorButton).toBeInTheDocument();
   });
+
+  test('Should trigger reloading and show loader when Refresh button is clicked', () => {
+    const user = userEvent.setup();
+    renderHomePage();
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+    user.click(refreshButton);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+
+  test('Should open and close details sidebar', async () => {
+    const user = userEvent.setup();
+    const getCloseButton = () =>
+      screen.queryByRole('button', { name: /close details/i });
+    renderHomePage();
+    await resolveLoading();
+
+    expect(getCloseButton()).not.toBeInTheDocument();
+
+    const cardButton = await screen.findByRole('button', {
+      name: /rick sanchez/i,
+    });
+    await user.click(cardButton);
+
+    const closeBtn = await screen.findByRole('button', {
+      name: /close details/i,
+    });
+    expect(closeBtn).toBeInTheDocument();
+
+    await user.click(closeBtn);
+    await waitFor(() => expect(getCloseButton()).not.toBeInTheDocument());
+  });
+
+  test('Should trigger refresh and update data when Refresh button is clicked', async () => {
+    const user = userEvent.setup();
+
+    renderHomePage();
+    await resolveLoading();
+    expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+    await user.click(refreshButton);
+    await resolveLoading();
+    expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+  });
 });
