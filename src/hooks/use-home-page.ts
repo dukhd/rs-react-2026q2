@@ -14,13 +14,11 @@ export const useHomePage = () => {
   const { refreshPage } = useCacheRefresh();
   const currentPage = Number(searchParams.get('page')) || 1;
   const urlSearchTerm = searchParams.get('search');
-  const savedSearchTerm = localStorage.getItem(STORAGE_KEYS.SEARCH_TERM) || '';
-  const activeSearchQuery = urlSearchTerm || savedSearchTerm;
-
-  const [, setSearchTerm] = useLocalStorage(
+  const [savedSearchTerm, setSearchTerm] = useLocalStorage(
     STORAGE_KEYS.SEARCH_TERM,
-    activeSearchQuery
+    ''
   );
+  const activeSearchQuery = urlSearchTerm || savedSearchTerm;
 
   useEffect(() => {
     if (!urlSearchTerm && savedSearchTerm) {
