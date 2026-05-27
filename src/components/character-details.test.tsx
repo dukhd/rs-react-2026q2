@@ -3,17 +3,33 @@ import userEvent from '@testing-library/user-event';
 import { useOutletContext, useSearchParams } from 'react-router';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { useFetch } from '@/hooks/use-fetch';
+import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 
 import CharacterDetails from './character-details';
+
+interface TestFetchState {
+  data: (typeof mockCharacters)[number] | null;
+  isLoading: boolean;
+  isFetching: boolean;
+  error: { status: number; data?: string } | null;
+}
+
+const defaultState: TestFetchState = {
+  data: null,
+  isLoading: false,
+  isFetching: false,
+  error: null,
+};
+
+let mockFetchResult: TestFetchState = { ...defaultState };
 
 vi.mock('react-router', () => ({
   useSearchParams: vi.fn(),
   useOutletContext: vi.fn(),
 }));
 
-vi.mock('@/hooks/use-fetch', () => ({
-  useFetch: vi.fn(),
+vi.mock('@/services/characters-api', () => ({
+  useGetCharacterDetailsQuery: () => mockFetchResult,
 }));
 
 vi.mock('@/components/loader/loader', () => ({
@@ -29,28 +45,17 @@ vi.mock('./ui/image', () => ({
 describe('CharacterDetails Component', () => {
   const mockOnClose = vi.fn();
 
-  const mockCharacter = {
-    name: 'Rick Sanchez',
-    status: 'Alive',
-    species: 'Human',
-    gender: 'Male',
-    type: '',
-    image: 'rick.png',
-    origin: { name: 'Earth' },
-    location: { name: 'Citadel of Ricks' },
-  };
-
-  const setup = (fetchState: {
-    data: unknown;
-    isLoading: boolean;
-    error: string | null;
-  }) => {
-    vi.mocked(useFetch).mockReturnValue(fetchState);
+  const setup = (fetchState: Partial<TestFetchState>) => {
+    mockFetchResult = {
+      ...defaultState,
+      ...fetchState,
+    };
     return render(<CharacterDetails />);
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFetchResult = { ...defaultState };
     vi.mocked(useSearchParams).mockReturnValue([
       new URLSearchParams('details=1'),
       vi.fn(),
@@ -59,13 +64,19 @@ describe('CharacterDetails Component', () => {
   });
 
   test('Should render loader when data is loading', () => {
-    setup({ data: null, isLoading: true, error: null });
+    setup({ isLoading: true });
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
+
+  test('Should render loader when data is fetching', () => {
+    setup({ isFetching: true });
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
   test('Should render character details correctly and responds to close button', async () => {
-    setup({ data: mockCharacter, isLoading: false, error: null });
+    setup({ data: mockCharacters[0] });
 
     expect(
       screen.getByRole('heading', { name: 'Rick Sanchez', level: 2 })
@@ -75,7 +86,7 @@ describe('CharacterDetails Component', () => {
       'status',
       'Alive',
       'last location',
-      'Citadel of Ricks',
+      'Earth (Replacement Dimension)',
       'Unknown',
     ];
     expectedTexts.forEach((text) => {
@@ -85,6 +96,17 @@ describe('CharacterDetails Component', () => {
     const closeBtn = screen.getByRole('button', { name: 'x' });
 
     await userEvent.click(closeBtn);
+
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should render error message and respond to Close button on failure', async () => {
+    setup({ error: { status: 500 } });
+
+    expect(screen.getByText('Failed to load details')).toBeInTheDocument();
+
+    const errorCloseBtn = screen.getByRole('button', { name: 'Close' });
+    await userEvent.click(errorCloseBtn);
 
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });

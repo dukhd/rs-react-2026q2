@@ -1,11 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
 import { describe, expect, test, vi } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-import selectedCardsReducer from '@/store/selected-cards-slice';
+import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { downloadCharactersCSV } from '@/utils/download-csv';
 
 import Flyout from './flyout';
@@ -15,19 +13,9 @@ vi.mock('@/utils/download-csv', () => ({
 }));
 
 const renderFlyout = (initialCards = mockCharacters) => {
-  const store = configureStore({
-    reducer: { selectedCards: selectedCardsReducer },
-    preloadedState: { selectedCards: { cards: initialCards } },
+  return renderWithProviders(<Flyout />, {
+    selectedCards: { cards: initialCards },
   });
-
-  return {
-    ...render(
-      <Provider store={store}>
-        <Flyout />
-      </Provider>
-    ),
-    store,
-  };
 };
 
 describe('Flyout Component', () => {
