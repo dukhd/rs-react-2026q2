@@ -7,6 +7,7 @@ import Button from '@/components/ui/button';
 
 interface HomeContentProps {
   isLoading: boolean;
+  isFetching: boolean;
   error: string | null;
   activeSearchQuery: string;
   onSearch: (query: string) => void;
@@ -16,6 +17,7 @@ interface HomeContentProps {
 
 export const HomeContent = ({
   isLoading,
+  isFetching,
   error,
   activeSearchQuery,
   onSearch,
@@ -51,7 +53,18 @@ export const HomeContent = ({
       )}
 
       {!isLoading && !error && (
-        <div className="pointer-events-auto">{cardList}</div>
+        <div className="pointer-events-auto relative w-full">
+          <div
+            className={`transition-opacity duration-200 ${isFetching ? 'pointer-events-none opacity-10' : ''}`}
+          >
+            {cardList}
+          </div>
+          {isFetching && (
+            <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
+              <Loader />
+            </div>
+          )}
+        </div>
       )}
     </div>
   </div>

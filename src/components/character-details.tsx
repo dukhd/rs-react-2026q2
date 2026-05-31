@@ -28,7 +28,7 @@ const CharacterDetails = (): JSX.Element => {
     error,
   } = useGetCharacterDetailsQuery(id, { skip: !detailsId });
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center py-20">
         <Loader />
@@ -63,44 +63,53 @@ const CharacterDetails = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex justify-between">
-        <Button
-          text="Refresh"
-          type="button"
-          onClick={() => refreshDetails(id)}
-          customClassName={
-            'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
-          }
-        />
-        <Button
-          text="x"
-          type="button"
-          onClick={onClose}
-          customClassName={
-            'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
-          }
-        />
-      </div>
+    <div className="relative flex flex-col">
+      <div
+        className={`flex flex-col gap-6 transition-opacity duration-200 ${isFetching ? 'pointer-events-none opacity-10' : ''}`}
+      >
+        <div className="flex justify-between">
+          <Button
+            text="Refresh"
+            type="button"
+            onClick={() => refreshDetails(id)}
+            customClassName={
+              'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
+            }
+          />
+          <Button
+            text="x"
+            type="button"
+            onClick={onClose}
+            customClassName={
+              'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
+            }
+          />
+        </div>
 
-      <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
-        <Image src={character.image} alt={character.name} priority={true} />
-      </div>
+        <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
+          <Image src={character.image} alt={character.name} priority={true} />
+        </div>
 
-      <h2 className="text-4xl font-bold uppercase">{character.name}</h2>
-      <div className="shadow-about-card-2 border-second flex flex-col items-start gap-3 rounded-2xl border-4 p-5">
-        {Object.entries(detailsData).map(([key, value]) => (
-          <div
-            key={key}
-            className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
-          >
-            <h3 className="text-card-sub-title text-xs font-bold uppercase">
-              {key}
-            </h3>
-            <p className="text-second text-base font-bold">{value}</p>
-          </div>
-        ))}
+        <h2 className="text-4xl font-bold uppercase">{character.name}</h2>
+        <div className="shadow-about-card-2 border-second flex flex-col items-start gap-3 rounded-2xl border-4 p-5">
+          {Object.entries(detailsData).map(([key, value]) => (
+            <div
+              key={key}
+              className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
+            >
+              <h3 className="text-card-sub-title text-xs font-bold uppercase">
+                {key}
+              </h3>
+              <p className="text-second text-base font-bold">{value}</p>
+            </div>
+          ))}
+        </div>
       </div>
+      {isFetching && (
+        <div className="pointer-events-none absolute inset-x-0 inset-y-50 z-50">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };

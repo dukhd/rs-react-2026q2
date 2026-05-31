@@ -52,7 +52,8 @@ const HomePage = (): JSX.Element => {
       <section className="flex flex-1 flex-col items-center justify-between gap-2">
         <div className="flex w-full grow flex-col items-center gap-2">
           <HomeContent
-            isLoading={isLoading || isFetching}
+            isLoading={isLoading}
+            isFetching={isFetching}
             error={error ? formatErrorMessage(error) : null}
             activeSearchQuery={activeSearchQuery}
             onRefresh={handleRefresh}
