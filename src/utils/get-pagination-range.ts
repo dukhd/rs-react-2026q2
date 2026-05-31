@@ -1,8 +1,13 @@
-export const getPaginationRange = (currentPage: number, totalPages: number) => {
+type PaginationItem = number | '...';
+
+export const getPaginationRange = (
+  currentPage: number,
+  totalPages: number
+): PaginationItem[] => {
   const delta = 1;
-  const range = [];
-  const rangeWithDots = [];
-  let l;
+  const range: number[] = [];
+  const rangeWithDots: PaginationItem[] = [];
+  let previousPage: number | undefined;
 
   range.push(1);
 
@@ -17,15 +22,15 @@ export const getPaginationRange = (currentPage: number, totalPages: number) => {
   }
 
   for (const i of range) {
-    if (l) {
-      if (i - l > 1) {
+    if (previousPage) {
+      if (i - previousPage > 1) {
         rangeWithDots.push('...');
-      } else if (i - l === 2) {
-        rangeWithDots.push(l + 1);
+      } else if (i - previousPage === 2) {
+        rangeWithDots.push(previousPage + 1);
       }
     }
     rangeWithDots.push(i);
-    l = i;
+    previousPage = i;
   }
 
   return rangeWithDots;

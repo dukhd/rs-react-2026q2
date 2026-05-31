@@ -14,12 +14,6 @@ const SearchBar = ({
   initialValue = '',
 }: SearchBarProps): JSX.Element => {
   const [query, setQuery] = useState<string>(initialValue);
-  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
-
-  if (initialValue !== prevInitialValue) {
-    setQuery(initialValue);
-    setPrevInitialValue(initialValue);
-  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -31,7 +25,7 @@ const SearchBar = ({
     event.preventDefault();
     const trimmedQuery = query.trim();
     setQuery(trimmedQuery);
-    if (trimmedQuery !== prevInitialValue.trim()) {
+    if (trimmedQuery !== initialValue.trim()) {
       onSearch(trimmedQuery);
     }
   };

@@ -1,10 +1,11 @@
 import { type JSX } from 'react';
-import { useSelector } from 'react-redux';
 
 import Flyout from '@/components/flyout';
 import Pagination from '@/components/pagination/pagination';
+import CardList from '@/components/ui/card-list';
+import { useAppSelector } from '@/hooks/store-hooks';
 import { useHomePage } from '@/hooks/use-home-page';
-import type { RootState } from '@/store/store';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 import { HomeContent } from './components/home-content';
 import { HomeSidebar } from './components/home-sidebar';
@@ -16,20 +17,25 @@ const HomePage = (): JSX.Element => {
     isSidebarOpen,
     data,
     isLoading,
+    isFetching,
     error,
     totalPages,
     handleSearch,
     handlePageChange,
     handleCloseDetails,
     handleCardClick,
+    handleRefresh,
   } = useHomePage();
 
-  const selectedCards = useSelector(
-    (state: RootState) => state.selectedCards.cards
-  );
+  const selectedCards = useAppSelector((state) => state.selectedCards.cards);
   const hasSelectedCards = selectedCards.length > 0;
   const shouldShowPagination = !isLoading && !error;
   const shouldShowFooter = shouldShowPagination || hasSelectedCards;
+
+  const SIDEBAR_WIDTH_PX = 400;
+  const paginationContainerWidth = isSidebarOpen
+    ? `w-[calc(100%-${SIDEBAR_WIDTH_PX}px)]`
+    : 'w-full';
 
   return (
     <div
@@ -40,28 +46,32 @@ const HomePage = (): JSX.Element => {
           onClick={handleCloseDetails}
           type="button"
           aria-label="Close details"
-          className="fixed inset-0 z-0 h-full w-full cursor-default border-none bg-transparent p-0"
+          className="bg-accent/10 fixed inset-0 z-1 h-full w-full cursor-default border-none p-0 backdrop-blur-xs"
         />
       )}
       <section className="flex flex-1 flex-col items-center justify-between gap-2">
         <div className="flex w-full grow flex-col items-center gap-2">
           <HomeContent
             isLoading={isLoading}
-            error={error}
-            cards={data?.results ?? []}
+            isFetching={isFetching}
+            error={error ? formatErrorMessage(error) : null}
             activeSearchQuery={activeSearchQuery}
-            isSidebarOpen={isSidebarOpen}
+            onRefresh={handleRefresh}
             onSearch={handleSearch}
-            onCardClick={handleCardClick}
+            cardList={
+              <CardList
+                cards={data?.results ?? []}
+                onCardClick={handleCardClick}
+                isSidebarOpen={isSidebarOpen}
+              />
+            }
           />
         </div>
 
         {shouldShowFooter && (
           <div className="bg-footer-bg shadow-footer sticky bottom-0 z-1000 -mx-5 mt-auto flex w-[calc(100%+40px)] flex-col items-center gap-2 px-5 pt-4 pb-2 transition-all duration-300">
             {shouldShowPagination && (
-              <div
-                className={`py-1 ${isSidebarOpen ? 'w-[calc(100%-400px)]' : 'w-full'}`}
-              >
+              <div className={`py-1 ${paginationContainerWidth}`}>
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}

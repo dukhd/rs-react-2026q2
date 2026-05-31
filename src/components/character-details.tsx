@@ -2,9 +2,9 @@ import type { JSX } from 'react';
 import { useOutletContext, useSearchParams } from 'react-router';
 
 import Loader from '@/components/loader/loader';
-import { CHARACTER_URL } from '@/constants/api-url';
-import { useFetch } from '@/hooks/use-fetch';
-import { isCharacter } from '@/types/guards/is-character.guard';
+import { useCacheRefresh } from '@/hooks/use-cache-refresh';
+import { useGetCharacterDetailsQuery } from '@/services/characters-api';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 import Button from './ui/button';
 import Image from './ui/image';
@@ -14,16 +14,20 @@ interface OutletContextType {
 }
 
 const CharacterDetails = (): JSX.Element => {
+  const { refreshDetails } = useCacheRefresh();
   const [searchParams] = useSearchParams();
   const { onClose } = useOutletContext<OutletContextType>();
 
   const detailsId = searchParams.get('details');
+  const id = Number(detailsId);
+  const isValidId = detailsId !== null && Number.isFinite(id) && id > 0;
 
   const {
     data: character,
     isLoading,
+    isFetching,
     error,
-  } = useFetch(`${CHARACTER_URL}/${detailsId}`, isCharacter);
+  } = useGetCharacterDetailsQuery(id, { skip: !isValidId });
 
   if (isLoading) {
     return (
@@ -34,9 +38,12 @@ const CharacterDetails = (): JSX.Element => {
   }
 
   if (error || !character) {
+    const errorMessage = error
+      ? formatErrorMessage(error)
+      : 'Character not found';
     return (
       <div className="flex flex-col gap-4 p-4 text-center">
-        <p className="text-details-error font-bold">Failed to load details</p>
+        <p className="text-details-error font-bold">{errorMessage}</p>
         <Button
           text="Close"
           type="button"
@@ -57,33 +64,53 @@ const CharacterDetails = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <Button
-        text="x"
-        type="button"
-        onClick={onClose}
-        customClassName={
-          'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
-        }
-      />
-      <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
-        <Image src={character.image} alt={character.name} priority={true} />
-      </div>
+    <div className="relative flex flex-col">
+      <div
+        className={`flex flex-col gap-6 transition-opacity duration-200 ${isFetching ? 'pointer-events-none opacity-10' : ''}`}
+      >
+        <div className="flex justify-between">
+          <Button
+            text="Refresh"
+            type="button"
+            onClick={() => refreshDetails(id)}
+            customClassName={
+              'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
+            }
+          />
+          <Button
+            text="x"
+            type="button"
+            onClick={onClose}
+            customClassName={
+              'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
+            }
+          />
+        </div>
 
-      <h2 className="text-4xl font-bold uppercase">{character.name}</h2>
-      <div className="shadow-about-card-2 border-second flex flex-col items-start gap-3 rounded-2xl border-4 p-5">
-        {Object.entries(detailsData).map(([key, value]) => (
-          <div
-            key={key}
-            className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
-          >
-            <h3 className="text-card-sub-title text-xs font-bold uppercase">
-              {key}
-            </h3>
-            <p className="text-second text-base font-bold">{value}</p>
-          </div>
-        ))}
+        <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
+          <Image src={character.image} alt={character.name} priority={true} />
+        </div>
+
+        <h2 className="text-4xl font-bold uppercase">{character.name}</h2>
+        <div className="shadow-about-card-2 border-second flex flex-col items-start gap-3 rounded-2xl border-4 p-5">
+          {Object.entries(detailsData).map(([key, value]) => (
+            <div
+              key={key}
+              className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
+            >
+              <h3 className="text-card-sub-title text-xs font-bold uppercase">
+                {key}
+              </h3>
+              <p className="text-second text-base font-bold">{value}</p>
+            </div>
+          ))}
+        </div>
       </div>
+      {isFetching && (
+        <div className="pointer-events-none absolute inset-x-0 inset-y-50 z-50">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };

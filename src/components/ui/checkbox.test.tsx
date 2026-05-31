@@ -1,28 +1,23 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
 import { describe, expect, test } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-import selectedCardsReducer from '@/store/selected-cards-slice';
+import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 
 import Checkbox from './checkbox';
 
-const renderCheckbox = (preloadedState = {}) => {
-  const store = configureStore({
-    reducer: { selectedCards: selectedCardsReducer },
-    preloadedState,
-  });
-
-  return {
-    ...render(
-      <Provider store={store}>
-        <Checkbox card={mockCharacters[0]} />
-      </Provider>
-    ),
-    store,
+interface TestState {
+  selectedCards?: {
+    cards: typeof mockCharacters;
   };
+}
+
+const renderCheckbox = (preloadedState: TestState = {}) => {
+  return renderWithProviders(
+    <Checkbox card={mockCharacters[0]} />,
+    preloadedState
+  );
 };
 
 describe('Checkbox Component', () => {

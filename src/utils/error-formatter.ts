@@ -1,9 +1,4 @@
-import { HttpError, ValidationError } from '@/types/errors';
-
-const SYSTEM_ERRORS = {
-  FETCH_MESSAGE: 'Failed to fetch',
-  TYPE_ERROR_NAME: 'TypeError',
-};
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 const ERROR_TEXTS = {
   NETWORK: (statusText: string) => `Oops! ${statusText}. Please try again.`,
@@ -13,21 +8,45 @@ const ERROR_TEXTS = {
   DEFAULT: 'Oops! Something went wrong. Please try again.',
 };
 
-export const formatErrorMessage = (error: unknown): string => {
-  if (error instanceof HttpError) {
-    if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
-    return ERROR_TEXTS.NETWORK(error.statusText);
-  }
-  if (error instanceof ValidationError) return ERROR_TEXTS.VALIDATION;
-  if (error instanceof Error) {
-    const isSystemNetworkError =
-      error.message === SYSTEM_ERRORS.FETCH_MESSAGE ||
-      error.name === SYSTEM_ERRORS.TYPE_ERROR_NAME;
+const isFetchBaseQueryError = (
+  error: unknown
+): error is FetchBaseQueryError => {
+  return typeof error === 'object' && error !== null && 'status' in error;
+};
 
-    if (isSystemNetworkError) {
-      return ERROR_TEXTS.FETCH_FAILED;
-    }
-    return error.message;
+const isValidationError = (error: unknown): boolean => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'name' in error &&
+    error.name === 'ValidationError'
+  );
+};
+
+const getApiErrorMessage = (error: FetchBaseQueryError): string => {
+  const errorData = error.data;
+
+  if (errorData && typeof errorData === 'object' && 'error' in errorData) {
+    return String(errorData.error);
   }
+
+  return `Status ${error.status}`;
+};
+
+export const formatErrorMessage = (error: unknown): string => {
+  if (!error) return ERROR_TEXTS.DEFAULT;
+  if (isValidationError(error)) return ERROR_TEXTS.VALIDATION;
+  if (!isFetchBaseQueryError(error)) return ERROR_TEXTS.DEFAULT;
+
+  if (error.status === 'FETCH_ERROR') {
+    return ERROR_TEXTS.FETCH_FAILED;
+  }
+
+  if (typeof error.status === 'number') {
+    if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
+
+    return ERROR_TEXTS.NETWORK(getApiErrorMessage(error));
+  }
+
   return ERROR_TEXTS.DEFAULT;
 };

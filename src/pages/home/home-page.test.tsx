@@ -1,29 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router';
+import { http, HttpResponse } from 'msw';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
+import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
+import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { resolveLoading } from '@/__tests__/utils/resolve-loading';
+import { CHARACTER_URL } from '@/constants/api-url';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-import selectedCardsReducer from '@/store/selected-cards-slice';
 
 import HomePage from './home-page';
 
 const renderHomePage = () => {
-  const store = configureStore({
-    reducer: { selectedCards: selectedCardsReducer },
-  });
-  return render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    </Provider>
-  );
+  return renderWithProviders(<HomePage />);
+};
+
+const mockApiResponse = {
+  info: { count: 2, pages: 2, next: `${CHARACTER_URL}?page=2`, prev: null },
+  results: [mockCharacters[0]],
+};
+
+const mockApiResponsePage2 = {
+  info: { count: 2, pages: 2, next: null, prev: `${CHARACTER_URL}?page=1` },
+  results: [mockCharacters[1]],
 };
 
 describe('Home Page Component', () => {
@@ -138,5 +139,132 @@ describe('Home Page Component', () => {
     renderHomePage();
     const errorButton = screen.getByRole('button', { name: /trigger error/i });
     expect(errorButton).toBeInTheDocument();
+  });
+
+  test('Should open and close details sidebar', async () => {
+    const user = userEvent.setup();
+    const getCloseButton = () =>
+      screen.queryByRole('button', { name: /close details/i });
+    renderHomePage();
+    await resolveLoading();
+
+    expect(getCloseButton()).not.toBeInTheDocument();
+
+    const cardButton = await screen.findByRole('button', {
+      name: /rick sanchez/i,
+    });
+    await user.click(cardButton);
+
+    const closeBtn = await screen.findByRole('button', {
+      name: /close details/i,
+    });
+    expect(closeBtn).toBeInTheDocument();
+
+    await user.click(closeBtn);
+    await waitFor(() => expect(getCloseButton()).not.toBeInTheDocument());
+  });
+
+  test('Should trigger refresh and update data when Refresh button is clicked', async () => {
+    const user = userEvent.setup();
+
+    renderHomePage();
+    await resolveLoading();
+    expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+    await user.click(refreshButton);
+    await resolveLoading();
+    expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+  });
+
+  test('Should cache data and not refetch from API when navigating back to page 1', async () => {
+    let requestCount = 0;
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    server.use(
+      http.get(CHARACTER_URL, ({ request }) => {
+        const url = new URL(request.url);
+        const page = url.searchParams.get('page');
+        requestCount++;
+
+        if (page === '2') {
+          return HttpResponse.json(mockApiResponsePage2);
+        }
+        return HttpResponse.json(mockApiResponse);
+      })
+    );
+
+    renderHomePage();
+    await resolveLoading();
+    expect(requestCount).toBe(1);
+    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
+
+    const page2Button = screen.getByRole('button', { name: '2' });
+    await user.click(page2Button);
+    await resolveLoading();
+
+    expect(requestCount).toBe(2);
+    expect(screen.getByText(/Morty Smith/i)).toBeInTheDocument();
+
+    const page1Button = screen.getByRole('button', { name: '1' });
+    await user.click(page1Button);
+    await resolveLoading();
+
+    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
+    expect(requestCount).toBe(2);
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+    await user.click(refreshButton);
+    await resolveLoading();
+
+    expect(requestCount).toBe(3);
+  });
+
+  test('Should cache search queries and not refetch when searching for the same term again', async () => {
+    let searchRequestCount = 0;
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    server.use(
+      http.get(CHARACTER_URL, ({ request }) => {
+        searchRequestCount++;
+        const url = new URL(request.url);
+        const name = url.searchParams.get('name');
+
+        if (name === 'Morty') {
+          return HttpResponse.json(mockApiResponsePage2);
+        }
+        return HttpResponse.json(mockApiResponse);
+      })
+    );
+
+    renderHomePage();
+    await resolveLoading();
+
+    const searchFor = async (term: string) => {
+      const input = screen.getByRole('searchbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      await waitFor(() => {
+        expect(input).toBeVisible();
+        expect(input).toBeEnabled();
+      });
+
+      await user.clear(input);
+      await user.type(input, term);
+      await user.click(searchButton);
+      await resolveLoading();
+    };
+
+    await searchFor('Morty');
+    await screen.findByText(/Morty Smith/i);
+    expect(searchRequestCount).toBe(2);
+
+    await searchFor('Rick');
+    await screen.findByText(/Rick Sanchez/i);
+    expect(searchRequestCount).toBe(3);
+
+    await searchFor('Morty');
+    await screen.findByText(/Morty Smith/i);
+    expect(searchRequestCount).toBe(3);
   });
 });

@@ -1,22 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import { screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-import selectedCardsReducer from '@/store/selected-cards-slice';
+import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 
 import Card from './card';
 
 const renderCard = () => {
-  const store = configureStore({
-    reducer: { selectedCards: selectedCardsReducer },
-  });
-  return render(
-    <Provider store={store}>
-      <Card card={mockCharacters[0]} priority={true} />
-    </Provider>
-  );
+  return renderWithProviders(<Card card={mockCharacters[0]} priority={true} />);
 };
 
 describe('Card', () => {

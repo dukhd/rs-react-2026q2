@@ -3,35 +3,46 @@ import type { JSX } from 'react';
 import ErrorButton from '@/components/error-button';
 import Loader from '@/components/loader/loader';
 import SearchBar from '@/components/search-bar';
-import CardList from '@/components/ui/card-list';
-import type { CharacterSchema } from '@/types/interfaces';
+import Button from '@/components/ui/button';
 
 interface HomeContentProps {
   isLoading: boolean;
+  isFetching: boolean;
   error: string | null;
-  cards: CharacterSchema[];
   activeSearchQuery: string;
-  isSidebarOpen: boolean;
   onSearch: (query: string) => void;
-  onCardClick: (id: number, e: React.MouseEvent) => void;
+  onRefresh: () => void;
+  cardList: React.ReactNode;
 }
 
 export const HomeContent = ({
   isLoading,
+  isFetching,
   error,
-  cards,
   activeSearchQuery,
-  isSidebarOpen,
   onSearch,
-  onCardClick,
+  onRefresh,
+  cardList,
 }: HomeContentProps): JSX.Element => (
   <div className="pointer-events-none mx-auto my-0 flex w-full max-w-360 flex-col gap-6">
-    <div className="pointer-events-auto self-start">
+    <div className="pointer-events-auto flex justify-between">
       <ErrorButton />
+      <Button
+        text="Refresh"
+        type="button"
+        onClick={onRefresh}
+        customClassName={
+          'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
+        }
+      />
     </div>
 
     <div className="pointer-events-auto mx-auto my-0 flex w-full max-w-360 flex-col gap-6">
-      <SearchBar onSearch={onSearch} initialValue={activeSearchQuery} />
+      <SearchBar
+        key={activeSearchQuery}
+        onSearch={onSearch}
+        initialValue={activeSearchQuery}
+      />
 
       {isLoading && <Loader />}
 
@@ -42,12 +53,17 @@ export const HomeContent = ({
       )}
 
       {!isLoading && !error && (
-        <div className="pointer-events-auto">
-          <CardList
-            cards={cards}
-            onCardClick={onCardClick}
-            isSidebarOpen={isSidebarOpen}
-          />
+        <div className="pointer-events-auto relative w-full">
+          <div
+            className={`transition-opacity duration-200 ${isFetching ? 'pointer-events-none opacity-10' : ''}`}
+          >
+            {cardList}
+          </div>
+          {isFetching && (
+            <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
+              <Loader />
+            </div>
+          )}
         </div>
       )}
     </div>

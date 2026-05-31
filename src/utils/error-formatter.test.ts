@@ -1,19 +1,19 @@
 import { describe, expect, test } from 'vitest';
 
-import { HttpError, ValidationError } from '@/types/errors';
+import { ValidationError } from '@/types/errors';
 
 import { formatErrorMessage } from './error-formatter';
 
 describe('Error Formatter Logic', () => {
   test.each([
     {
-      name: 'HttpError 404',
-      error: new HttpError(404, 'Not Found'),
+      name: 'RTK Query 404 Error',
+      error: { status: 404 },
       expected: 'No characters found. Try a different name.',
     },
     {
-      name: 'HttpError 500',
-      error: new HttpError(500, 'Internal Server Error'),
+      name: 'RTK Query 500 Error',
+      error: { status: 500, data: { error: 'Internal Server Error' } },
       expected: 'Oops! Internal Server Error. Please try again.',
     },
     {
@@ -23,18 +23,23 @@ describe('Error Formatter Logic', () => {
     },
     {
       name: 'System Fetch Error',
-      error: new Error('Failed to fetch'),
+      error: { status: 'FETCH_ERROR' },
       expected: 'Network failure or API limit reached. Please try again later.',
     },
     {
       name: 'Generic Error',
-      error: new Error('Custom message'),
-      expected: 'Custom message',
+      error: new Error('Some native error'),
+      expected: 'Oops! Something went wrong. Please try again.',
     },
     {
       name: 'Unknown input (null)',
       error: null,
       expected: 'Oops! Something went wrong. Please try again.',
+    },
+    {
+      name: 'RTK Query 400 Error with custom message',
+      error: { status: 400, data: { error: 'Custom message' } },
+      expected: 'Oops! Custom message. Please try again.',
     },
   ])(
     'getMessage should return correct string for $name',
@@ -45,17 +50,6 @@ describe('Error Formatter Logic', () => {
 });
 
 describe('Custom Error Construction', () => {
-  test('HttpError should correctly store status and format base message', () => {
-    const error = new HttpError(403, 'Forbidden');
-    expect(error.status).toBe(403);
-    expect(error.message).toBe('HTTP Error 403: Forbidden');
-  });
-
-  test('HttpError should use fallback for empty statusText', () => {
-    const error = new HttpError(502, '');
-    expect(error.message).toBe('HTTP Error 502: Something went wrong');
-  });
-
   test('ValidationError should have specific name and base message', () => {
     const error = new ValidationError();
     expect(error.name).toBe('ValidationError');

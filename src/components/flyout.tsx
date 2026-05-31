@@ -1,16 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useAppDispatch, useAppSelector } from '@/hooks/store-hooks';
 import { unselectAll } from '@/store/selected-cards-slice';
-import type { AppDispatch, RootState } from '@/store/store';
 import { downloadCharactersCSV } from '@/utils/download-csv';
 
 import Button from './ui/button';
 
 const Flyout = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const selectedCards = useSelector(
-    (state: RootState) => state.selectedCards.cards
-  );
+  const dispatch = useAppDispatch();
+  const selectedCards = useAppSelector((state) => state.selectedCards.cards);
   const count = selectedCards.length;
 
   const handleUnselectAll = () => {
