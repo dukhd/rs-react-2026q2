@@ -1,17 +1,30 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
+import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { resolveLoading } from '@/__tests__/utils/resolve-loading';
+import { CHARACTER_URL } from '@/constants/api-url';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
 
 import HomePage from './home-page';
 
 const renderHomePage = () => {
   return renderWithProviders(<HomePage />);
+};
+
+const mockApiResponse = {
+  info: { count: 2, pages: 2, next: `${CHARACTER_URL}?page=2`, prev: null },
+  results: [mockCharacters[0]],
+};
+
+const mockApiResponsePage2 = {
+  info: { count: 2, pages: 2, next: null, prev: `${CHARACTER_URL}?page=1` },
+  results: [mockCharacters[1]],
 };
 
 describe('Home Page Component', () => {
@@ -172,5 +185,48 @@ describe('Home Page Component', () => {
     await user.click(refreshButton);
     await resolveLoading();
     expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
+  });
+
+  test('Should cache data and not refetch from API when navigating back to page 1', async () => {
+    let requestCount = 0;
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    server.use(
+      http.get(CHARACTER_URL, ({ request }) => {
+        const url = new URL(request.url);
+        const page = url.searchParams.get('page');
+        requestCount++;
+
+        if (page === '2') {
+          return HttpResponse.json(mockApiResponsePage2);
+        }
+        return HttpResponse.json(mockApiResponse);
+      })
+    );
+
+    renderHomePage();
+    await resolveLoading();
+    expect(requestCount).toBe(1);
+    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
+
+    const page2Button = screen.getByRole('button', { name: '2' });
+    await user.click(page2Button);
+    await resolveLoading();
+
+    expect(requestCount).toBe(2);
+    expect(screen.getByText(/Morty Smith/i)).toBeInTheDocument();
+
+    const page1Button = screen.getByRole('button', { name: '1' });
+    await user.click(page1Button);
+    await resolveLoading();
+
+    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
+    expect(requestCount).toBe(2);
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+    await user.click(refreshButton);
+    await resolveLoading();
+
+    expect(requestCount).toBe(3);
   });
 });
