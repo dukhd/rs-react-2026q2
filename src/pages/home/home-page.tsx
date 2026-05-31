@@ -32,6 +32,11 @@ const HomePage = (): JSX.Element => {
   const shouldShowPagination = !isLoading && !error;
   const shouldShowFooter = shouldShowPagination || hasSelectedCards;
 
+  const SIDEBAR_WIDTH_PX = 400;
+  const paginationContainerWidth = isSidebarOpen
+    ? `w-[calc(100%-${SIDEBAR_WIDTH_PX}px)]`
+    : 'w-full';
+
   return (
     <div
       className={`flex min-h-screen w-full transition-all duration-300 ${isSidebarOpen ? 'pr-100' : 'pr-0'}`}
@@ -65,9 +70,7 @@ const HomePage = (): JSX.Element => {
         {shouldShowFooter && (
           <div className="bg-footer-bg shadow-footer sticky bottom-0 z-1000 -mx-5 mt-auto flex w-[calc(100%+40px)] flex-col items-center gap-2 px-5 pt-4 pb-2 transition-all duration-300">
             {shouldShowPagination && (
-              <div
-                className={`py-1 ${isSidebarOpen ? 'w-[calc(100%-400px)]' : 'w-full'}`}
-              >
+              <div className={`py-1 ${paginationContainerWidth}`}>
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
