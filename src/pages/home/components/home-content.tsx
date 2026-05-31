@@ -36,7 +36,11 @@ export const HomeContent = ({
     </div>
 
     <div className="pointer-events-auto mx-auto my-0 flex w-full max-w-360 flex-col gap-6">
-      <SearchBar onSearch={onSearch} initialValue={activeSearchQuery} />
+      <SearchBar
+        key={activeSearchQuery}
+        onSearch={onSearch}
+        initialValue={activeSearchQuery}
+      />
 
       {isLoading && <Loader />}
 
