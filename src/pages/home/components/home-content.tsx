@@ -4,29 +4,23 @@ import ErrorButton from '@/components/error-button';
 import Loader from '@/components/loader/loader';
 import SearchBar from '@/components/search-bar';
 import Button from '@/components/ui/button';
-import CardList from '@/components/ui/card-list';
-import type { CharacterSchema } from '@/types/interfaces';
 
 interface HomeContentProps {
   isLoading: boolean;
   error: string | null;
-  cards: CharacterSchema[];
   activeSearchQuery: string;
-  isSidebarOpen: boolean;
   onSearch: (query: string) => void;
-  onCardClick: (id: number, e: React.MouseEvent) => void;
   onRefresh: () => void;
+  cardList: React.ReactNode;
 }
 
 export const HomeContent = ({
   isLoading,
   error,
-  cards,
   activeSearchQuery,
-  isSidebarOpen,
   onSearch,
-  onCardClick,
   onRefresh,
+  cardList,
 }: HomeContentProps): JSX.Element => (
   <div className="pointer-events-none mx-auto my-0 flex w-full max-w-360 flex-col gap-6">
     <div className="pointer-events-auto flex justify-between">
@@ -53,13 +47,7 @@ export const HomeContent = ({
       )}
 
       {!isLoading && !error && (
-        <div className="pointer-events-auto">
-          <CardList
-            cards={cards}
-            onCardClick={onCardClick}
-            isSidebarOpen={isSidebarOpen}
-          />
-        </div>
+        <div className="pointer-events-auto">{cardList}</div>
       )}
     </div>
   </div>

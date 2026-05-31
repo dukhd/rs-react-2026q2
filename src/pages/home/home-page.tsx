@@ -2,6 +2,7 @@ import { type JSX } from 'react';
 
 import Flyout from '@/components/flyout';
 import Pagination from '@/components/pagination/pagination';
+import CardList from '@/components/ui/card-list';
 import { useAppSelector } from '@/hooks/store-hooks';
 import { useHomePage } from '@/hooks/use-home-page';
 import { formatErrorMessage } from '@/utils/error-formatter';
@@ -48,12 +49,16 @@ const HomePage = (): JSX.Element => {
           <HomeContent
             isLoading={isLoading || isFetching}
             error={error ? formatErrorMessage(error) : null}
-            cards={data?.results ?? []}
             activeSearchQuery={activeSearchQuery}
-            isSidebarOpen={isSidebarOpen}
-            onSearch={handleSearch}
-            onCardClick={handleCardClick}
             onRefresh={handleRefresh}
+            onSearch={handleSearch}
+            cardList={
+              <CardList
+                cards={data?.results ?? []}
+                onCardClick={handleCardClick}
+                isSidebarOpen={isSidebarOpen}
+              />
+            }
           />
         </div>
 
