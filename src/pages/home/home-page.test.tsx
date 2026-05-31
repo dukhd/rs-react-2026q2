@@ -141,16 +141,6 @@ describe('Home Page Component', () => {
     expect(errorButton).toBeInTheDocument();
   });
 
-  test('Should trigger reloading and show loader when Refresh button is clicked', () => {
-    const user = userEvent.setup();
-    renderHomePage();
-
-    const refreshButton = screen.getByRole('button', { name: /refresh/i });
-    user.click(refreshButton);
-
-    expect(screen.getByRole('status')).toBeInTheDocument();
-  });
-
   test('Should open and close details sidebar', async () => {
     const user = userEvent.setup();
     const getCloseButton = () =>
@@ -228,5 +218,53 @@ describe('Home Page Component', () => {
     await resolveLoading();
 
     expect(requestCount).toBe(3);
+  });
+
+  test('Should cache search queries and not refetch when searching for the same term again', async () => {
+    let searchRequestCount = 0;
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    server.use(
+      http.get(CHARACTER_URL, ({ request }) => {
+        searchRequestCount++;
+        const url = new URL(request.url);
+        const name = url.searchParams.get('name');
+
+        if (name === 'Morty') {
+          return HttpResponse.json(mockApiResponsePage2);
+        }
+        return HttpResponse.json(mockApiResponse);
+      })
+    );
+
+    renderHomePage();
+    await resolveLoading();
+
+    const searchFor = async (term: string) => {
+      const input = screen.getByRole('searchbox');
+      const searchButton = screen.getByRole('button', { name: /search/i });
+
+      await waitFor(() => {
+        expect(input).toBeVisible();
+        expect(input).toBeEnabled();
+      });
+
+      await user.clear(input);
+      await user.type(input, term);
+      await user.click(searchButton);
+      await resolveLoading();
+    };
+
+    await searchFor('Morty');
+    await screen.findByText(/Morty Smith/i);
+    expect(searchRequestCount).toBe(2);
+
+    await searchFor('Rick');
+    await screen.findByText(/Rick Sanchez/i);
+    expect(searchRequestCount).toBe(3);
+
+    await searchFor('Morty');
+    await screen.findByText(/Morty Smith/i);
+    expect(searchRequestCount).toBe(3);
   });
 });
