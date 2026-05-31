@@ -4,6 +4,7 @@ import { useOutletContext, useSearchParams } from 'react-router';
 import Loader from '@/components/loader/loader';
 import { useCacheRefresh } from '@/hooks/use-cache-refresh';
 import { useGetCharacterDetailsQuery } from '@/services/characters-api';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 import Button from './ui/button';
 import Image from './ui/image';
@@ -36,9 +37,12 @@ const CharacterDetails = (): JSX.Element => {
   }
 
   if (error || !character) {
+    const errorMessage = error
+      ? formatErrorMessage(error)
+      : 'Character not found';
     return (
       <div className="flex flex-col gap-4 p-4 text-center">
-        <p className="text-details-error font-bold">Failed to load details</p>
+        <p className="text-details-error font-bold">{errorMessage}</p>
         <Button
           text="Close"
           type="button"
