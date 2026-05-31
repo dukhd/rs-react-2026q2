@@ -78,7 +78,7 @@ describe('CharacterDetails Component', () => {
   });
 
   test('Should render loader when data is fetching', () => {
-    setup({ isFetching: true });
+    setup({ isFetching: true, data: mockCharacters[0] });
 
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
@@ -111,7 +111,9 @@ describe('CharacterDetails Component', () => {
   test('Should render error message and respond to Close button on failure', async () => {
     setup({ error: { status: 500 } });
 
-    expect(screen.getByText('Failed to load details')).toBeInTheDocument();
+    expect(
+      screen.getByText('Oops! Status 500. Please try again.')
+    ).toBeInTheDocument();
 
     const errorCloseBtn = screen.getByRole('button', { name: 'Close' });
     await userEvent.click(errorCloseBtn);
@@ -135,7 +137,7 @@ describe('CharacterDetails Component', () => {
       vi.fn(),
     ]);
 
-    setup({ data: null });
-    expect(screen.getByText('Failed to load details')).toBeInTheDocument();
+    setup({ data: null, error: null });
+    expect(screen.getByText('Character not found')).toBeInTheDocument();
   });
 });
