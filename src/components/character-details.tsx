@@ -19,14 +19,15 @@ const CharacterDetails = (): JSX.Element => {
   const { onClose } = useOutletContext<OutletContextType>();
 
   const detailsId = searchParams.get('details');
-  const id = detailsId ? Number(detailsId) : 0;
+  const id = Number(detailsId);
+  const isValidId = detailsId !== null && Number.isFinite(id) && id > 0;
 
   const {
     data: character,
     isLoading,
     isFetching,
     error,
-  } = useGetCharacterDetailsQuery(id, { skip: !detailsId });
+  } = useGetCharacterDetailsQuery(id, { skip: !isValidId });
 
   if (isLoading) {
     return (
