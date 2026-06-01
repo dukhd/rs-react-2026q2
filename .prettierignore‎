@@ -1,0 +1,21 @@
+node_modules
+dist
+.cache
+
+bun.lockb
+package-lock.json
+yarn.lock
+
+coverage
+.vscode
+.husky
+
+# Media
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.woff2
+
+README.md
