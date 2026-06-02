@@ -1,7 +1,9 @@
 import type { JSX } from 'react';
 
+import { useAppSelector } from '@/store/hooks';
+
 const SubmissionLog = (): JSX.Element => {
-  const submissions = [];
+  const submissions = useAppSelector((state) => state.form.submissions);
 
   return (
     <div className="mt-8">
