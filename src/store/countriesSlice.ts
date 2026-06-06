@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { countriesData } from '@/form/config/countriesData';
+import { COUNTRIES_LIST } from '@/form/config/countriesData';
 
 interface CountriesState {
   countries: string[];
 }
 
 const initialState: CountriesState = {
-  countries: countriesData,
+  countries: COUNTRIES_LIST,
 };
 
 const countriesSlice = createSlice({

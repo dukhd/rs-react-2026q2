@@ -18,6 +18,8 @@
   --color-border-subtle: rgba(255, 255, 255, 0.05);
   --color-focus-ring: #60a5fa;
   --color-avatar-fallback: #f8fafc;
+
+  --color-bg-input: #1f1e2a;
 }
 
 @layer base {

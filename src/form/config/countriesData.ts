@@ -1,4 +1,4 @@
-export const countriesData: string[] = [
+export const COUNTRIES_LIST: string[] = [
   'Afghanistan',
   'Albania',
   'Algeria',

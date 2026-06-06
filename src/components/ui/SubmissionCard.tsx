@@ -1,14 +1,9 @@
 import type { JSX } from 'react';
 
-interface SubmissionData {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  gender: 'male' | 'female' | 'prefer not to say';
-  country: string;
-  image: string;
-  terms: boolean;
+import type { FormSchemaType } from '@/form/config/validation';
+
+export interface SubmissionData extends Omit<FormSchemaType, 'picture'> {
+  picture: string;
 }
 
 interface SubmissionCardProps {
@@ -21,7 +16,7 @@ const FIELD_TITLE_STYLES = 'text-label text-sm font-semibold tracking-wider uppe
 const FIELD_VALUE_STYLES = 'text-text-secondary truncate text-base font-medium';
 
 const SubmissionCard = ({ id, formType, formData }: SubmissionCardProps): JSX.Element => {
-  const { name, age, email, password, gender, country, image, terms } = formData;
+  const { name, age, email, password, gender, country, picture, terms } = formData;
   return (
     <article className="glass-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl p-8">
       <header className="border-border-subtle flex w-full items-start justify-between border-b pb-4">
@@ -35,7 +30,7 @@ const SubmissionCard = ({ id, formType, formData }: SubmissionCardProps): JSX.El
 
       <div className="flex items-center gap-6">
         <img
-          src={image}
+          src={picture}
           alt={`${name} avatar`}
           className="border-border-subtle bg-avatar-fallback h-16 w-16 shrink-0 rounded-full border object-cover"
         />
