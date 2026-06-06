@@ -1,9 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type TempSubmission = Record<string, unknown>;
+import type { FormSchemaType } from '@/form/config/validation';
 
+export interface SavedSubmission extends Omit<FormSchemaType, 'picture'> {
+  picture: string;
+}
 interface FormState {
-  submissions: TempSubmission[];
+  submissions: SavedSubmission[];
 }
 
 const initialState: FormState = {
@@ -14,7 +17,7 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    addSubmission: (state, action: PayloadAction<TempSubmission>) => {
+    addSubmission: (state, action: PayloadAction<SavedSubmission>) => {
       state.submissions.unshift(action.payload);
     },
   },

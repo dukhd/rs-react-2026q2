@@ -1,0 +1,71 @@
+import { z } from 'zod';
+
+import { countriesData } from './countriesData';
+import { GENDERS_LIST } from './gendersData';
+
+const validateEmailBasic = (value: string) => {
+  const parts = value.split('@');
+  if (parts.length !== 2) return false;
+
+  const [local, domain] = parts;
+  return !!local?.trim() && !!domain?.includes('.');
+};
+
+const MAX_FILE_SIZE = 3 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png']);
+
+const formSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, 'Name must be at least 2 characters')
+      .refine((val) => /^[A-ZА-Я]/.test(val), {
+        message: 'First letter must be uppercase',
+      }),
+
+    age: z.coerce
+      .number()
+      .int('Age must be an integer')
+      .nonnegative('Age cannot be negative')
+      .max(150, 'Age cannot exceed 150'),
+
+    email: z.string().refine(validateEmailBasic, { message: 'Invalid email format' }),
+
+    gender: z.enum(GENDERS_LIST, {
+      message: 'Select a gender',
+    }),
+
+    country: z.string().refine((val) => countriesData.includes(val), {
+      message: 'Please select a valid country from the list',
+    }),
+
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/\d/, 'Must contain at least 1 number')
+      .regex(/[a-z]/, 'Must contain at least 1 lowercase letter')
+      .regex(/[A-Z]/, 'Must contain at least 1 uppercase letter')
+      .regex(/[^a-zA-Z0-9]/, 'Must contain at least 1 special character'),
+
+    confirmPassword: z.string(),
+
+    picture: z
+      .custom<FileList>()
+      .refine((files) => files && files.length > 0, 'Image is required.')
+      .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, 'Max file size is 3MB.')
+      .refine((files) => ACCEPTED_IMAGE_TYPES.has(files?.[0]?.type), 'Only .jpeg, and .png formats are supported.'),
+
+    terms: z.boolean().refine((val) => val === true, 'You must accept the terms'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Passwords must match',
+        path: ['confirmPassword'],
+      });
+    }
+  });
+
+export type FormSchemaType = z.infer<typeof formSchema>;
+export default formSchema;
