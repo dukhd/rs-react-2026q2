@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Button from '@/components/ui/Button';
 
@@ -17,6 +17,7 @@ type ModalType = 'uncontrolled' | 'react hook form' | null;
 function App() {
   const dispatch = useAppDispatch();
   const [modalType, setModalType] = useState<ModalType>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const closeModal = () => setModalType(null);
 
@@ -46,13 +47,27 @@ function App() {
 
       <main className="px-5">
         <div className="mb-4 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button type="button" text="Open uncontrolled form" onClick={() => setModalType('uncontrolled')} />
-          <Button type="button" text="Open react hook form" onClick={() => setModalType('react hook form')} />
+          <Button
+            type="button"
+            text="Open uncontrolled form"
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              triggerRef.current = e.currentTarget;
+              setModalType('uncontrolled');
+            }}
+          />
+          <Button
+            type="button"
+            text="Open react hook form"
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              triggerRef.current = e.currentTarget;
+              setModalType('react hook form');
+            }}
+          />
         </div>
 
         <SubmissionLog />
       </main>
-      <Modal isOpen={modalType !== null} onClose={closeModal} formType={modalType ?? ''}>
+      <Modal isOpen={modalType !== null} onClose={closeModal} formType={modalType ?? ''} triggerRef={triggerRef}>
         {modalType === 'uncontrolled' && <UncontrolledForm onSubmit={handleSubmit} />}
         {modalType === 'react hook form' && <ReactHookForm onSubmit={handleSubmit} />}
       </Modal>

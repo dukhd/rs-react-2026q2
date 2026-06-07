@@ -3,7 +3,7 @@ import type { JSX } from 'react';
 interface ButtonProps {
   type: 'button' | 'submit';
   text: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 

@@ -6,26 +6,25 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   formType: string;
+  triggerRef: React.RefObject<HTMLElement | null>;
 }
 
-const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element | null => {
+const Modal = ({ isOpen, onClose, children, formType, triggerRef }: ModalProps): JSX.Element | null => {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const triggerRef = useRef<HTMLElement | null>(null);
 
   const isBackdropClickStarted = useRef(false);
 
   useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
     if (isOpen) {
-      const active = document.activeElement;
-      if (active instanceof HTMLElement) {
-        triggerRef.current = active;
-      }
-      dialogRef.current?.showModal();
+      if (!dialog.open) dialog.showModal();
     } else {
-      dialogRef.current?.close();
+      if (dialog.open) dialog.close();
+
       triggerRef.current?.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, triggerRef]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDialogElement>) => {
     isBackdropClickStarted.current = e.target === dialogRef.current;
@@ -38,13 +37,11 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
     isBackdropClickStarted.current = false;
   };
 
-  if (!isOpen) return null;
-
   return createPortal(
     <dialog
       ref={dialogRef}
       className="bg-bg-dark/70 glass-panel fixed inset-0 z-50 m-auto h-fit max-h-11/12 w-full max-w-2xl scrollbar-thin overflow-y-auto rounded-2xl shadow-2xl outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm"
-      onClose={() => onClose()}
+      onClose={onClose}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onKeyDown={(e) => e.key === 'Escape' && onClose()}
