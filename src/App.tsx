@@ -9,6 +9,7 @@ import type { FormSchemaType } from './form/config/validation';
 import ReactHookForm from './form/ReactHookForm';
 import { addSubmission, type Submission } from './store/formSlice';
 import { useAppDispatch } from './store/hooks';
+import { convertToBase64 } from './utils/fileToBase64';
 
 type ModalType = 'uncontrolled' | 'react hook form' | null;
 
@@ -18,18 +19,24 @@ function App() {
 
   const closeModal = () => setModalType(null);
 
-  const handleSubmit = (data: FormSchemaType, formType: Submission['formType']) => {
-    const submission: Submission = {
-      id: crypto.randomUUID(),
-      formType,
-      data: {
-        ...data,
-        picture: 'TBC',
-      },
-    };
+  const handleSubmit = async (data: FormSchemaType, formType: Submission['formType']) => {
+    try {
+      const picture = data.picture?.[0];
+      const base64Picture = picture ? await convertToBase64(picture) : '';
+      const submission: Submission = {
+        id: crypto.randomUUID(),
+        formType,
+        data: {
+          ...data,
+          picture: base64Picture,
+        },
+      };
 
-    dispatch(addSubmission(submission));
-    setModalType(null);
+      dispatch(addSubmission(submission));
+      setModalType(null);
+    } catch (error) {
+      console.error('Error during image conversion:', error);
+    }
   };
 
   return (
