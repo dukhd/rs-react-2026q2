@@ -6,6 +6,7 @@ import SubmissionCard from '../ui/SubmissionCard';
 
 const SubmissionLog = (): JSX.Element => {
   const submissions = useAppSelector((state) => state.form.submissions);
+  const latestId = submissions.length > 0 ? submissions.at(0)?.id : null;
 
   return (
     <div className="mt-8">
@@ -19,9 +20,10 @@ const SubmissionLog = (): JSX.Element => {
 
       {submissions.length > 0 ? (
         <section className="mx-auto mt-4 mb-10 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
-          {submissions.map((submission) => (
-            <SubmissionCard key={submission.id} submission={submission} />
-          ))}
+          {submissions.map((submission) => {
+            const isNew = submission.id === latestId;
+            return <SubmissionCard key={submission.id} submission={submission} isNew={isNew} />;
+          })}
         </section>
       ) : (
         <div className="glass-panel border-border-subtle mx-auto mt-8 max-w-md rounded-3xl border p-8 text-center shadow-lg">

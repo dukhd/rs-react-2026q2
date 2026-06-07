@@ -1,18 +1,40 @@
-import type { JSX } from 'react';
+import { type JSX, useEffect, useState } from 'react';
 
 import type { Submission } from '@/store/formSlice';
 
 interface SubmissionCardProps {
   submission: Submission;
+  isNew: boolean;
 }
 
 const FIELD_TITLE_STYLES = 'text-label text-sm font-semibold tracking-wider uppercase';
 const FIELD_VALUE_STYLES = 'text-text-secondary truncate text-base font-medium';
 
-const SubmissionCard = ({ submission }: SubmissionCardProps): JSX.Element => {
+const SubmissionCard = ({ submission, isNew = false }: SubmissionCardProps): JSX.Element => {
   const { id, formType, data } = submission;
+  const [showHighlight, setShowHighlight] = useState(isNew);
+
+  useEffect(() => {
+    if (isNew) {
+      const timer = setTimeout(() => {
+        setShowHighlight(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isNew]);
+
   return (
-    <article className="glass-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl p-8">
+    <article
+      className={`glass-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl border-2 border-transparent p-8 transition-all duration-500 ${
+        showHighlight ? 'border-accent animate-pulse border-2' : ''
+      }`}
+    >
+      {showHighlight && (
+        <span className="bg-accent text-bg-dark absolute top-0 right-0 z-10 rounded-bl-2xl px-4 py-1 text-[10px] font-bold tracking-widest uppercase">
+          New
+        </span>
+      )}
       <header className="border-border-subtle flex w-full items-start justify-between border-b pb-4">
         <span className="text-label text-sm font-semibold">ID: #{id.slice(0, 5)}</span>
         <span
