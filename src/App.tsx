@@ -7,6 +7,7 @@ import Modal from './components/layout/Modal';
 import SubmissionLog from './components/layout/SubmissionLog';
 import type { FormSchemaType } from './form/config/validation';
 import ReactHookForm from './form/ReactHookForm';
+import UncontrolledForm from './form/UncontrolledForm';
 import { addSubmission, type Submission } from './store/formSlice';
 import { useAppDispatch } from './store/hooks';
 import { convertToBase64 } from './utils/fileToBase64';
@@ -52,7 +53,7 @@ function App() {
         <SubmissionLog />
       </main>
       <Modal isOpen={modalType !== null} onClose={closeModal} formType={modalType ?? ''}>
-        {modalType === 'uncontrolled' && <p className="text-white">TBC: Uncontrolled form</p>}
+        {modalType === 'uncontrolled' && <UncontrolledForm onSubmit={handleSubmit} />}
         {modalType === 'react hook form' && <ReactHookForm onSubmit={handleSubmit} />}
       </Modal>
     </>

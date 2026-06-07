@@ -1,6 +1,7 @@
-export type FormFieldName = 'name' | 'age' | 'email' | 'password' | 'confirmPassword';
+import type { FormSchemaType } from './validation';
 
-export interface FormField {
+type FormFieldName = keyof FormSchemaType;
+interface FormField {
   name: FormFieldName;
   type: 'text' | 'number' | 'email' | 'password';
   label: string;
@@ -39,3 +40,21 @@ export const formFields: FormField[] = [
     placeholder: 'Confirm your password',
   },
 ];
+
+export const ALL_FORM_KEYS: FormFieldName[] = [
+  'name',
+  'age',
+  'email',
+  'password',
+  'confirmPassword',
+  'gender',
+  'country',
+  'picture',
+  'terms',
+];
+
+export const isFormKey = (key: unknown): key is FormFieldName => {
+  if (typeof key !== 'string') return false;
+  const stringKeys: string[] = ALL_FORM_KEYS;
+  return stringKeys.includes(key);
+};

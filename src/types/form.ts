@@ -6,3 +6,5 @@ export interface BaseFormFieldProps {
   error?: string;
   register?: UseFormRegister<FormSchemaType>;
 }
+
+export type FormErrors = Partial<Record<keyof FormSchemaType, string>>;

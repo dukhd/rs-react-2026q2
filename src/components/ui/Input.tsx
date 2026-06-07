@@ -6,10 +6,12 @@ import type { BaseFormFieldProps } from '@/types/form';
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, BaseFormFieldProps {
   id: keyof FormSchemaType;
   label: string;
+  ref?: React.RefObject<HTMLInputElement | null>;
 }
 
-const Input = ({ id, name, label, type, placeholder, error, register, ...props }: InputProps): JSX.Element => {
+const Input = ({ id, ref, name, label, type, placeholder, error, register, ...props }: InputProps): JSX.Element => {
   const isAgeField = id === 'age';
+  const isPasswordFields = id === 'password' || id === 'confirmPassword';
   const isFileType = type === 'file';
 
   const baseStyles =
@@ -32,11 +34,13 @@ const Input = ({ id, name, label, type, placeholder, error, register, ...props }
         {label}
       </label>
       <input
+        required
+        ref={ref}
         id={id}
         name={name || id}
         type={type}
         placeholder={placeholder}
-        autoComplete="new-password"
+        {...(isPasswordFields && { autoComplete: 'new-password' })}
         {...props}
         {...register?.(id)}
         className={combinedClassName}

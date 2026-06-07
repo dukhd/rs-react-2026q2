@@ -23,12 +23,13 @@ const formSchema = (countries: readonly string[]) =>
 
       age: z
         .string()
+        .min(1, 'Please enter your age')
         .refine((val) => !Number.isNaN(Number(val)), 'Must be a number')
-        .refine((val) => !Number.isInteger(val), 'Age must be an integer')
+        .refine((val) => Number.isInteger(Number(val)), 'Age must be an integer')
         .refine((val) => Number(val) >= 0, 'Age cannot be negative')
         .refine((val) => Number(val) <= 150, 'Age cannot exceed 150'),
 
-      email: z.email().refine(validateEmailBasic, { message: 'Invalid email format' }),
+      email: z.string().refine(validateEmailBasic, { message: 'Invalid email format' }),
 
       gender: z.string().min(1, 'Please select a gender'),
 

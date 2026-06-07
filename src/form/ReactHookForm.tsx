@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type JSX, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 
 import Button from '@/components/ui/Button';
 import CountryList from '@/components/ui/CountryList';
@@ -9,7 +8,7 @@ import GenderSelector from '@/components/ui/GenderSelector';
 import Input from '@/components/ui/Input';
 import TermsCheckbox from '@/components/ui/TermsCheckbox';
 import type { Submission } from '@/store/formSlice';
-import type { RootState } from '@/store/store';
+import { useAppSelector } from '@/store/hooks';
 
 import { formFields } from './config/formFields';
 import formSchema, { type FormSchemaType } from './config/validation';
@@ -19,7 +18,7 @@ type Props = {
 };
 
 const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
-  const countries = useSelector((state: RootState) => state.countries.countries);
+  const countries = useAppSelector((state) => state.countries.countries);
 
   const {
     register,
@@ -44,7 +43,7 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="flex w-full flex-col gap-1 sm:gap-3">
+    <form onSubmit={handleSubmit(submitHandler)} noValidate className="flex w-full flex-col gap-1 sm:gap-3">
       {formFields.map((field) => (
         <Input
           key={field.name}

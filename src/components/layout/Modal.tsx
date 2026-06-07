@@ -12,6 +12,8 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
+  const isBackdropClickStarted = useRef(false);
+
   useEffect(() => {
     if (isOpen) {
       const active = document.activeElement;
@@ -25,8 +27,15 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
     }
   }, [isOpen]);
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    if (e.target === dialogRef.current) onClose();
+  const handleMouseDown = (e: React.MouseEvent<HTMLDialogElement>) => {
+    isBackdropClickStarted.current = e.target === dialogRef.current;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (isBackdropClickStarted.current && e.target === dialogRef.current) {
+      onClose();
+    }
+    isBackdropClickStarted.current = false;
   };
 
   if (!isOpen) return null;
@@ -36,11 +45,12 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
       ref={dialogRef}
       className="bg-bg-dark/70 glass-panel fixed inset-0 z-50 m-auto h-fit max-h-11/12 w-full max-w-2xl scrollbar-thin overflow-y-auto rounded-2xl shadow-2xl outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       onClose={() => onClose()}
-      onClick={handleBackdropClick}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       onKeyDown={(e) => e.key === 'Escape' && onClose()}
       aria-modal="true"
     >
-      <div className="relative flex w-full flex-col items-center gap-3 p-2 sm:p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex w-full flex-col items-center gap-3 p-2 sm:p-6">
         <button
           type="button"
           onClick={onClose}
