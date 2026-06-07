@@ -5,8 +5,14 @@ import type { FormSchemaType } from '@/form/config/validation';
 export interface SavedSubmission extends Omit<FormSchemaType, 'picture'> {
   picture: string;
 }
+
+export interface Submission {
+  id: string;
+  formType: 'react hook form' | 'uncontrolled';
+  data: SavedSubmission;
+}
 interface FormState {
-  submissions: SavedSubmission[];
+  submissions: Submission[];
 }
 
 const initialState: FormState = {
@@ -17,7 +23,7 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    addSubmission: (state, action: PayloadAction<SavedSubmission>) => {
+    addSubmission: (state, action: PayloadAction<Submission>) => {
       state.submissions.unshift(action.payload);
     },
   },

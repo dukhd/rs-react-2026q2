@@ -6,7 +6,7 @@ export interface TermsCheckboxProps extends React.InputHTMLAttributes<HTMLInputE
 
 const TermsCheckbox = ({ error, register, ...props }: TermsCheckboxProps): JSX.Element => {
   return (
-    <div className="mt-2 flex w-full flex-col items-center gap-1 px-2">
+    <div className="my-2 flex w-full flex-col items-center gap-1 px-2">
       <div className="flex items-center gap-4">
         <div className="relative flex items-center">
           <input
@@ -14,8 +14,8 @@ const TermsCheckbox = ({ error, register, ...props }: TermsCheckboxProps): JSX.E
             type="checkbox"
             id="terms"
             name="terms"
-            {...register?.('terms')}
             {...props}
+            {...register?.('terms')}
             className={`bg-bg-input/50 checked:bg-accent checked:border-text-primary focus:outline-focus-ring h-6 w-6 cursor-pointer appearance-none rounded-lg border-2 transition-all duration-300 checked:shadow-[0_0_10px_var(--color-accent-muted)] ${
               error ? 'border-error/50 focus:border-error' : 'border-border-strong'
             }`}
@@ -25,7 +25,13 @@ const TermsCheckbox = ({ error, register, ...props }: TermsCheckboxProps): JSX.E
           I agree to the Terms and Conditions
         </label>
       </div>
-      {error && <span className="text-error ml-2 min-h-5 text-xs font-medium transition-all">{error}</span>}
+      <span
+        className={`text-error ml-2 block min-h-5 text-xs font-medium transition-all duration-300 sm:text-sm ${
+          error ? 'visible opacity-100' : 'invisible opacity-0'
+        }`}
+      >
+        {error || ''}
+      </span>
     </div>
   );
 };

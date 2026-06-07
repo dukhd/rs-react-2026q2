@@ -2,6 +2,8 @@ import type { JSX } from 'react';
 
 import { useAppSelector } from '@/store/hooks';
 
+import SubmissionCard from '../ui/SubmissionCard';
+
 const SubmissionLog = (): JSX.Element => {
   const submissions = useAppSelector((state) => state.form.submissions);
 
@@ -17,7 +19,9 @@ const SubmissionLog = (): JSX.Element => {
 
       {submissions.length > 0 ? (
         <section className="mx-auto mt-4 mb-10 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
-          <p>Cards will be here</p>
+          {submissions.map((submission) => (
+            <SubmissionCard key={submission.id} submission={submission} />
+          ))}
         </section>
       ) : (
         <div className="glass-panel border-border-subtle mx-auto mt-8 max-w-md rounded-3xl border p-8 text-center shadow-lg">

@@ -34,13 +34,13 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
   return createPortal(
     <dialog
       ref={dialogRef}
-      className="bg-bg-dark/70 glass-panel fixed inset-0 z-50 m-auto h-fit max-h-11/12 w-full max-w-2xl overflow-y-auto rounded-2xl shadow-2xl outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+      className="bg-bg-dark/70 glass-panel fixed inset-0 z-50 m-auto h-fit max-h-11/12 w-full max-w-2xl scrollbar-thin overflow-y-auto rounded-2xl shadow-2xl outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       onClose={() => onClose()}
       onClick={handleBackdropClick}
       onKeyDown={(e) => e.key === 'Escape' && onClose()}
       aria-modal="true"
     >
-      <div className="relative flex w-full flex-col items-center gap-3 p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex w-full flex-col items-center gap-3 p-2 sm:p-6" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           onClick={onClose}
@@ -49,10 +49,12 @@ const Modal = ({ isOpen, onClose, children, formType }: ModalProps): JSX.Element
         >
           ✖
         </button>
-        <h2 className="text-accent-muted text-4xl font-bold capitalize">Let&apos;s get started!</h2>
+        <h2 className="text-accent-muted text-center text-2xl font-bold capitalize sm:text-4xl">
+          Let&apos;s get started!
+        </h2>
 
-        <p className="text-text-primary text-base font-medium">{`Fill in the details below within ${formType.toUpperCase()} form.`}</p>
-        <div className="p-5">{children}</div>
+        <p className="text-text-primary text-center text-sm font-medium sm:text-base">{`Fill in the details below within ${formType.toUpperCase()} form.`}</p>
+        <div className="w-11/12 p-1 sm:p-5">{children}</div>
       </div>
     </dialog>,
     document.body

@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { GENDERS_LIST } from './gendersData';
-
 const validateEmailBasic = (value: string) => {
   const parts = value.split('@');
   if (parts.length !== 2) return false;
@@ -23,32 +21,35 @@ const formSchema = (countries: readonly string[]) =>
           message: 'First letter must be uppercase',
         }),
 
-      age: z.coerce
-        .number()
-        .int('Age must be an integer')
-        .nonnegative('Age cannot be negative')
-        .max(150, 'Age cannot exceed 150'),
+      age: z
+        .string()
+        .refine((val) => !Number.isNaN(Number(val)), 'Must be a number')
+        .refine((val) => !Number.isInteger(val), 'Age must be an integer')
+        .refine((val) => Number(val) >= 0, 'Age cannot be negative')
+        .refine((val) => Number(val) <= 150, 'Age cannot exceed 150'),
 
-      email: z.string().refine(validateEmailBasic, { message: 'Invalid email format' }),
+      email: z.email().refine(validateEmailBasic, { message: 'Invalid email format' }),
 
-      gender: z.enum(GENDERS_LIST, {
-        message: 'Select a gender',
-      }),
+      gender: z.string().min(1, 'Please select a gender'),
 
-      country: z.string().refine((val) => countries.includes(val), {
-        message: 'Please select a valid country from the list',
-      }),
+      country: z
+        .string()
+        .min(1, 'Please select a country')
+        .refine((val) => countries.includes(val), {
+          message: 'Please select a valid country from the list',
+        }),
 
       password: z
         .string()
-        .min(8, 'Password must be at least 8 characters')
+        .min(1, 'Please enter your password')
+        .regex(/[a-zA-Z]/, 'Must contain English letters')
+        .min(6, 'Password must be at least 6 characters')
         .regex(/\d/, 'Must contain at least 1 number')
         .regex(/[a-z]/, 'Must contain at least 1 lowercase letter')
         .regex(/[A-Z]/, 'Must contain at least 1 uppercase letter')
         .regex(/[^a-zA-Z0-9]/, 'Must contain at least 1 special character'),
 
-      confirmPassword: z.string(),
-
+      confirmPassword: z.string().min(1, 'Please confirm your password'),
       picture: z
         .custom<FileList>()
         .refine((files) => files && files.length > 0, 'Image is required.')

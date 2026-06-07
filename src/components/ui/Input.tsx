@@ -28,22 +28,26 @@ const Input = ({ id, name, label, type, placeholder, error, register, ...props }
 
   return (
     <div className="flex w-full flex-col gap-1">
-      <label htmlFor={id} className="text-text-primary ml-2 text-sm font-semibold capitalize">
+      <label htmlFor={id} className="text-text-primary ml-7 text-sm font-semibold capitalize">
         {label}
       </label>
       <input
-        required
         id={id}
-        name={name}
+        name={name || id}
         type={type}
         placeholder={placeholder}
         autoComplete="new-password"
-        {...(isAgeField ? { min: 0, max: 150 } : {})}
-        {...register?.(id)}
         {...props}
+        {...register?.(id)}
         className={combinedClassName}
       />
-      {error && <span className="text-error ml-2 min-h-5 text-xs font-medium transition-all">{error}</span>}
+      <span
+        className={`text-error ml-2 block min-h-5 text-xs font-medium transition-all duration-300 sm:text-sm ${
+          error ? 'visible opacity-100' : 'invisible opacity-0'
+        }`}
+      >
+        {error || ''}
+      </span>
     </div>
   );
 };
