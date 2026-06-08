@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+@theme {
+  --font: 'Montserrat', sans-serif;
+
+  --color-accent: #ecb2ff;
+  --color-accent-muted: #ffb1c3;
+  --color-subtle: #9d8ba0;
+  --color-border-strong: #514255;
+  --color-text-primary: #e3e0f1;
+  --color-text-secondary: #d4c0d7;
+  --color-success: #00e46b;
+  --color-error: #ffb4ab;
+  --color-label: #979797;
+
+  --color-bg-dark: #12121d;
+  --color-surface-glass: rgba(41, 41, 53, 0.4);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
+  --color-focus-ring: #60a5fa;
+  --color-avatar-fallback: #f8fafc;
+
+  --color-bg-input: #1f1e2a;
+
+  --color-weak-pass: #ff6b7e;
+  --color-fair-pass: #ffd066;
+  --color-strong-pass: #00e46b;
+  --color-requirements: #ea7979;
+}
+
+@layer base {
+  body {
+    font-family: var(--font);
+    background-color: var(--color-bg-dark);
+    background-image:
+      radial-gradient(at 0% 0%, hsla(285, 91%, 21%, 0.5) 0px, transparent 70%),
+      radial-gradient(at 100% 0%, hsla(340, 93%, 37%, 0.5) 0px, transparent 60%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+}
+
+@utility glass-panel {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+@utility squishy-button {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover,
+    &:active {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--tw-shadow-color);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+
+@utility glow-green {
+  text-shadow: 0 0 10px rgba(0, 228, 107, 0.8);
+}
+
+@utility glow-red {
+  text-shadow: 0 0 10px rgba(255, 180, 171, 0.8);
+}
