@@ -44,11 +44,7 @@ const formSchema = (countries: readonly string[]) =>
         .string()
         .min(1, 'Please enter your password')
         .regex(/[a-zA-Z]/, 'Must contain English letters')
-        .min(6, 'Password must be at least 6 characters')
-        .regex(/\d/, 'Must contain at least 1 number')
-        .regex(/[a-z]/, 'Must contain at least 1 lowercase letter')
-        .regex(/[A-Z]/, 'Must contain at least 1 uppercase letter')
-        .regex(/[^a-zA-Z0-9]/, 'Must contain at least 1 special character'),
+        .min(6, 'Password must be at least 6 characters'),
 
       confirmPassword: z.string().min(1, 'Please confirm your password'),
       picture: z

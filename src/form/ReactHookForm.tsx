@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button';
 import CountryList from '@/components/ui/CountryList';
 import GenderSelector from '@/components/ui/GenderSelector';
 import Input from '@/components/ui/Input';
+import StrengthBar from '@/components/ui/StrengthBar';
 import TermsCheckbox from '@/components/ui/TermsCheckbox';
 import type { Submission } from '@/store/formSlice';
 import { useAppSelector } from '@/store/hooks';
@@ -43,17 +44,20 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} noValidate className="flex w-full flex-col gap-1 sm:gap-3">
+    <form onSubmit={handleSubmit(submitHandler)} noValidate className="flex w-full flex-col gap-1 sm:gap-2">
       {formFields.map((field) => (
-        <Input
-          key={field.name}
-          id={field.name}
-          type={field.type}
-          label={field.label}
-          placeholder={field.placeholder}
-          register={register}
-          error={errors[field.name]?.message}
-        />
+        <div key={field.name} className="flex w-full flex-col gap-1">
+          <Input
+            key={field.name}
+            id={field.name}
+            type={field.type}
+            label={field.label}
+            placeholder={field.placeholder}
+            register={register}
+            error={errors[field.name]?.message}
+          />
+          {field.name === 'password' && <StrengthBar password={password} />}
+        </div>
       ))}
       <div className="flex flex-col justify-between gap-1 sm:flex-row sm:gap-2">
         <GenderSelector register={register} error={errors.gender?.message} />

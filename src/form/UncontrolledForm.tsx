@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button';
 import CountryList from '@/components/ui/CountryList';
 import GenderSelector from '@/components/ui/GenderSelector';
 import Input from '@/components/ui/Input';
+import StrengthBar from '@/components/ui/StrengthBar';
 import TermsCheckbox from '@/components/ui/TermsCheckbox';
 import type { Submission } from '@/store/formSlice';
 import { useAppSelector } from '@/store/hooks';
@@ -19,6 +20,7 @@ type Props = {
 const UncontrolledForm = ({ onSubmit }: Props): JSX.Element => {
   const countries = useAppSelector((state) => state.countries.countries);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [passwordValue, setPasswordValue] = useState('');
   const pictureRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
@@ -57,21 +59,32 @@ const UncontrolledForm = ({ onSubmit }: Props): JSX.Element => {
     setErrors({});
     onSubmit(result.data, 'uncontrolled');
     form.reset();
+    setPasswordValue('');
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordValue(e.target.value);
   };
 
   return (
-    <form onSubmit={submitHandler} className="flex w-full flex-col gap-1 sm:gap-3" noValidate>
-      {formFields.map((field) => (
-        <Input
-          key={field.name}
-          id={field.name}
-          name={field.name}
-          type={field.type}
-          label={field.label}
-          placeholder={field.placeholder}
-          error={errors[field.name]}
-        />
-      ))}
+    <form onSubmit={submitHandler} className="flex w-full flex-col gap-1 sm:gap-2" noValidate>
+      {formFields.map((field) => {
+        const isPasswordField = field.name === 'password';
+        return (
+          <div key={field.name} className="flex w-full flex-col gap-1">
+            <Input
+              id={field.name}
+              name={field.name}
+              type={field.type}
+              label={field.label}
+              placeholder={field.placeholder}
+              error={errors[field.name]}
+              {...(isPasswordField ? { onChange: handlePasswordChange } : {})}
+            />
+            {isPasswordField && <StrengthBar password={passwordValue} />}
+          </div>
+        );
+      })}
       <div className="flex flex-col justify-between gap-1 sm:flex-row sm:gap-2">
         <GenderSelector error={errors.gender} />
         <CountryList error={errors.country} />

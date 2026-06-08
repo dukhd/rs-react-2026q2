@@ -20,6 +20,11 @@
   --color-avatar-fallback: #f8fafc;
 
   --color-bg-input: #1f1e2a;
+
+  --color-weak-pass: #ff6b7e;
+  --color-fair-pass: #ffd066;
+  --color-strong-pass: #00e46b;
+  --color-requirements: #ea7979;
 }
 
 @layer base {
