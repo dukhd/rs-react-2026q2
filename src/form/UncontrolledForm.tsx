@@ -1,4 +1,4 @@
-import { type JSX, useRef, useState } from 'react';
+import { type JSX, useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/ui/Button';
 import CountryList from '@/components/ui/CountryList';
@@ -22,6 +22,15 @@ const UncontrolledForm = ({ onSubmit }: Props): JSX.Element => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [passwordValue, setPasswordValue] = useState('');
   const pictureRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      nameInputRef.current?.focus();
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const submitHandler = (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
@@ -70,6 +79,7 @@ const UncontrolledForm = ({ onSubmit }: Props): JSX.Element => {
     <form onSubmit={submitHandler} className="flex w-full flex-col gap-1 sm:gap-2" noValidate>
       {formFields.map((field) => {
         const isPasswordField = field.name === 'password';
+        const isNameField = field.name === 'name';
         return (
           <div key={field.name} className="flex w-full flex-col gap-1">
             <Input
@@ -79,6 +89,7 @@ const UncontrolledForm = ({ onSubmit }: Props): JSX.Element => {
               label={field.label}
               placeholder={field.placeholder}
               error={errors[field.name]}
+              ref={isNameField ? nameInputRef : undefined}
               {...(isPasswordField ? { onChange: handlePasswordChange } : {})}
             />
             {isPasswordField && <StrengthBar password={passwordValue} />}

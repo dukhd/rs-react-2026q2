@@ -37,9 +37,12 @@ const Modal = ({ isOpen, onClose, children, formType, triggerRef }: ModalProps):
     isBackdropClickStarted.current = false;
   };
 
+  if (!isOpen) return null;
+
   return createPortal(
     <dialog
       ref={dialogRef}
+      tabIndex={-1}
       className="bg-bg-dark/70 glass-panel fixed inset-0 z-50 m-auto h-fit max-h-11/12 w-full max-w-2xl scrollbar-thin overflow-y-auto rounded-2xl shadow-2xl outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       onClose={onClose}
       onMouseDown={handleMouseDown}

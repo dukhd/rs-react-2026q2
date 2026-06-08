@@ -11,6 +11,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
 
 const Input = ({ id, ref, name, label, type, placeholder, error, register, ...props }: InputProps): JSX.Element => {
   const isAgeField = id === 'age';
+  const isNameField = id === 'name';
   const isPasswordFields = id === 'password' || id === 'confirmPassword';
   const isFileType = type === 'file';
 
@@ -27,6 +28,7 @@ const Input = ({ id, ref, name, label, type, placeholder, error, register, ...pr
     : '';
 
   const combinedClassName = `${baseStyles} ${themeStyles} ${fileStyles} ${ageStyles}`.trim().replace(/\s+/g, ' ');
+  const registerProps = register?.(id);
 
   return (
     <div className="flex w-full flex-col gap-1">
@@ -35,14 +37,15 @@ const Input = ({ id, ref, name, label, type, placeholder, error, register, ...pr
       </label>
       <input
         required
-        ref={ref}
         id={id}
         name={name || id}
         type={type}
         placeholder={placeholder}
         {...(isPasswordFields && { autoComplete: 'new-password' })}
         {...props}
-        {...register?.(id)}
+        {...registerProps}
+        ref={registerProps?.ref || ref}
+        autoFocus={isNameField}
         className={combinedClassName}
       />
       <span

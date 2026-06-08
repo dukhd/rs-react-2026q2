@@ -27,6 +27,7 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
     control,
     trigger,
     reset,
+    setFocus,
     formState: { errors, isValid, touchedFields },
   } = useForm<FormSchemaType>({
     mode: 'onChange',
@@ -44,6 +45,14 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
       picture: undefined,
     },
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFocus('name');
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [setFocus]);
 
   const password = useWatch({ control, name: 'password' });
 
