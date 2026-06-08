@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
-const validateEmailBasic = (value: string) => {
-  const parts = value.split('@');
-  if (parts.length !== 2) return false;
-
-  const [local, domain] = parts;
-  return !!local?.trim() && !!domain?.includes('.');
-};
+import { validateEmailBasic } from '@/utils/validateEmailBasic';
 
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png']);
@@ -29,7 +23,9 @@ const formSchema = (countries: readonly string[]) =>
         .refine((val) => Number(val) >= 0, 'Age cannot be negative')
         .refine((val) => Number(val) <= 150, 'Age cannot exceed 150'),
 
-      email: z.string().refine(validateEmailBasic, { message: 'Invalid email format' }),
+      email: z.string().min(1, 'Email is required').refine(validateEmailBasic, {
+        message: 'Invalid email format (e.g. example@gmail.com)',
+      }),
 
       gender: z.string().min(1, 'Please select a gender'),
 
