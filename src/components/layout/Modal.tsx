@@ -16,11 +16,10 @@ const Modal = ({ isOpen, onClose, children, formType, triggerRef }: ModalProps):
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
     if (isOpen) {
-      if (!dialog.open) dialog.showModal();
+      if (dialog?.open === false) dialog.showModal();
     } else {
-      if (dialog.open) dialog.close();
+      if (dialog?.open) dialog.close();
 
       triggerRef.current?.focus();
     }
