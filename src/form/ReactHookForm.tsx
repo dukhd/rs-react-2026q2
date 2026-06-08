@@ -26,11 +26,23 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
     handleSubmit,
     control,
     trigger,
+    reset,
     formState: { errors, isValid, touchedFields },
   } = useForm<FormSchemaType>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: zodResolver(formSchema(countries)),
+    defaultValues: {
+      name: '',
+      age: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      gender: '',
+      country: '',
+      terms: false,
+      picture: undefined,
+    },
   });
 
   const password = useWatch({ control, name: 'password' });
@@ -41,6 +53,7 @@ const ReactHookForm = ({ onSubmit }: Props): JSX.Element => {
 
   const submitHandler = (data: FormSchemaType) => {
     onSubmit(data, 'react hook form');
+    reset();
   };
 
   return (
