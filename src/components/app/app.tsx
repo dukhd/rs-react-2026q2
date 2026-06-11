@@ -89,8 +89,9 @@ export const App = () => {
         <YearSelector year={state.selectedYear} years={years} onChange={handleYearChange} />
 
         <div className={styles.sortContainer}>
-          <label className={styles.sortLabel}>Sort by:</label>
+          <label htmlFor="sortField" className={styles.sortLabel}>Sort by:</label>
           <select
+            id="sortField"
             value={state.sortField}
             onChange={(e) => handleSortFieldChange(e.target.value as 'name' | 'population')}
             className={styles.sortSelect}
