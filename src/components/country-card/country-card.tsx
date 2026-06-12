@@ -8,7 +8,7 @@ import {
 import { formatNumber } from '../../utils/format-utils';
 
 import styles from './country-card.module.css';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 type CountryCardProps = {
   country: Country;
@@ -17,7 +17,7 @@ type CountryCardProps = {
 };
 
 export const CountryCard = memo(({ country, selectedYear, selectedColumns }: CountryCardProps) => {
-  const yearDataMap = createYearDataMap(country.data);
+  const yearDataMap = useMemo(() => createYearDataMap(country.data), [country.data]);
   const population = getPopulationForYear(yearDataMap, selectedYear);
   const co2 = getCo2ForYear(yearDataMap, selectedYear);
 

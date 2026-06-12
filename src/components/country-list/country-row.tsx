@@ -8,7 +8,7 @@ export type RowProps = {
   selectedColumns: string[];
 };
 
-export const CountryRow = (({
+export const CountryRow = ({
   index,
   style,
   items,
@@ -31,4 +31,4 @@ export const CountryRow = (({
       />
     </div>
   );
-});
+};

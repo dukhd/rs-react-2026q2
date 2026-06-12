@@ -47,6 +47,10 @@ export const App = () => {
     setState(prev => ({ ...prev, sortField: field }));
   }, []);
 
+  const handleSortFieldSelectChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleSortFieldChange(e.target.value as 'name' | 'population');
+  }, [handleSortFieldChange]);
+
   const handleSortOrderToggle = useCallback(() => {
     setState(prev => ({
       ...prev,
@@ -96,7 +100,7 @@ export const App = () => {
           <select
             id="sortField"
             value={state.sortField}
-            onChange={(e) => handleSortFieldChange(e.target.value as 'name' | 'population')}
+            onChange={handleSortFieldSelectChange}
             className={styles.sortSelect}
           >
             <option value="population">Population</option>

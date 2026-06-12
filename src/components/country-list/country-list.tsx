@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { List } from 'react-window';
 import type { Country } from '../../types';
-import { getPopulationForYear, createYearDataMap } from '../../utils/data-transformers';
 import styles from './country-list.module.css';
 import { CountryRow, type RowProps } from './country-row';
 
@@ -25,21 +24,34 @@ export const CountryList = ({
   sortOrder,
 }: CountryListProps) => {
   const filteredCountries = useMemo(() => {
-    return countries
-      .filter((c) => {
-        const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-        return matchesSearch && matchesRegion;
-      })
-      .sort((a, b) => {
-        if (sortField === 'name') {
-          return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-        } else {
-          const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-          const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-          return sortOrder === 'asc' ? popA - popB : popB - popA;
-        }
+    const filtered = countries.filter((c) => {
+      const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
+      return matchesSearch && matchesRegion;
+    });
+
+    if (sortField === 'population') {
+      const popMap = new Map<string, number>();
+      filtered.forEach(c => {
+        const pop = c.data.find(d => d.year === selectedYear)?.population || 0;
+        popMap.set(c.id, pop);
       });
+
+      filtered.sort((a, b) => {
+        const popA = popMap.get(a.id) || 0;
+        const popB = popMap.get(b.id) || 0;
+        return sortOrder === 'asc' ? popA - popB : popB - popA;
+      });
+      return filtered;
+    }
+
+    filtered.sort((a, b) =>
+      sortOrder === 'asc'
+        ? a.id.localeCompare(b.id)
+        : b.id.localeCompare(a.id)
+    );
+
+    return filtered;
   }, [countries, searchQuery, selectedRegion, selectedYear, sortField, sortOrder]);
 
 
