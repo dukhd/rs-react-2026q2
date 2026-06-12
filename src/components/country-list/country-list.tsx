@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { List } from 'react-window';
+import { List, useDynamicRowHeight } from 'react-window';
 import type { Country } from '../../types';
 import styles from './country-list.module.css';
 import { CountryRow, type RowProps } from './country-row';
@@ -54,6 +54,9 @@ export const CountryList = ({
     return filtered;
   }, [countries, searchQuery, selectedRegion, selectedYear, sortField, sortOrder]);
 
+  const rowHeight = useDynamicRowHeight({
+    defaultRowHeight: 166.08
+  });
 
   const rowProps = useMemo<RowProps>(() => ({
     items: filteredCountries,
@@ -66,7 +69,7 @@ export const CountryList = ({
       <List
         rowComponent={CountryRow}
         rowCount={filteredCountries.length}
-        rowHeight={280.08}
+        rowHeight={rowHeight}
         rowProps={rowProps}
         overscanCount={1}
       />
