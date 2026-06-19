@@ -1,14 +1,14 @@
+'use client';
+
 import { type JSX } from 'react';
 
 import Flyout from '@/components/flyout';
+import { HomeContent } from '@/components/home/home-content';
 import Pagination from '@/components/pagination/pagination';
 import CardList from '@/components/ui/card-list';
 import { useAppSelector } from '@/hooks/store-hooks';
 import { useHomePage } from '@/hooks/use-home-page';
 import { formatErrorMessage } from '@/utils/error-formatter';
-
-import { HomeContent } from './components/home-content';
-import { HomeSidebar } from './components/home-sidebar';
 
 const HomePage = (): JSX.Element => {
   const {
@@ -87,7 +87,6 @@ const HomePage = (): JSX.Element => {
           </div>
         )}
       </section>
-      <HomeSidebar isOpen={isSidebarOpen} onClose={handleCloseDetails} />
     </div>
   );
 };

@@ -1,26 +1,25 @@
-import type { JSX } from 'react';
-import { useOutletContext, useSearchParams } from 'react-router';
+'use client';
+
+import { useParams } from 'next/navigation';
+import { type JSX } from 'react';
 
 import Loader from '@/components/loader/loader';
+import Button from '@/components/ui/button';
+import ImageComponent from '@/components/ui/image';
 import { useCacheRefresh } from '@/hooks/use-cache-refresh';
+import { useDetailsSidebar } from '@/hooks/use-details-sidebar';
 import { useGetCharacterDetailsQuery } from '@/services/characters-api';
 import { formatErrorMessage } from '@/utils/error-formatter';
 
-import Button from './ui/button';
-import Image from './ui/image';
-
-interface OutletContextType {
-  onClose: () => void;
-}
-
 const CharacterDetails = (): JSX.Element => {
   const { refreshDetails } = useCacheRefresh();
-  const [searchParams] = useSearchParams();
-  const { onClose } = useOutletContext<OutletContextType>();
+  const { handleCloseDetails } = useDetailsSidebar();
 
-  const detailsId = searchParams.get('details');
+  const params = useParams<{ id: string }>();
+  const detailsId = params?.id;
+
   const id = Number(detailsId);
-  const isValidId = detailsId !== null && Number.isFinite(id) && id > 0;
+  const isValidId = detailsId !== undefined && Number.isFinite(id) && id > 0;
 
   const {
     data: character,
@@ -47,7 +46,7 @@ const CharacterDetails = (): JSX.Element => {
         <Button
           text="Close"
           type="button"
-          onClick={onClose}
+          onClick={handleCloseDetails}
           customClassName="bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-center"
         />
       </div>
@@ -80,7 +79,7 @@ const CharacterDetails = (): JSX.Element => {
           <Button
             text="x"
             type="button"
-            onClick={onClose}
+            onClick={handleCloseDetails}
             customClassName={
               'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
             }
@@ -88,7 +87,11 @@ const CharacterDetails = (): JSX.Element => {
         </div>
 
         <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
-          <Image src={character.image} alt={character.name} priority={true} />
+          <ImageComponent
+            src={character.image}
+            alt={character.name}
+            priority={true}
+          />
         </div>
 
         <h2 className="text-4xl font-bold uppercase">{character.name}</h2>

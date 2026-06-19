@@ -1,14 +1,20 @@
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router';
+'use client';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 import { STORAGE_KEYS } from '@/constants/storage-keys';
 
 import useLocalStorage from './use-local-storage';
 
 export const useSearchState = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
-  const urlSearchTerm = searchParams.get('search');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isInitialized = useRef(false);
+
+  const currentPage = Number(searchParams?.get('page')) || 1;
+  const urlSearchTerm = searchParams?.get('search');
   const [savedSearchTerm, setSearchTerm] = useLocalStorage(
     STORAGE_KEYS.SEARCH_TERM,
     ''
@@ -16,38 +22,38 @@ export const useSearchState = () => {
   const activeSearchQuery = urlSearchTerm || savedSearchTerm;
 
   useEffect(() => {
+    if (isInitialized.current) return;
     if (!urlSearchTerm && savedSearchTerm) {
-      setSearchParams(
-        (prev) => {
-          prev.set('search', savedSearchTerm);
-          prev.set('page', String(currentPage));
-          return prev;
-        },
-        { replace: true }
-      );
+      const params = new URLSearchParams(searchParams?.toString());
+      params.set('search', savedSearchTerm);
+      params.set('page', String(currentPage));
+
+      router.replace(`${pathname}?${params.toString()}`);
     }
-  }, [urlSearchTerm, savedSearchTerm, currentPage, setSearchParams]);
+    isInitialized.current = true;
+  }, [
+    urlSearchTerm,
+    savedSearchTerm,
+    currentPage,
+    searchParams,
+    pathname,
+    router,
+  ]);
 
   const handleSearch = (query: string) => {
     setSearchTerm(query);
-    setSearchParams((prev) => {
-      if (query) {
-        prev.set('search', query);
-      } else {
-        prev.delete('search');
-      }
-      prev.set('page', '1');
-      prev.delete('details');
-      return prev;
-    });
+    const params = new URLSearchParams();
+    if (query) {
+      params.set('search', query);
+    }
+    params.set('page', '1');
+    router.push(`/?${params.toString()}`);
   };
 
   const handlePageChange = (page: number) => {
-    setSearchParams((prev) => {
-      prev.set('page', String(page));
-      prev.delete('details');
-      return prev;
-    });
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', String(page));
+    router.push(`/?${params.toString()}`);
   };
 
   return {

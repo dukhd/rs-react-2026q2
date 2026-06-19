@@ -1,7 +1,12 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 const useLocalStorage = (key: string, initialValue: string) => {
   const [value, setValue] = useState<string>(() => {
+    if (globalThis.window === undefined) {
+      return initialValue;
+    }
     try {
       const stored = localStorage.getItem(key);
       return stored ?? initialValue;

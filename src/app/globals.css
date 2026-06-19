@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-advent: 'Advent Pro', sans-serif;
+  --font-advent: var(--font-advent);
 
   --color-main: #f1f5f9;
   --color-second: #0b0b0b;
@@ -129,15 +129,11 @@
 
 @layer base {
   body {
+    font-family: var(--font-advent), sans-serif;
     background-color: var(--color-main);
     color: var(--color-second);
-    font-family: var(--font-advent);
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
-  }
-
-  #root {
-    min-height: 100vh;
   }
 }

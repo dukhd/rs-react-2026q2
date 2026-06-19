@@ -1,3 +1,5 @@
+'use client';
+
 import type { JSX } from 'react';
 
 import ErrorButton from '@/components/error-button';

@@ -1,12 +1,16 @@
+import Image from 'next/image';
 import { type JSX, useState } from 'react';
-
 interface ImageProps {
   alt: string;
   src: string;
   priority?: boolean;
 }
 
-const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
+const ImageComponent = ({
+  src,
+  alt,
+  priority = false,
+}: ImageProps): JSX.Element => {
   const [hasError, setHasError] = useState<boolean>(false);
 
   const handleError = (): void => {
@@ -20,7 +24,7 @@ const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
           No image available
         </span>
       ) : (
-        <img
+        <Image
           src={src}
           alt={`${alt} avatar`}
           loading={priority ? 'eager' : 'lazy'}
@@ -33,4 +37,4 @@ const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
   );
 };
 
-export default Image;
+export default ImageComponent;

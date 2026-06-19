@@ -1,23 +1,22 @@
-import { useSearchParams } from 'react-router';
+'use client';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export const useDetailsSidebar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedDetailsId = searchParams.get('details');
-  const isSidebarOpen = !!selectedDetailsId;
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isSidebarOpen = pathname?.startsWith('/character/');
 
   const handleCloseDetails = () => {
-    setSearchParams((prev) => {
-      prev.delete('details');
-      return prev;
-    });
+    const currentParams = new URLSearchParams(searchParams?.toString());
+    router.push(`/?${currentParams.toString()}`);
   };
 
   const handleCardClick = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    setSearchParams((prev) => {
-      prev.set('details', String(id));
-      return prev;
-    });
+    const currentParams = new URLSearchParams(searchParams?.toString());
+    router.push(`/character/${id}?${currentParams.toString()}`);
   };
 
   return { isSidebarOpen, handleCloseDetails, handleCardClick };

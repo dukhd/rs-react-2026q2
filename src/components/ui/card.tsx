@@ -4,7 +4,7 @@ import type { CharacterSchema } from '@/types/interfaces';
 
 import Badge from './badge';
 import Checkbox from './checkbox';
-import Image from './image';
+import ImageComponent from './image';
 
 interface CardProps {
   card: CharacterSchema;
@@ -22,7 +22,7 @@ const Card = ({ card, priority }: CardProps): JSX.Element => {
       <header className="border-card-border relative border-b-4">
         <Checkbox card={card} />
         <Badge status={card.status} />
-        <Image src={card.image} alt={card.name} priority={priority} />
+        <ImageComponent src={card.image} alt={card.name} priority={priority} />
       </header>
       <main className="p-3">
         <h2 className="text-card-title line-clamp-1 overflow-hidden text-xl font-bold text-ellipsis">

@@ -1,5 +1,5 @@
+import Link from 'next/link';
 import { type JSX } from 'react';
-import { Link } from 'react-router';
 
 const NotFoundPage = (): JSX.Element => {
   return (
@@ -23,7 +23,7 @@ const NotFoundPage = (): JSX.Element => {
 
         <Link
           className="bg-accent text-second border-border-main shadow-card cursor-pointer rounded-xl border-3 px-7 py-2 text-sm font-bold tracking-wide uppercase transition-shadow duration-300 ease-in-out hover:shadow-none sm:text-base md:text-lg"
-          to="/"
+          href="/"
         >
           Return home
         </Link>

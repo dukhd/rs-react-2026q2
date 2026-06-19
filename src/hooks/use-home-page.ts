@@ -1,3 +1,5 @@
+'use client';
+
 import { useGetCharactersQuery } from '@/services/characters-api';
 
 import { useCacheRefresh } from './use-cache-refresh';

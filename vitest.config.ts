@@ -1,24 +1,11 @@
-/// <reference types="vitest/config" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  build: {
-    minify: true,
-    target: 'esnext',
-  },
-  css: {
-    modules: {
-      localsConvention: 'camelCaseOnly',
-    },
-  },
-  resolve: {
-    tsconfigPaths: true,
-  },
-  plugins: [tailwindcss(), react()],
+  plugins: [react(), tsconfigPaths()],
   test: {
-    exclude: ['node_modules', 'dist'],
+    exclude: ['node_modules', '.next', 'dist'],
     ui: true,
     environment: 'jsdom',
     globals: true,
@@ -29,8 +16,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: [
-        'src/main.tsx',
-        'src/App.tsx',
+        'src/app/manifest.json',
         'src/**/*.test.{js,jsx,ts,tsx}',
         'src/__tests__/*',
         'src/**/*.d.ts',

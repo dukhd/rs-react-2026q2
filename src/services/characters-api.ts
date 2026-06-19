@@ -6,7 +6,7 @@ import { areAllCharacters } from '@/types/guards/are-all-characters.guard';
 import { isCharacter } from '@/types/guards/is-character.guard';
 import type { AllCharactersSchema, CharacterSchema } from '@/types/interfaces';
 
-const CACHE_TTL = Number(import.meta.env.VITE_CACHE_TTL) || 120;
+const CACHE_TTL = Number(process.env.NEXT_PUBLIC_CACHE_TTL) || 120;
 
 export const charactersApi = createApi({
   reducerPath: 'charactersApi',
