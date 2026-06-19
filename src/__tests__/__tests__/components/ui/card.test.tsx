@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 
-import Card from './card';
+import Card from '../../../../components/ui/card';
 
 const renderCard = () => {
   return renderWithProviders(<Card card={mockCharacters[0]} priority={true} />);

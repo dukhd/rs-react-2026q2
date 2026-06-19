@@ -34,6 +34,7 @@ const FallbackUI = ({
         src={fallbackImage}
         alt={FALLBACK_CONTENT.IMG_ALT}
         width={350}
+        height={350}
         className="h-auto w-full max-w-87.5 object-cover"
         priority
       />

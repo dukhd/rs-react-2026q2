@@ -4,7 +4,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 
-import CardList from './card-list';
+import CardList from '../../../../components/ui/card-list';
 
 const renderCardList = () => {
   return renderWithProviders(

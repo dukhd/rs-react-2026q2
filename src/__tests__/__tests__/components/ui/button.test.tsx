@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import type { ComponentProps } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 
-import Button from './button';
+import Button from '../../../../components/ui/button';
 
 type Props = ComponentProps<typeof Button>;
 

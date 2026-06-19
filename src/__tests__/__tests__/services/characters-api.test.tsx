@@ -7,8 +7,7 @@ import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { CHARACTER_URL } from '@/constants/api-url';
-
-import { charactersApi } from './characters-api';
+import { charactersApi } from '@/services/characters-api';
 
 const DEFAULT_PARAMS = { page: 1, searchTerm: '' };
 const setupStore = () => renderWithProviders(<div />).store;

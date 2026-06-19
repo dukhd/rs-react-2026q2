@@ -5,7 +5,7 @@ import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import selectedCardsReducer, {
   toggleItem,
   unselectAll,
-} from './selected-cards-slice';
+} from '../../../store/selected-cards-slice';
 
 describe('Selected Cards Slice', () => {
   test('Should return the initial state by default', () => {

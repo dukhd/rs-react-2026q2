@@ -1,25 +1,61 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
-import { describe, expect, test } from 'vitest';
+import { usePathname } from 'next/navigation';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { ThemeProvider } from '@/context/theme-provider';
+import Header from '@/components/header';
+import { useTheme } from '@/hooks/use-theme';
+import { useThemeAction } from '@/hooks/use-theme-action';
 
-import Header from './header';
+vi.mock('next/navigation', () => ({
+  usePathname: vi.fn(() => '/'),
+}));
 
-const renderHeader = ({ initialEntries = ['/'] } = {}) => {
-  return render(
-    <ThemeProvider>
-      <MemoryRouter initialEntries={initialEntries}>
-        <Header />
-      </MemoryRouter>
-    </ThemeProvider>
-  );
+vi.mock('next/link', () => ({
+  default: ({
+    children,
+    href,
+    className,
+  }: {
+    children: React.ReactNode;
+    href: string;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  ),
+}));
+
+vi.mock('@/hooks/use-theme', () => ({
+  useTheme: vi.fn(),
+}));
+
+vi.mock('@/hooks/use-theme-action', () => ({
+  useThemeAction: vi.fn(),
+}));
+
+let currentDarkMode = false;
+const mockToggleTheme = vi.fn(() => {
+  currentDarkMode = !currentDarkMode;
+});
+
+const renderHeader = (currentPath = '/') => {
+  vi.mocked(usePathname).mockReturnValue(currentPath);
+  vi.mocked(useTheme).mockReturnValue(currentDarkMode);
+  vi.mocked(useThemeAction).mockReturnValue(mockToggleTheme);
+
+  return render(<Header />);
 };
 
 describe('Header Component', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    currentDarkMode = false;
+  });
+
   test('Should render title and navigation links', () => {
-    renderHeader();
+    renderHeader('/');
 
     expect(
       screen.getByRole('heading', { name: /Rick and Morty/i })
@@ -29,7 +65,7 @@ describe('Header Component', () => {
   });
 
   test('Navigation links have correct href attributes', () => {
-    renderHeader();
+    renderHeader('/');
 
     expect(screen.getByRole('link', { name: /home/i })).toHaveAttribute(
       'href',
@@ -42,7 +78,7 @@ describe('Header Component', () => {
   });
 
   test('Should apply active class to the current route link', () => {
-    renderHeader({ initialEntries: ['/about'] });
+    renderHeader('/about');
 
     const homeLink = screen.getByRole('link', { name: /home/i });
     const aboutLink = screen.getByRole('link', { name: /about/i });
@@ -56,7 +92,8 @@ describe('Header Component', () => {
 
   test('Should toggle theme on button click', async () => {
     const user = userEvent.setup();
-    renderHeader();
+
+    const { rerender } = renderHeader('/');
 
     const themeButton = screen.getByRole('button', {
       name: /Switch to dark theme/i,
@@ -64,6 +101,10 @@ describe('Header Component', () => {
     expect(themeButton).toBeInTheDocument();
 
     await user.click(themeButton);
+    expect(mockToggleTheme).toHaveBeenCalledTimes(1);
+
+    vi.mocked(useTheme).mockReturnValue(currentDarkMode);
+    rerender(<Header />);
 
     expect(
       screen.getByRole('button', { name: /Switch to light theme/i })

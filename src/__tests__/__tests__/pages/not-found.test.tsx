@@ -1,16 +1,27 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
-import NotFoundPage from './not-found';
+import NotFoundPage from '@/app/not-found';
+
+vi.mock('next/link', () => ({
+  default: ({
+    children,
+    href,
+    className,
+  }: {
+    children: React.ReactNode;
+    href: string;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  ),
+}));
 
 describe('NotFoundPage Component', () => {
   test('Should render Not Found page', () => {
-    render(
-      <MemoryRouter>
-        <NotFoundPage />
-      </MemoryRouter>
-    );
+    render(<NotFoundPage />);
 
     expect(screen.getByText('404')).toBeInTheDocument();
     expect(screen.getByText('Page Not Found')).toBeInTheDocument();
@@ -18,11 +29,7 @@ describe('NotFoundPage Component', () => {
   });
 
   test('Should contain a link that redirects to the home page', () => {
-    render(
-      <MemoryRouter>
-        <NotFoundPage />
-      </MemoryRouter>
-    );
+    render(<NotFoundPage />);
 
     const homeLink = screen.getByRole('link', { name: /return home/i });
 

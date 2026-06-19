@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import Loader from './loader';
+import Loader from '../../../components/loader/loader';
 
 describe('Loader', () => {
   test('Should render loader with "Loading..." text', () => {

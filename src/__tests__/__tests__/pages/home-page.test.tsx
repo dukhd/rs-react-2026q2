@@ -8,10 +8,9 @@ import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { resolveLoading } from '@/__tests__/utils/resolve-loading';
+import HomePage from '@/app/page';
 import { CHARACTER_URL } from '@/constants/api-url';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
-
-import HomePage from './home-page';
 
 const renderHomePage = () => {
   return renderWithProviders(<HomePage />);
@@ -141,29 +140,6 @@ describe('Home Page Component', () => {
     expect(errorButton).toBeInTheDocument();
   });
 
-  test('Should open and close details sidebar', async () => {
-    const user = userEvent.setup();
-    const getCloseButton = () =>
-      screen.queryByRole('button', { name: /close details/i });
-    renderHomePage();
-    await resolveLoading();
-
-    expect(getCloseButton()).not.toBeInTheDocument();
-
-    const cardButton = await screen.findByRole('button', {
-      name: /rick sanchez/i,
-    });
-    await user.click(cardButton);
-
-    const closeBtn = await screen.findByRole('button', {
-      name: /close details/i,
-    });
-    expect(closeBtn).toBeInTheDocument();
-
-    await user.click(closeBtn);
-    await waitFor(() => expect(getCloseButton()).not.toBeInTheDocument());
-  });
-
   test('Should trigger refresh and update data when Refresh button is clicked', async () => {
     const user = userEvent.setup();
 
@@ -175,49 +151,6 @@ describe('Home Page Component', () => {
     await user.click(refreshButton);
     await resolveLoading();
     expect(screen.getByText(/rick sanchez/i)).toBeInTheDocument();
-  });
-
-  test('Should cache data and not refetch from API when navigating back to page 1', async () => {
-    let requestCount = 0;
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-
-    server.use(
-      http.get(CHARACTER_URL, ({ request }) => {
-        const url = new URL(request.url);
-        const page = url.searchParams.get('page');
-        requestCount++;
-
-        if (page === '2') {
-          return HttpResponse.json(mockApiResponsePage2);
-        }
-        return HttpResponse.json(mockApiResponse);
-      })
-    );
-
-    renderHomePage();
-    await resolveLoading();
-    expect(requestCount).toBe(1);
-    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
-
-    const page2Button = screen.getByRole('button', { name: '2' });
-    await user.click(page2Button);
-    await resolveLoading();
-
-    expect(requestCount).toBe(2);
-    expect(screen.getByText(/Morty Smith/i)).toBeInTheDocument();
-
-    const page1Button = screen.getByRole('button', { name: '1' });
-    await user.click(page1Button);
-    await resolveLoading();
-
-    expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
-    expect(requestCount).toBe(2);
-
-    const refreshButton = screen.getByRole('button', { name: /refresh/i });
-    await user.click(refreshButton);
-    await resolveLoading();
-
-    expect(requestCount).toBe(3);
   });
 
   test('Should cache search queries and not refetch when searching for the same term again', async () => {

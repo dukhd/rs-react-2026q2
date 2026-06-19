@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-
-import { downloadCharactersCSV } from './download-csv';
+import { downloadCharactersCSV } from '@/utils/download-csv';
 
 describe('downloadCharactersCSV Utility', () => {
   beforeEach(() => {

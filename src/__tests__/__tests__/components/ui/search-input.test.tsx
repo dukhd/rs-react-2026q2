@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import type { ComponentProps } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 
-import SearchInput from './search-input';
+import SearchInput from '@/components/ui/search-input';
 
 type Props = ComponentProps<typeof SearchInput>;
 

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useOutletContext, useSearchParams } from 'react-router';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-
-import CharacterDetails from './character-details';
+import CharacterDetails from '@/app/@details/character/[id]/page';
 
 interface TestFetchState {
   data: (typeof mockCharacters)[number] | null;
@@ -24,11 +24,7 @@ const defaultState: TestFetchState = {
 let mockFetchResult: TestFetchState = { ...defaultState };
 
 const mockRefreshDetails = vi.fn();
-
-vi.mock('react-router', () => ({
-  useSearchParams: vi.fn(),
-  useOutletContext: vi.fn(),
-}));
+const mockHandleCloseDetails = vi.fn();
 
 vi.mock('@/services/characters-api', () => ({
   useGetCharacterDetailsQuery: () => mockFetchResult,
@@ -40,35 +36,39 @@ vi.mock('@/hooks/use-cache-refresh', () => ({
   }),
 }));
 
+vi.mock('@/hooks/use-details-sidebar', () => ({
+  useDetailsSidebar: () => ({
+    handleCloseDetails: mockHandleCloseDetails,
+  }),
+}));
+
 vi.mock('@/components/loader/loader', () => ({
   default: () => <div data-testid="loader" />,
 }));
 
-vi.mock('./ui/image', () => ({
+vi.mock('@/components/ui/image', () => ({
   default: ({ src, alt }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} />
+    <Image src={src} alt={alt} fill data-testid="character-image" />
   ),
 }));
 
-describe('CharacterDetails Component', () => {
-  const mockOnClose = vi.fn();
+vi.mock('next/navigation', () => ({
+  useParams: vi.fn(() => ({ id: '1' })),
+}));
 
-  const setup = (fetchState: Partial<TestFetchState>) => {
+describe('CharacterDetails Component', () => {
+  const setup = (fetchState: Partial<TestFetchState>, id = '1') => {
     mockFetchResult = {
       ...defaultState,
       ...fetchState,
     };
+    vi.mocked(useParams).mockReturnValue({ id });
     return render(<CharacterDetails />);
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockFetchResult = { ...defaultState };
-    vi.mocked(useSearchParams).mockReturnValue([
-      new URLSearchParams('details=1'),
-      vi.fn(),
-    ]);
-    vi.mocked(useOutletContext).mockReturnValue({ onClose: mockOnClose });
   });
 
   test('Should render loader when data is loading', () => {
@@ -102,10 +102,9 @@ describe('CharacterDetails Component', () => {
     });
 
     const closeBtn = screen.getByRole('button', { name: 'x' });
-
     await userEvent.click(closeBtn);
 
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    expect(mockHandleCloseDetails).toHaveBeenCalledTimes(1);
   });
 
   test('Should render error message and respond to Close button on failure', async () => {
@@ -118,7 +117,7 @@ describe('CharacterDetails Component', () => {
     const errorCloseBtn = screen.getByRole('button', { name: 'Close' });
     await userEvent.click(errorCloseBtn);
 
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    expect(mockHandleCloseDetails).toHaveBeenCalledTimes(1);
   });
 
   test('Should call refreshDetails with character id when Refresh button is clicked', async () => {
@@ -132,12 +131,7 @@ describe('CharacterDetails Component', () => {
   });
 
   test('Should fallback to id 0 and handle missing detailsId', () => {
-    vi.mocked(useSearchParams).mockReturnValue([
-      new URLSearchParams(''),
-      vi.fn(),
-    ]);
-
-    setup({ data: null, error: null });
+    setup({ data: null, error: null }, '0');
     expect(screen.getByText('Character not found')).toBeInTheDocument();
   });
 });

@@ -6,7 +6,7 @@ import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { downloadCharactersCSV } from '@/utils/download-csv';
 
-import Flyout from './flyout';
+import Flyout from '../../../components/flyout';
 
 vi.mock('@/utils/download-csv', () => ({
   downloadCharactersCSV: vi.fn(),
@@ -14,7 +14,9 @@ vi.mock('@/utils/download-csv', () => ({
 
 const renderFlyout = (initialCards = mockCharacters) => {
   return renderWithProviders(<Flyout />, {
-    selectedCards: { cards: initialCards },
+    preloadedState: {
+      selectedCards: { cards: initialCards },
+    },
   });
 };
 

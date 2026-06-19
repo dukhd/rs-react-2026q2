@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { charactersApi } from '@/services/characters-api';
 
-import { useAppDispatch } from './store-hooks';
-import { useCacheRefresh } from './use-cache-refresh';
+import { useAppDispatch } from '../../../hooks/store-hooks';
+import { useCacheRefresh } from '../../../hooks/use-cache-refresh';
 
 vi.mock('@/hooks/store-hooks', () => ({
   useAppDispatch: vi.fn(),

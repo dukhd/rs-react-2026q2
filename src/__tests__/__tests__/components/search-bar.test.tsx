@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import SearchBar from './search-bar';
+import SearchBar from '../../../components/search-bar';
 
 vi.mock('@/services/local-storage', () => ({
   default: vi.fn(() => [null, vi.fn()]),

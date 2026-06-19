@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 
-import Checkbox from './checkbox';
+import Checkbox from '../../../../components/ui/checkbox';
 
 interface TestState {
   selectedCards?: {
@@ -14,10 +14,9 @@ interface TestState {
 }
 
 const renderCheckbox = (preloadedState: TestState = {}) => {
-  return renderWithProviders(
-    <Checkbox card={mockCharacters[0]} />,
-    preloadedState
-  );
+  return renderWithProviders(<Checkbox card={mockCharacters[0]} />, {
+    preloadedState,
+  });
 };
 
 describe('Checkbox Component', () => {

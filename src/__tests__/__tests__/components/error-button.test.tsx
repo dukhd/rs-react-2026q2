@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 
-import ErrorButton from './error-button';
+import ErrorButton from '../../../components/error-button';
 
 describe('Error Button', () => {
   test('Should render error button', () => {

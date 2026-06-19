@@ -2,11 +2,22 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
-import FallbackUI from './fallback-ui';
+import FallbackUI from '@/app/error';
+
+const mockError = new Error('Test application error') as Error & {
+  digest?: string;
+};
+mockError.digest = 'test-digest-123';
+
+const mockReset = vi.fn();
+
+const renderFallback = (customReset = mockReset) => {
+  return render(<FallbackUI error={mockError} reset={customReset} />);
+};
 
 describe('Fallback UI', () => {
   test('Should render the Fallback UI elements correctly', () => {
-    render(<FallbackUI onReturn={() => {}} />);
+    renderFallback();
 
     const title = screen.getByRole('heading', {
       level: 1,
@@ -20,12 +31,12 @@ describe('Fallback UI', () => {
   });
 
   test('Should call onReturn callback when "Try again" button is clicked', async () => {
-    const onReturnMock = vi.fn();
+    const customResetMock = vi.fn();
     const user = userEvent.setup();
-    render(<FallbackUI onReturn={onReturnMock} />);
+    renderFallback(customResetMock);
 
     const button = screen.getByRole('button', { name: /try again/i });
     await user.click(button);
-    expect(onReturnMock).toHaveBeenCalledTimes(1);
+    expect(customResetMock).toHaveBeenCalledTimes(1);
   });
 });

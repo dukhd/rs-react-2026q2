@@ -18,7 +18,7 @@ const ImageComponent = ({
   };
 
   return (
-    <div className="bg-img-placeholder flex aspect-square h-auto w-full items-center justify-center place-self-center overflow-hidden rounded-t-xl object-cover">
+    <div className="bg-img-placeholder relative flex aspect-square h-auto w-full items-center justify-center place-self-center overflow-hidden rounded-t-xl object-cover">
       {hasError ? (
         <span className="text-img-text-placeholder text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
           No image available
@@ -27,6 +27,7 @@ const ImageComponent = ({
         <Image
           src={src}
           alt={`${alt} avatar`}
+          fill
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           onError={handleError}

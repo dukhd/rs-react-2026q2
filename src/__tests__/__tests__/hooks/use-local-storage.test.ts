@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 import { STORAGE_KEYS } from '@/constants/storage-keys';
 
-import useLocalStorage from './use-local-storage';
+import useLocalStorage from '../../../hooks/use-local-storage';
 
 describe('useLocalStorage', () => {
   const KEY = STORAGE_KEYS.SEARCH_TERM;

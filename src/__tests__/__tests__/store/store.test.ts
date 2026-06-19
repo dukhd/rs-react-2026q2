@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { charactersApi } from '@/services/characters-api';
 
-import { store } from './store';
+import { store } from '../../../store/store';
 
 describe('Store Configuration', () => {
   test('Should initialize with the correct initial state structure', () => {

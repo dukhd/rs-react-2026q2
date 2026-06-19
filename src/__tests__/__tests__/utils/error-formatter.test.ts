@@ -1,8 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import { ValidationError } from '@/types/errors';
-
-import { formatErrorMessage } from './error-formatter';
+import { formatErrorMessage } from '@/utils/error-formatter';
 
 describe('Error Formatter Logic', () => {
   test.each([

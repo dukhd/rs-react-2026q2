@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import AboutPage from './about-page';
+import AboutPage from '@/app/about/page';
 
 describe('AboutPage Component', () => {
   test('Should render about section and personal introduction', () => {
