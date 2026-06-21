@@ -86,7 +86,7 @@ const CharacterDetails = (): JSX.Element => {
           />
         </div>
 
-        <div className="shadow-about-card-1 border-second overflow-hidden rounded-2xl border-4">
+        <div className="shadow-about-card-1 border-second relative aspect-square h-83.25 w-83.25 overflow-hidden rounded-2xl border-4">
           <ImageComponent
             src={character.image}
             alt={character.name}

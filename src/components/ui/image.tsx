@@ -28,6 +28,7 @@ const ImageComponent = ({
           src={src}
           alt={`${alt} avatar`}
           fill
+          sizes="(max-width: 640px) 100vw, 292.5px"
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           onError={handleError}

@@ -31,7 +31,7 @@ const CardList = ({
               type="button"
               className="block w-full"
             >
-              <Card card={card} priority={index < 2} />
+              <Card card={card} priority={index < 4} />
             </button>
           </li>
         );
