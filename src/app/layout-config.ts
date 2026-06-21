@@ -25,4 +25,5 @@ export const adventPro = localFont({
   ],
   variable: '--font-advent',
   display: 'swap',
+  preload: false,
 });
