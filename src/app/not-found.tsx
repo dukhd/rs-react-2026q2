@@ -4,7 +4,7 @@ import '@/app/globals.css';
 import { useRouter } from 'next/navigation';
 import { type JSX } from 'react';
 
-const NotFoundPage = (): JSX.Element => {
+const GlobalNotFound = (): JSX.Element => {
   const router = useRouter();
   return (
     <div className="flex min-h-[calc(100vh-(--spacing(42)))] items-center justify-center">
@@ -25,4 +25,4 @@ const NotFoundPage = (): JSX.Element => {
   );
 };
 
-export default NotFoundPage;
+export default GlobalNotFound;

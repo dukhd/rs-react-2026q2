@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+
 import HomePage from '@/components/home/home-page';
 import { CHARACTER_URL } from '@/constants/api-url';
 import type { AllCharactersSchema } from '@/types/interfaces';
@@ -5,6 +7,7 @@ import type { AllCharactersSchema } from '@/types/interfaces';
 import { handleSearchAction } from '../actions/search-actions';
 
 interface PageProps {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     search?: string;
     page?: string;
@@ -44,9 +47,22 @@ async function fetchCharacters(
   }
 }
 
-export default async function Page({ searchParams }: Readonly<PageProps>) {
+export default async function Page({
+  params,
+  searchParams,
+}: Readonly<PageProps>) {
+  const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
+  const locale = resolvedParams.locale;
+  const paramKeys = Object.keys(resolvedSearchParams);
+  const ALLOWED_PARAMS = new Set(['search', 'page']);
+  const hasInvalidParam = paramKeys.some((key) => !ALLOWED_PARAMS.has(key));
+  const pageParam = resolvedSearchParams.page;
+  const isPageInvalid = pageParam !== undefined && !/^\d+$/.test(pageParam);
 
+  if (hasInvalidParam || isPageInvalid) {
+    redirect(`/${locale}/404`);
+  }
   const query = resolvedSearchParams.search || '';
   const page = resolvedSearchParams.page || '1';
 

@@ -3,6 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { type JSX, useState, useTransition } from 'react';
 
+import { STORAGE_KEYS } from '@/constants/storage-keys';
+
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
 
@@ -33,6 +35,18 @@ const SearchBar = ({
     if (trimmedQuery === trimmedInitial) {
       return;
     }
+
+    try {
+      if (trimmedQuery) {
+        localStorage.setItem(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.SEARCH_TERM);
+      }
+    } catch (error) {
+      console.error('Failed to write to localStorage:', error);
+    }
+
+    setQuery(trimmedQuery);
 
     const formData = new FormData();
     formData.set('search', trimmedQuery);
