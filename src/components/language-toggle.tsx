@@ -3,13 +3,14 @@
 import { useLocale } from 'next-intl';
 import { JSX } from 'react/jsx-runtime';
 
-import { usePathname, useRouter } from '@/i18n/routing';
+import { routing, usePathname, useRouter } from '@/i18n/routing';
 
 const LanguageToggle = (): JSX.Element => {
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const locale = useLocale();
-  const isRu = locale === 'ru';
+  const locales = routing.locales;
+  const isRu = locale === locales[1];
 
   const handleToggle = () => {
     const newLocale = isRu ? 'en' : 'ru';
