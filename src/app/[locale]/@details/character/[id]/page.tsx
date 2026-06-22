@@ -1,57 +1,47 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { type JSX } from 'react';
 
-import Loader from '@/components/loader/loader';
-import Button from '@/components/ui/button';
+import {
+  CharacterDetailsActions,
+  CharacterDetailsCloseButton,
+} from '@/components/character-details-actions';
 import ImageComponent from '@/components/ui/image';
-import { useCacheRefresh } from '@/hooks/use-cache-refresh';
-import { useDetailsSidebar } from '@/hooks/use-details-sidebar';
-import { useGetCharacterDetailsQuery } from '@/services/characters-api';
-import { formatErrorMessage } from '@/utils/error-formatter';
+import { CHARACTER_URL } from '@/constants/api-url';
+import { CharacterSchema } from '@/types/interfaces';
 
-const CharacterDetails = (): JSX.Element => {
-  const tDetails = useTranslations('CharacterDetails');
-  const tErrors = useTranslations('Errors');
-  const { refreshDetails } = useCacheRefresh();
-  const { handleCloseDetails } = useDetailsSidebar();
+interface CharacterDetailsPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
 
-  const params = useParams<{ id: string }>();
-  const detailsId = params?.id;
-
-  const id = Number(detailsId);
-  const isValidId = detailsId !== undefined && Number.isFinite(id) && id > 0;
-
-  const {
-    data: character,
-    isLoading,
-    isFetching,
-    error,
-  } = useGetCharacterDetailsQuery(id, { skip: !isValidId });
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center py-20">
-        <Loader />
-      </div>
-    );
+async function fetchCharacterData(id: string): Promise<CharacterSchema | null> {
+  try {
+    const res = await fetch(`${CHARACTER_URL}/${id}`, {
+      next: { revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TTL) || 120 },
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    console.error('Server fetch for character failed:', error);
+    return null;
   }
+}
 
-  if (error || !character) {
-    const errorMessage = error
-      ? formatErrorMessage(error, tErrors)
-      : tDetails('notFound');
+const CharacterDetails = async ({
+  params,
+}: Readonly<CharacterDetailsPageProps>): Promise<JSX.Element> => {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
+  const tDetails = await getTranslations('CharacterDetails');
+
+  const character = await fetchCharacterData(id);
+
+  if (!character) {
     return (
       <div className="flex flex-col gap-4 p-4 text-center">
-        <p className="text-details-error font-bold">{errorMessage}</p>
-        <Button
-          text={tDetails('btnClose')}
-          type="button"
-          onClick={handleCloseDetails}
-          customClassName="bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-center"
-        />
+        <p className="text-details-error font-bold">{tDetails('notFound')}</p>
+        <CharacterDetailsCloseButton />
       </div>
     );
   }
@@ -67,28 +57,8 @@ const CharacterDetails = (): JSX.Element => {
 
   return (
     <div className="relative flex flex-col">
-      <div
-        className={`flex flex-col gap-6 transition-opacity duration-200 ${isFetching ? 'pointer-events-none opacity-10' : ''}`}
-      >
-        <div className="flex justify-between">
-          <Button
-            text={tDetails('btnRefresh')}
-            type="button"
-            onClick={() => refreshDetails(id)}
-            customClassName={
-              'bg-accent-yellow text-black px-4 py-2 text-xs sm:text-sm self-end'
-            }
-          />
-          <Button
-            text="x"
-            type="button"
-            onClick={handleCloseDetails}
-            customClassName={
-              'bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-end'
-            }
-          />
-        </div>
-
+      <div className="flex flex-col gap-6 transition-opacity duration-200">
+        <CharacterDetailsActions />
         <div className="shadow-about-card-1 border-second relative aspect-square h-83.25 w-83.25 overflow-hidden rounded-2xl border-4">
           <ImageComponent
             src={character.image}
@@ -112,11 +82,6 @@ const CharacterDetails = (): JSX.Element => {
           ))}
         </div>
       </div>
-      {isFetching && (
-        <div className="pointer-events-none absolute inset-x-0 inset-y-50 z-50">
-          <Loader />
-        </div>
-      )}
     </div>
   );
 };

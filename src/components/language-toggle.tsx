@@ -14,7 +14,9 @@ const LanguageToggle = (): JSX.Element => {
 
   const handleToggle = () => {
     const newLocale = isRu ? 'en' : 'ru';
-    router.replace(pathname, { locale: newLocale });
+    const cleanPath = pathname.replace(/^\/(en|ru)/, '');
+
+    router.replace(cleanPath || '/', { locale: newLocale });
   };
 
   return (

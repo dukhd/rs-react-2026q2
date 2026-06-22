@@ -1,11 +1,11 @@
-import './[locale]/globals.css';
+import '@/app/globals.css';
 
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 
 import { ThemeProvider } from '@/context/theme-provider';
 
-import { adventPro } from './[locale]/layout-config';
+import { adventPro } from './layout-config';
 
 export const metadata: Metadata = {
   title: 'Rick and Morty Explorer',

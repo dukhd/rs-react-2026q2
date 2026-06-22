@@ -13,7 +13,7 @@ interface HomeContentProps {
   isFetching: boolean;
   error: string | null;
   activeSearchQuery: string;
-  onSearch: (query: string) => void;
+  onSearch: (formData: FormData) => Promise<void>;
   onRefresh: () => void;
   cardList: React.ReactNode;
 }

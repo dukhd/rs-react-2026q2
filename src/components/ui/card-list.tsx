@@ -1,18 +1,17 @@
 import type { JSX } from 'react';
 
+import { Link } from '@/i18n/routing';
 import type { CharacterSchema } from '@/types/interfaces';
 
 import Card from './card';
 
 interface CardListProps {
   cards: CharacterSchema[];
-  onCardClick: (id: number, e: React.MouseEvent) => void;
   isSidebarOpen?: boolean;
 }
 
 const CardList = ({
   cards,
-  onCardClick,
   isSidebarOpen = false,
 }: CardListProps): JSX.Element => {
   const gridColsClasses = isSidebarOpen
@@ -26,13 +25,12 @@ const CardList = ({
             key={card.id}
             className="w-full max-w-100 min-w-50 list-none justify-self-center"
           >
-            <button
-              onClick={(e) => onCardClick(card.id, e)}
-              type="button"
-              className="block w-full"
+            <Link
+              href={`/character/${card.id}`}
+              className="block w-full text-left"
             >
               <Card card={card} priority={index < 4} />
-            </button>
+            </Link>
           </li>
         );
       })}

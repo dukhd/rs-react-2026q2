@@ -8,31 +8,38 @@ import { HomeContent } from '@/components/home/home-content';
 import Pagination from '@/components/pagination/pagination';
 import CardList from '@/components/ui/card-list';
 import { useAppSelector } from '@/hooks/store-hooks';
-import { useHomePage } from '@/hooks/use-home-page';
+import { useDetailsSidebar } from '@/hooks/use-details-sidebar';
+import { useSearchState } from '@/hooks/use-search-state';
+import { AllCharactersSchema } from '@/types/interfaces';
 import { formatErrorMessage } from '@/utils/error-formatter';
 
-const HomePage = (): JSX.Element => {
+interface HomePageProps {
+  serverData: AllCharactersSchema | null;
+  serverError: unknown;
+  initialQuery: string;
+  initialPage: number;
+  onSearch: (formData: FormData) => Promise<void>;
+}
+
+const HomePage = ({
+  serverData,
+  serverError,
+  initialQuery,
+  initialPage,
+  onSearch,
+}: HomePageProps): JSX.Element => {
   const t = useTranslations('HomePage');
   const tErrors = useTranslations('Errors');
-  const {
-    currentPage,
-    activeSearchQuery,
-    isSidebarOpen,
-    data,
-    isLoading,
-    isFetching,
-    error,
-    totalPages,
-    handleSearch,
-    handlePageChange,
-    handleCloseDetails,
-    handleCardClick,
-    handleRefresh,
-  } = useHomePage();
+
+  const { isSidebarOpen, handleCloseDetails, handleRefresh } =
+    useDetailsSidebar();
+  const { handlePageChange } = useSearchState();
 
   const selectedCards = useAppSelector((state) => state.selectedCards.cards);
   const hasSelectedCards = selectedCards.length > 0;
-  const shouldShowPagination = !isLoading && !error;
+
+  const totalPages = serverData?.info?.pages ?? 1;
+  const shouldShowPagination = serverData !== null && !serverError;
   const shouldShowFooter = shouldShowPagination || hasSelectedCards;
 
   const SIDEBAR_WIDTH_PX = 400;
@@ -55,16 +62,17 @@ const HomePage = (): JSX.Element => {
       <section className="flex flex-1 flex-col items-center justify-between gap-2">
         <div className="flex w-full grow flex-col items-center gap-2">
           <HomeContent
-            isLoading={isLoading}
-            isFetching={isFetching}
-            error={error ? formatErrorMessage(error, tErrors) : null}
-            activeSearchQuery={activeSearchQuery}
+            isLoading={false}
+            isFetching={false}
+            error={
+              serverError ? formatErrorMessage(serverError, tErrors) : null
+            }
+            activeSearchQuery={initialQuery}
             onRefresh={handleRefresh}
-            onSearch={handleSearch}
+            onSearch={onSearch}
             cardList={
               <CardList
-                cards={data?.results ?? []}
-                onCardClick={handleCardClick}
+                cards={serverData?.results ?? []}
                 isSidebarOpen={isSidebarOpen}
               />
             }
@@ -76,7 +84,7 @@ const HomePage = (): JSX.Element => {
             {shouldShowPagination && (
               <div className={`py-1 ${paginationContainerWidth}`}>
                 <Pagination
-                  currentPage={currentPage}
+                  currentPage={initialPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
                 />

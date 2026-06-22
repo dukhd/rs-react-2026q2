@@ -1,33 +1,39 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
-import { type JSX, useState } from 'react';
+import { type JSX, useState, useTransition } from 'react';
 
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
+
 interface SearchBarProps {
-  onSearch: (trimmedQuery: string) => void;
   initialValue?: string;
+  onSearch: (formData: FormData) => Promise<void>;
 }
 
 const SearchBar = ({
-  onSearch,
   initialValue = '',
+  onSearch,
 }: SearchBarProps): JSX.Element => {
   const t = useTranslations('SearchBar');
   const [query, setQuery] = useState<string>(initialValue);
+  const [isPending, startTransition] = useTransition();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
   const handleSearchSubmit = (
-    event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
-  ) => {
+    event: React.SyntheticEvent<HTMLFormElement>
+  ): void => {
     event.preventDefault();
-    const trimmedQuery = query.trim();
-    setQuery(trimmedQuery);
-    if (trimmedQuery !== initialValue.trim()) {
-      onSearch(trimmedQuery);
-    }
+    const formData = new FormData();
+    formData.set('search', query.trim());
+    formData.set('page', '1');
+
+    startTransition(async () => {
+      await onSearch(formData);
+    });
   };
 
   return (
@@ -38,12 +44,17 @@ const SearchBar = ({
     >
       <SearchInput
         id="search-input"
-        name="Search query"
+        name="search-input"
         placeholder={t('placeholder')}
         value={query}
         onChange={handleInputChange}
+        disabled={isPending}
       />
-      <Button text={t('btn')} type="submit" />
+      <Button
+        text={isPending ? '...' : t('btn')}
+        type="submit"
+        disabled={isPending}
+      />
     </form>
   );
 };

@@ -1,21 +1,18 @@
-import './globals.css';
+import '@/app/globals.css';
 
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { JSX } from 'react/jsx-runtime';
 
 import Header from '@/components/header';
 import { HomeSidebar } from '@/components/home/home-sidebar';
 import { ThemeProvider } from '@/context/theme-provider';
-import { routing } from '@/i18n/routing';
 import StoreProvider from '@/providers/store-provider';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
   details: React.ReactNode;
-  params: Promise<{ locale: string }>;
 }
 
 export const metadata: Metadata = {
@@ -27,12 +24,7 @@ export const metadata: Metadata = {
 export default async function LocaleLayout({
   children,
   details,
-  params,
 }: Readonly<LocaleLayoutProps>): Promise<JSX.Element> {
-  const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
   const messages = await getMessages();
   return (
     <NextIntlClientProvider messages={messages}>
