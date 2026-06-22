@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import { type JSX } from 'react';
+
+import { Link } from '@/i18n/routing';
 
 const NotFoundPage = (): JSX.Element => {
   return (

@@ -3,8 +3,8 @@ import { describe, expect, test, vi } from 'vitest';
 
 import NotFoundPage from '@/app/[locale]/not-found';
 
-vi.mock('next/link', () => ({
-  default: ({
+vi.mock('@/i18n/routing', () => ({
+  Link: ({
     children,
     href,
     className,

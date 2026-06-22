@@ -11,8 +11,8 @@ vi.mock('next/navigation', () => ({
   usePathname: vi.fn(() => '/'),
 }));
 
-vi.mock('next/link', () => ({
-  default: ({
+vi.mock('@/i18n/routing', () => ({
+  Link: ({
     children,
     href,
     className,

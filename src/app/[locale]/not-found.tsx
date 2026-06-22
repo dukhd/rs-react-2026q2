@@ -1,6 +1,7 @@
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { type JSX } from 'react';
+
+import { Link } from '@/i18n/routing';
 
 const NotFoundPage = (): JSX.Element => {
   const t = useTranslations('NotFoundPage');
