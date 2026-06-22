@@ -1,0 +1,85 @@
+{
+  "Header": {
+    "title": "Rick and Morty ",
+    "subtitle": "Explorer",
+    "HomeLink": "Home",
+    "AboutLink": "About",
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
+  },
+  "Flyout": {
+    "text": "Selected",
+    "downloadBtn": "Download",
+    "resetBtn": "Unselect all"
+  },
+  "SearchBar": {
+    "placeholder": "Search by name",
+    "btn": "Search"
+  },
+  "ErrorBtn": {
+    "btn": "Trigger Error"
+  },
+  "Card": {
+    "speciesLabel": "Species",
+    "genderLabel": "Gender"
+  },
+  "Checkbox": {
+    "ariaLabel": "Toggle favorite status"
+  },
+  "ImageComponent": {
+    "empty": "No image available",
+    "alt": "avatar"
+  },
+  "Loader": {
+    "text": "Loading..."
+  },
+  "NotFoundPage": {
+    "text": "Page Not Found",
+    "titleFirstPart": "Wubba Lubba Dub-Dub!",
+    "titleSecondPart": "You're lost in another dimension.",
+    "desc": "The page you're looking for got sucked into a portal gun accident. Maybe Rick broke it. Maybe Morty clicked something weird. Let's get you back to reality.",
+    "btn": "Return home"
+  },
+  "ErrorPage": {
+    "title": "Oooooops! Something went wrong!",
+    "imgAlt": "The main characters of Rick and Morty",
+    "btn": "Try again"
+  },
+  "AboutPage": {
+    "title": "About",
+    "greeting": "Hey I'm ",
+    "name": "Diana",
+    "intro": " I'm a Front-end developer in progress, exploring React, APIs, and UI architecture through hands-on projects like this one.",
+    "authorLabel": "Author:",
+    "mentorLabel": "Mentor:",
+    "mentorDesc": "rare kind of developer who brings order to chaos, transforming React confusion into multiverse-level clarity.",
+    "appDesc": "This app is a portal-based gallery of characters from the Rick and Morty universe, powered by the Rick and Morty API. Each card contains a glimpse into different dimensions, where reality is questionable and logic is optional.",
+    "courseText": "The project was created as part of the: ",
+    "courseLink": "RS School React Course"
+  },
+  "HomePage": {
+    "btnRefresh": "Refresh",
+    "btnCloseAriaLabel": "Close details"
+  },
+  "CharacterDetails": {
+    "notFound": "Character not found",
+    "btnClose": "Close",
+    "btnRefresh": "Refresh",
+    "unknownType": "Unknown",
+    "labels": {
+      "status": "status",
+      "species": "species",
+      "gender": "gender",
+      "type": "type",
+      "origin": "origin",
+      "lastLocation": "last location"
+    }
+  },
+  "Errors": {
+    "network": "Oops! {statusText}. Please try again.",
+    "notFound": "No characters found. Try a different name.",
+    "validation": "Data validation failed.",
+    "fetchFailed": "Network failure or API limit reached. Please try again later.",
+    "default": "Oops! Something went wrong. Please try again."
+  }
+}

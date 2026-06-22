@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { JSX } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/hooks/store-hooks';
@@ -9,6 +10,7 @@ interface CheckboxProps {
 }
 
 const Checkbox = ({ card }: CheckboxProps): JSX.Element => {
+  const t = useTranslations('Checkbox');
   const dispatch = useAppDispatch();
   const selectedCards = useAppSelector((state) => state.selectedCards.cards);
 
@@ -33,7 +35,7 @@ const Checkbox = ({ card }: CheckboxProps): JSX.Element => {
         onChange={handleToggle}
         onClick={(e) => e.stopPropagation()}
         className="peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-        aria-label={`Add "${card.name}" to favorites`}
+        aria-label={t('ariaLabel')}
       />
 
       <div className="group bg-checkbox-bg border-checkbox-border shadow-checkbox peer-hover:shadow-card-hover flex h-10 w-10 items-center justify-center rounded-2xl border-3 transition-all duration-300 ease-in-out">

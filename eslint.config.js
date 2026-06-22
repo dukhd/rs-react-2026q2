@@ -11,10 +11,17 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+
 export default tseslint.config(
   {
     ignores: [
       'dist',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'next-env.d.ts',
       '**/*.js',
       '**/*.d.ts',
       '**/*.config.js',
@@ -25,13 +32,18 @@ export default tseslint.config(
     extends: [
       js.configs.recommended,
       ...tseslint.configs.strict,
+      ...nextVitals,
+      ...nextTs,
       eslintPluginPrettier,
       eslintConfigPrettier,
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
     plugins: {
       react,
@@ -68,6 +80,19 @@ export default tseslint.config(
           project: './tsconfig.json',
         },
       },
+    },
+  },
+  {
+    files: [
+      '**/layout.tsx',
+      '**/page.tsx',
+      '**/loading.tsx',
+      '**/error.tsx',
+      '**/not-found.tsx',
+      '**/route.ts',
+    ],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   }
 );

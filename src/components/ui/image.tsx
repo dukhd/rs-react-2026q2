@@ -1,12 +1,20 @@
-import { type JSX, useState } from 'react';
+'use client';
 
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { type JSX, useState } from 'react';
 interface ImageProps {
   alt: string;
   src: string;
   priority?: boolean;
 }
 
-const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
+const ImageComponent = ({
+  src,
+  alt,
+  priority = false,
+}: ImageProps): JSX.Element => {
+  const t = useTranslations('ImageComponent');
   const [hasError, setHasError] = useState<boolean>(false);
 
   const handleError = (): void => {
@@ -14,15 +22,17 @@ const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
   };
 
   return (
-    <div className="bg-img-placeholder flex aspect-square h-auto w-full items-center justify-center place-self-center overflow-hidden rounded-t-xl object-cover">
+    <div className="bg-img-placeholder relative flex aspect-square h-auto w-full items-center justify-center place-self-center overflow-hidden rounded-t-xl object-cover">
       {hasError ? (
         <span className="text-img-text-placeholder text-4 px-2 text-center font-semibold tracking-wide wrap-break-word">
-          No image available
+          {t('empty')}
         </span>
       ) : (
-        <img
+        <Image
           src={src}
-          alt={`${alt} avatar`}
+          alt={`${alt} ${t('alt')}`}
+          fill
+          sizes="(max-width: 640px) 100vw, 292.5px"
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           onError={handleError}
@@ -33,4 +43,4 @@ const Image = ({ src, alt, priority = false }: ImageProps): JSX.Element => {
   );
 };
 
-export default Image;
+export default ImageComponent;

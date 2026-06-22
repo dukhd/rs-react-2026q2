@@ -1,24 +1,35 @@
-import { useSearchParams } from 'react-router';
+'use client';
+
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
+import { useLocale } from 'next-intl';
 
 export const useDetailsSidebar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedDetailsId = searchParams.get('details');
-  const isSidebarOpen = !!selectedDetailsId;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = useParams<{ id?: string }>();
+  const pathname = usePathname();
+  const locale = useLocale();
+
+  const detailsId = params?.id || null;
+
+  const isSidebarOpen = pathname.includes('/character/');
 
   const handleCloseDetails = () => {
-    setSearchParams((prev) => {
-      prev.delete('details');
-      return prev;
-    });
+    const currentParams = new URLSearchParams(searchParams?.toString());
+    const queryString = currentParams.toString();
+    const targetUrl = queryString ? `/${locale}?${queryString}` : `/${locale}`;
+
+    router.replace(targetUrl);
   };
 
-  const handleCardClick = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setSearchParams((prev) => {
-      prev.set('details', String(id));
-      return prev;
-    });
+  const handleRefresh = () => {
+    router.refresh();
   };
 
-  return { isSidebarOpen, handleCloseDetails, handleCardClick };
+  return { isSidebarOpen, detailsId, handleCloseDetails, handleRefresh };
 };

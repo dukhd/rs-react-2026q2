@@ -1,8 +1,10 @@
+import { useTranslations } from 'next-intl';
 import { type JSX, useState } from 'react';
 
 import Button from './ui/button';
 
 const ErrorButton = (): JSX.Element => {
+  const t = useTranslations('ErrorBtn');
   const [testError, setTestError] = useState<boolean>(false);
 
   const handleTriggerError = (): void => {
@@ -15,7 +17,7 @@ const ErrorButton = (): JSX.Element => {
 
   return (
     <Button
-      text="Trigger Error"
+      text={t('btn')}
       type="button"
       onClick={handleTriggerError}
       customClassName={

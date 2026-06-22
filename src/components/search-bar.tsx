@@ -1,33 +1,60 @@
-import { type JSX, useState } from 'react';
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { type JSX, useState, useTransition } from 'react';
+
+import { STORAGE_KEYS } from '@/constants/storage-keys';
 
 import Button from './ui/button';
 import SearchInput from './ui/search-input';
+
 interface SearchBarProps {
-  onSearch: (trimmedQuery: string) => void;
   initialValue?: string;
+  onSearch: (formData: FormData) => Promise<void>;
 }
 
-const SEARCH_PLACEHOLDER = 'Search by name';
-
 const SearchBar = ({
-  onSearch,
   initialValue = '',
+  onSearch,
 }: SearchBarProps): JSX.Element => {
+  const t = useTranslations('SearchBar');
   const [query, setQuery] = useState<string>(initialValue);
+  const [isPending, startTransition] = useTransition();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
   const handleSearchSubmit = (
-    event: React.SyntheticEvent<HTMLFormElement, SubmitEvent>
-  ) => {
+    event: React.SyntheticEvent<HTMLFormElement>
+  ): void => {
     event.preventDefault();
     const trimmedQuery = query.trim();
-    setQuery(trimmedQuery);
-    if (trimmedQuery !== initialValue.trim()) {
-      onSearch(trimmedQuery);
+    const trimmedInitial = initialValue.trim();
+
+    if (trimmedQuery === trimmedInitial) {
+      return;
     }
+
+    try {
+      if (trimmedQuery) {
+        localStorage.setItem(STORAGE_KEYS.SEARCH_TERM, trimmedQuery);
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.SEARCH_TERM);
+      }
+    } catch (error) {
+      console.error('Failed to write to localStorage:', error);
+    }
+
+    setQuery(trimmedQuery);
+
+    const formData = new FormData();
+    formData.set('search', trimmedQuery);
+    formData.set('page', '1');
+
+    startTransition(async () => {
+      await onSearch(formData);
+    });
   };
 
   return (
@@ -38,12 +65,17 @@ const SearchBar = ({
     >
       <SearchInput
         id="search-input"
-        name="Search query"
-        placeholder={SEARCH_PLACEHOLDER}
+        name="search-input"
+        placeholder={t('placeholder')}
         value={query}
         onChange={handleInputChange}
+        disabled={isPending}
       />
-      <Button text="Search" type="submit" />
+      <Button
+        text={isPending ? '...' : t('btn')}
+        type="submit"
+        disabled={isPending}
+      />
     </form>
   );
 };

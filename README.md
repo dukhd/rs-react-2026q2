@@ -36,9 +36,9 @@ The application uses environment variables for dynamic runtime configuration. Be
 cp .env.example .env
 ```
 
-| **Variable**     | **Description**                                                                                                     | **Example Value** |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `VITE_CACHE_TTL` | Cache Time-To-Live (TTL) in seconds before the query data is considered unused and eligible for garbage collection. | `60`              |
+| **Variable**            | **Description**                                                                                                     | **Example Value** |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `NEXT_PUBLIC_CACHE_TTL` | Cache Time-To-Live (TTL) in seconds before the query data is considered unused and eligible for garbage collection. | `60`              |
 
 ### ⚙️ Installation & Setup
 
