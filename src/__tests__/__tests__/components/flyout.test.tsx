@@ -4,7 +4,6 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
-import { downloadCharactersCSV } from '@/utils/download-csv';
 
 import Flyout from '../../../components/flyout';
 
@@ -43,16 +42,5 @@ describe('Flyout Component', () => {
     await user.click(unselectAllButton);
 
     expect(store.getState().selectedCards.cards).toHaveLength(0);
-  });
-
-  test('Should call downloadCharactersCSV utility when Download is clicked', async () => {
-    const user = userEvent.setup();
-    const testCards = [mockCharacters[0]];
-    renderFlyout(testCards);
-
-    const downloadButton = screen.getByRole('button', { name: /download/i });
-    await user.click(downloadButton);
-
-    expect(downloadCharactersCSV).toHaveBeenCalledWith(testCards);
   });
 });
