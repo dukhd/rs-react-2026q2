@@ -1,5 +1,6 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { JSX } from 'react/jsx-runtime';
 
@@ -9,14 +10,18 @@ const LanguageToggle = (): JSX.Element => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const locales = routing.locales;
   const isRu = locale === locales[1];
 
   const handleToggle = () => {
     const newLocale = isRu ? 'en' : 'ru';
-    const cleanPath = pathname.replace(/^\/(en|ru)/, '');
 
-    router.replace(cleanPath || '/', { locale: newLocale });
+    const cleanPath = pathname.replace(/^\/(en|ru)/, '') || '/';
+    const queryString = searchParams?.toString();
+
+    const finalUrl = queryString ? `${cleanPath}?${queryString}` : cleanPath;
+    router.replace(finalUrl, { locale: newLocale });
   };
 
   return (

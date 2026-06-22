@@ -40,6 +40,12 @@ export const useSearchState = () => {
     router,
   ]);
 
+  useEffect(() => {
+    if (urlSearchTerm) {
+      setSearchTerm(urlSearchTerm);
+    }
+  }, [urlSearchTerm, setSearchTerm]);
+
   const handleSearch = (query: string) => {
     setSearchTerm(query);
     const params = new URLSearchParams();

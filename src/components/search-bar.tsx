@@ -27,8 +27,15 @@ const SearchBar = ({
     event: React.SyntheticEvent<HTMLFormElement>
   ): void => {
     event.preventDefault();
+    const trimmedQuery = query.trim();
+    const trimmedInitial = initialValue.trim();
+
+    if (trimmedQuery === trimmedInitial) {
+      return;
+    }
+
     const formData = new FormData();
-    formData.set('search', query.trim());
+    formData.set('search', trimmedQuery);
     formData.set('page', '1');
 
     startTransition(async () => {

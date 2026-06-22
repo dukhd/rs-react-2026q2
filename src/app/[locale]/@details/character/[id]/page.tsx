@@ -12,6 +12,7 @@ import { CharacterSchema } from '@/types/interfaces';
 interface CharacterDetailsPageProps {
   params: Promise<{
     id: string;
+    locale: string;
   }>;
 }
 
@@ -33,7 +34,11 @@ const CharacterDetails = async ({
 }: Readonly<CharacterDetailsPageProps>): Promise<JSX.Element> => {
   const resolvedParams = await params;
   const id = resolvedParams.id;
-  const tDetails = await getTranslations('CharacterDetails');
+  const locale = resolvedParams.locale;
+  const tDetails = await getTranslations({
+    locale,
+    namespace: 'CharacterDetails',
+  });
 
   const character = await fetchCharacterData(id);
 
