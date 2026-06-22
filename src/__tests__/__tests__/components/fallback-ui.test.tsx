@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
-import FallbackUI from '@/app/error';
+import FallbackUI from '@/app/[locale]/error';
 
 const mockError = new Error('Test application error') as Error & {
   digest?: string;

@@ -1,12 +1,5 @@
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-
-const ERROR_TEXTS = {
-  NETWORK: (statusText: string) => `Oops! ${statusText}. Please try again.`,
-  NOT_FOUND: 'No characters found. Try a different name.',
-  VALIDATION: 'Data validation failed.',
-  FETCH_FAILED: 'Network failure or API limit reached. Please try again later.',
-  DEFAULT: 'Oops! Something went wrong. Please try again.',
-};
+import { useTranslations } from 'next-intl';
 
 const isFetchBaseQueryError = (
   error: unknown
@@ -33,20 +26,24 @@ const getApiErrorMessage = (error: FetchBaseQueryError): string => {
   return `Status ${error.status}`;
 };
 
-export const formatErrorMessage = (error: unknown): string => {
-  if (!error) return ERROR_TEXTS.DEFAULT;
-  if (isValidationError(error)) return ERROR_TEXTS.VALIDATION;
-  if (!isFetchBaseQueryError(error)) return ERROR_TEXTS.DEFAULT;
+type TranslationFunction = ReturnType<typeof useTranslations>;
+
+export const formatErrorMessage = (
+  error: unknown,
+  t: TranslationFunction
+): string => {
+  if (!error) return t('default');
+  if (isValidationError(error)) return t('validation');
+  if (!isFetchBaseQueryError(error)) return t('default');
 
   if (error.status === 'FETCH_ERROR') {
-    return ERROR_TEXTS.FETCH_FAILED;
+    return t('fetchFailed');
   }
 
   if (typeof error.status === 'number') {
-    if (error.status === 404) return ERROR_TEXTS.NOT_FOUND;
-
-    return ERROR_TEXTS.NETWORK(getApiErrorMessage(error));
+    if (error.status === 404) return t('notFound');
+    return t('network', { statusText: getApiErrorMessage(error) });
   }
 
-  return ERROR_TEXTS.DEFAULT;
+  return t('default');
 };

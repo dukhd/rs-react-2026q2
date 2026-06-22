@@ -1,23 +1,33 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
+
+import { useRouter } from '@/i18n/routing';
 
 export const useDetailsSidebar = () => {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isSidebarOpen = pathname?.startsWith('/character/');
+  const params = useParams<{ id?: string }>();
+
+  const detailsId = params?.id || null;
+  const isSidebarOpen = Boolean(detailsId);
 
   const handleCloseDetails = () => {
     const currentParams = new URLSearchParams(searchParams?.toString());
-    router.push(`/?${currentParams.toString()}`);
+    const queryString = currentParams.toString();
+
+    router.push(queryString ? `/?${queryString}` : '/');
   };
 
   const handleCardClick = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     const currentParams = new URLSearchParams(searchParams?.toString());
-    router.push(`/character/${id}?${currentParams.toString()}`);
+    const queryString = currentParams.toString();
+
+    router.push(
+      queryString ? `/character/${id}?${queryString}` : `/character/${id}`
+    );
   };
 
-  return { isSidebarOpen, handleCloseDetails, handleCardClick };
+  return { isSidebarOpen, detailsId, handleCloseDetails, handleCardClick };
 };

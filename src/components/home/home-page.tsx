@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { type JSX } from 'react';
 
 import Flyout from '@/components/flyout';
@@ -11,6 +12,8 @@ import { useHomePage } from '@/hooks/use-home-page';
 import { formatErrorMessage } from '@/utils/error-formatter';
 
 const HomePage = (): JSX.Element => {
+  const t = useTranslations('HomePage');
+  const tErrors = useTranslations('Errors');
   const {
     currentPage,
     activeSearchQuery,
@@ -45,7 +48,7 @@ const HomePage = (): JSX.Element => {
         <button
           onClick={handleCloseDetails}
           type="button"
-          aria-label="Close details"
+          aria-label={t('btnCloseAriaLabel')}
           className="bg-accent/10 fixed inset-0 z-1 h-full w-full cursor-default border-none p-0 backdrop-blur-xs"
         />
       )}
@@ -54,7 +57,7 @@ const HomePage = (): JSX.Element => {
           <HomeContent
             isLoading={isLoading}
             isFetching={isFetching}
-            error={error ? formatErrorMessage(error) : null}
+            error={error ? formatErrorMessage(error, tErrors) : null}
             activeSearchQuery={activeSearchQuery}
             onRefresh={handleRefresh}
             onSearch={handleSearch}

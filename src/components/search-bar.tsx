@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { type JSX, useState } from 'react';
 
 import Button from './ui/button';
@@ -7,12 +8,11 @@ interface SearchBarProps {
   initialValue?: string;
 }
 
-const SEARCH_PLACEHOLDER = 'Search by name';
-
 const SearchBar = ({
   onSearch,
   initialValue = '',
 }: SearchBarProps): JSX.Element => {
+  const t = useTranslations('SearchBar');
   const [query, setQuery] = useState<string>(initialValue);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,11 +39,11 @@ const SearchBar = ({
       <SearchInput
         id="search-input"
         name="Search query"
-        placeholder={SEARCH_PLACEHOLDER}
+        placeholder={t('placeholder')}
         value={query}
         onChange={handleInputChange}
       />
-      <Button text="Search" type="submit" />
+      <Button text={t('btn')} type="submit" />
     </form>
   );
 };

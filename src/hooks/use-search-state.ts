@@ -1,9 +1,9 @@
 'use client';
-
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { STORAGE_KEYS } from '@/constants/storage-keys';
+import { usePathname, useRouter } from '@/i18n/routing';
 
 import useLocalStorage from './use-local-storage';
 

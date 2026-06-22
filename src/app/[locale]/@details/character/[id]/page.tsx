@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { type JSX } from 'react';
 
 import Loader from '@/components/loader/loader';
@@ -12,6 +13,8 @@ import { useGetCharacterDetailsQuery } from '@/services/characters-api';
 import { formatErrorMessage } from '@/utils/error-formatter';
 
 const CharacterDetails = (): JSX.Element => {
+  const tDetails = useTranslations('CharacterDetails');
+  const tErrors = useTranslations('Errors');
   const { refreshDetails } = useCacheRefresh();
   const { handleCloseDetails } = useDetailsSidebar();
 
@@ -38,13 +41,13 @@ const CharacterDetails = (): JSX.Element => {
 
   if (error || !character) {
     const errorMessage = error
-      ? formatErrorMessage(error)
-      : 'Character not found';
+      ? formatErrorMessage(error, tErrors)
+      : tDetails('notFound');
     return (
       <div className="flex flex-col gap-4 p-4 text-center">
         <p className="text-details-error font-bold">{errorMessage}</p>
         <Button
-          text="Close"
+          text={tDetails('btnClose')}
           type="button"
           onClick={handleCloseDetails}
           customClassName="bg-btn-red text-btn-red-text px-4 py-2 text-xs sm:text-sm self-center"
@@ -57,9 +60,9 @@ const CharacterDetails = (): JSX.Element => {
     status: character.status,
     species: character.species,
     gender: character.gender,
-    type: character.type || 'Unknown',
+    type: character.type || tDetails('unknownType'),
     origin: character.origin.name,
-    'last location': character.location.name,
+    lastLocation: character.location.name,
   };
 
   return (
@@ -69,7 +72,7 @@ const CharacterDetails = (): JSX.Element => {
       >
         <div className="flex justify-between">
           <Button
-            text="Refresh"
+            text={tDetails('btnRefresh')}
             type="button"
             onClick={() => refreshDetails(id)}
             customClassName={
@@ -102,7 +105,7 @@ const CharacterDetails = (): JSX.Element => {
               className="bg-sub-bg-gray flex w-full flex-col items-start gap-1 rounded-2xl p-2"
             >
               <h3 className="text-card-sub-title text-xs font-bold uppercase">
-                {key}
+                {tDetails(`labels.${key}`)}
               </h3>
               <p className="text-second text-base font-bold">{value}</p>
             </div>

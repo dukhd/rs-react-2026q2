@@ -9,7 +9,7 @@ interface HomeSidebarProps {
 
 export const HomeSidebar = ({ children }: HomeSidebarProps): JSX.Element => {
   const pathname = usePathname();
-  const isOpen = pathname.startsWith('/character/');
+  const isOpen = pathname.includes('/character/');
 
   return (
     <aside

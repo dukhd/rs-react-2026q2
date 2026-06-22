@@ -8,7 +8,7 @@ import { errorHandlers } from '@/__tests__/msw/error-handlers';
 import { server } from '@/__tests__/msw/server';
 import { renderWithProviders } from '@/__tests__/utils/render-with-providers';
 import { resolveLoading } from '@/__tests__/utils/resolve-loading';
-import HomePage from '@/app/page';
+import HomePage from '@/app/[locale]/page';
 import { CHARACTER_URL } from '@/constants/api-url';
 import { STORAGE_KEYS } from '@/constants/storage-keys';
 

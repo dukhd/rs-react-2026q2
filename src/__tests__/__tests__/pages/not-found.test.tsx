@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 
-import NotFoundPage from '@/app/not-found';
+import NotFoundPage from '@/app/[locale]/not-found';
 
 vi.mock('next/link', () => ({
   default: ({

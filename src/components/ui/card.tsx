@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { JSX } from 'react';
 
 import type { CharacterSchema } from '@/types/interfaces';
@@ -11,12 +12,8 @@ interface CardProps {
   priority?: boolean;
 }
 
-const LABELS = {
-  SPECIES: 'Species',
-  GENDER: 'Gender',
-} as const;
-
 const Card = ({ card, priority }: CardProps): JSX.Element => {
+  const t = useTranslations('Card');
   return (
     <div className="bg-card-bg border-card-border shadow-card text-card-text hover:shadow-card-hover relative z-20 cursor-pointer rounded-2xl border-3 tracking-wide transition-all duration-300 ease-in-out hover:scale-105 hover:rotate-1">
       <header className="border-card-border relative border-b-4">
@@ -31,13 +28,13 @@ const Card = ({ card, priority }: CardProps): JSX.Element => {
         <dl className="mt-4 flex flex-col gap-2">
           <div className="bg-card-sub-bg flex flex-row justify-between rounded-sm border-2 border-transparent p-1 text-sm">
             <dt className="text-card-sub-title font-bold uppercase">
-              {LABELS.SPECIES}:
+              {t('speciesLabel')}:
             </dt>
             <dd className="text-card-text font-bold">{card.species}</dd>
           </div>
           <div className="bg-card-sub-bg flex flex-row justify-between rounded-sm border-2 border-transparent p-1 text-sm">
             <dt className="text-card-sub-title font-bold uppercase">
-              {LABELS.GENDER}:
+              {t('genderLabel')}:
             </dt>
             <dd className="text-card-text font-bold">{card.gender}</dd>
           </div>

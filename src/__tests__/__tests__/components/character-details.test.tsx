@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { mockCharacters } from '@/__tests__/mocks/mock-characters';
-import CharacterDetails from '@/app/@details/character/[id]/page';
+import CharacterDetails from '@/app/[locale]/@details/character/[id]/page';
 
 interface TestFetchState {
   data: (typeof mockCharacters)[number] | null;
