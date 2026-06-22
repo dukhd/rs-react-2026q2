@@ -36,7 +36,11 @@ const CardList = ({
             key={card.id}
             className="w-full max-w-100 min-w-50 list-none justify-self-center"
           >
-            <Link href={href} className="block w-full text-left">
+            <Link
+              href={href}
+              className="block w-full text-left"
+              prefetch={false}
+            >
               <Card card={card} priority={index < 4} />
             </Link>
           </li>
