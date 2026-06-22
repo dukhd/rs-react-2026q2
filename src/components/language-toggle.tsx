@@ -1,21 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useLocale } from 'next-intl';
 import { JSX } from 'react/jsx-runtime';
 
-interface LanguageToggleProps {
-  firstLanguage: string;
-  secondLanguage: string;
-}
-const LanguageToggle = ({
-  firstLanguage,
-  secondLanguage,
-}: LanguageToggleProps): JSX.Element => {
-  const [isSecondActive, setIsSecondActive] = useState(false);
+import { usePathname, useRouter } from '@/i18n/routing';
+
+const LanguageToggle = (): JSX.Element => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
+  const isRu = locale === 'ru';
 
   const handleToggle = () => {
-    const newState = !isSecondActive;
-    setIsSecondActive(newState);
+    const newLocale = isRu ? 'en' : 'ru';
+    router.replace(pathname, { locale: newLocale });
   };
 
   return (
@@ -27,17 +25,17 @@ const LanguageToggle = ({
       <div className="flex w-full gap-2 text-base font-bold tracking-wider uppercase select-none">
         <span
           className={`flex justify-center rounded-4xl px-2 py-1 transition-colors duration-300 ${
-            isSecondActive ? 'text-white' : 'bg-accent text-black'
+            isRu ? 'text-white' : 'bg-accent text-black'
           }`}
         >
-          {firstLanguage}
+          EN
         </span>
         <span
           className={`flex justify-center rounded-4xl px-2 py-1 transition-colors duration-300 ${
-            isSecondActive ? 'bg-accent text-black' : 'text-white'
+            isRu ? 'bg-accent text-black' : 'text-white'
           }`}
         >
-          {secondLanguage}
+          RU
         </span>
       </div>
     </button>

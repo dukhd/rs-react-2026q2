@@ -52,7 +52,7 @@ const Header = (): JSX.Element => {
             height={20}
           />
         </button>
-        <LanguageToggle firstLanguage="en" secondLanguage="ru" />
+        <LanguageToggle />
       </div>
     </div>
   );
