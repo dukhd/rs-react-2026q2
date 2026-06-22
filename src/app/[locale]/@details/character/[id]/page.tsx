@@ -61,7 +61,7 @@ const CharacterDetails = async ({
   };
 
   return (
-    <div className="relative flex flex-col">
+    <div key={id} className="relative flex flex-col">
       <div className="flex flex-col gap-6 transition-opacity duration-200">
         <CharacterDetailsActions />
         <div className="shadow-about-card-1 border-second relative aspect-square h-83.25 w-83.25 overflow-hidden rounded-2xl border-4">
